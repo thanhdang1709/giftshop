@@ -278,7 +278,7 @@ const AdminUsers = {
 
     // Save to DB
     if (typeof DB !== 'undefined' && DB.update) {
-      DB.update(DB.STORES.USERS, user);
+      DB.update(DB.STORES.USERS, userId, user);
     } else {
       // Fallback to localStorage
       const users = JSON.parse(localStorage.getItem('users') || '[]');

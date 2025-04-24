@@ -327,13 +327,13 @@ const AdminCategories = {
       category.id = categoryId;
       
       if (typeof DB !== 'undefined' && DB.update) {
-        DB.update(DB.STORES.CATEGORIES, category);
+        DB.update(DB.STORES.CATEGORIES, categoryId, category);
       } else {
         // Fallback to localStorage
         const categories = JSON.parse(localStorage.getItem('categories') || '[]');
         const index = categories.findIndex(cat => cat.id === categoryId);
         if (index !== -1) {
-          categories[index] = category;
+          categories[index] = {...categories[index], ...category};
           localStorage.setItem('categories', JSON.stringify(categories));
         }
       }

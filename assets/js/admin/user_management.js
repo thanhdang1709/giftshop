@@ -227,7 +227,16 @@ const UserManagement = {
       user.active = form.active.checked;
       user.updatedAt = new Date().toISOString();
       
-      DB.update(DB.STORES.USERS, user);
+      if (DB.update) {
+        DB.update(DB.STORES.USERS, user.id, user);
+      } else {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const index = users.findIndex(u => u.id === user.id);
+        if (index !== -1) {
+          users[index] = user;
+          localStorage.setItem('users', JSON.stringify(users));
+        }
+      }
       this.showNotification('User updated successfully');
     }
     
