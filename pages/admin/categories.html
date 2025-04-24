@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Danh mục - Cửa hàng quà tặng Nhóm5</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Tùy chỉnh -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .admin-sidebar {
+            background-color: #343a40;
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            color: #fff;
+        }
+        
+        .category-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Thanh bên -->
+            <div class="col-md-3 col-lg-2 admin-sidebar d-md-block collapse">
+                <div class="pt-3 pb-2 mb-3">
+                    <a href="../../index.html" class="d-flex align-items-center text-white text-decoration-none mb-4">
+                        <img src="../../assets/images/logo.png" alt="Cửa hàng quà tặng Nhóm5" height="40" class="me-2">
+                        <span class="fs-4">Bảng Điều Khiển</span>
+                    </a>
+                    
+                    <hr class="border-light">
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="dashboard.html">
+                                <i class="bi bi-speedometer2 me-2"></i> Tổng quan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html">
+                                <i class="bi bi-box-seam me-2"></i> Sản phẩm
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="categories.html">
+                                <i class="bi bi-list-ul me-2"></i> Danh mục
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="orders.html">
+                                <i class="bi bi-cart-check me-2"></i> Đơn hàng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="users.html">
+                                <i class="bi bi-people me-2"></i> Người dùng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="settings.html">
+                                <i class="bi bi-gear me-2"></i> Cài đặt
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../index.html">
+                                <i class="bi bi-house-door me-2"></i> Về trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="adminLogoutBtn">
+                                <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Nội dung chính -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Quản lý Danh mục</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-primary" id="addCategoryBtn">
+                            <i class="bi bi-plus-lg me-1"></i> Thêm danh mục
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tìm kiếm -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchCategory" placeholder="Tìm kiếm danh mục...">
+                            <button class="btn btn-outline-secondary" type="button" id="searchCategoryBtn">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="showInactiveCheckbox" value="1">
+                            <label class="form-check-label" for="showInactiveCheckbox">Hiển thị danh mục không hoạt động</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Danh sách danh mục -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th width="20%">Tên danh mục</th>
+                                        <th width="35%">Mô tả</th>
+                                        <th width="15%">Màu</th>
+                                        <th width="10%">Sản phẩm</th>
+                                        <th width="5%">Trạng thái</th>
+                                        <th width="10%">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="categoriesList">
+                                    <!-- Danh sách danh mục sẽ được tải động -->
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">Đang tải danh mục...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Modal thêm/sửa danh mục -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">Thêm danh mục mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="categoryForm">
+                        <input type="hidden" id="categoryId">
+                        
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">Tên danh mục <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="categoryName" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="categoryDescription" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="categoryDescription" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="categoryColor" class="form-label">Màu danh mục</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" id="categoryColor" value="#3498db">
+                                <input type="text" class="form-control" id="categoryColorHex" value="#3498db">
+                            </div>
+                            <small class="form-text text-muted">Màu sắc giúp phân biệt trực quan các danh mục</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="categoryIcon" class="form-label">Icon danh mục (tùy chọn)</label>
+                            <input type="text" class="form-control" id="categoryIcon" placeholder="Ví dụ: bi-gift">
+                            <small class="form-text text-muted">Sử dụng tên icon của Bootstrap (bi-*)</small>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="categoryStatus" checked>
+                            <label class="form-check-label" for="categoryStatus">Hiện danh mục</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveCategoryBtn">Lưu danh mục</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal xác nhận xóa -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa danh mục "<span id="deleteCategoryName"></span>"?</p>
+                    <div id="categoryHasProductsWarning" class="alert alert-warning d-none">
+                        <i class="bi bi-exclamation-triangle-fill"></i> 
+                        Danh mục này có <strong id="productCount">0</strong> sản phẩm. Nếu xóa, các sản phẩm sẽ không có danh mục.
+                    </div>
+                    <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa danh mục</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JS Tùy chỉnh -->
+    <script src="../../assets/js/db.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    
+    <script>
+        // Đối tượng Modal
+        let categoryModal;
+        let deleteConfirmModal;
+        
+        // ID danh mục đang chọn để xóa
+        let categoryToDelete = null;
+        
+        // Trạng thái chỉnh sửa hay thêm mới
+        let isEditing = false;
+        
+        // Tham số tìm kiếm
+        let currentSearchTerm = '';
+        let showInactive = false;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Bảo vệ trang admin
+            if (!Auth.isLoggedIn() || (!Auth.isAdmin() && !Auth.isStaff())) {
+                window.location.href = '../../pages/customer/login.html';
+                return;
+            }
+            
+            // Khởi tạo các modal
+            categoryModal = new bootstrap.Modal(document.getElementById('categoryModal'));
+            deleteConfirmModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            
+            // Tải dữ liệu
+            loadCategories();
+            
+            // Sự kiện thêm danh mục mới
+            document.getElementById('addCategoryBtn').addEventListener('click', () => {
+                resetCategoryForm();
+                document.getElementById('categoryModalLabel').textContent = 'Thêm danh mục mới';
+                isEditing = false;
+                categoryModal.show();
+            });
+            
+            // Sự kiện lưu danh mục
+            document.getElementById('saveCategoryBtn').addEventListener('click', saveCategory);
+            
+            // Sự kiện xác nhận xóa
+            document.getElementById('confirmDeleteBtn').addEventListener('click', deleteCategory);
+            
+            // Sự kiện tìm kiếm
+            document.getElementById('searchCategoryBtn').addEventListener('click', () => {
+                currentSearchTerm = document.getElementById('searchCategory').value.trim();
+                loadCategories();
+            });
+            
+            // Sự kiện tìm kiếm khi nhấn Enter
+            document.getElementById('searchCategory').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentSearchTerm = e.target.value.trim();
+                    loadCategories();
+                }
+            });
+            
+            // Sự kiện thay đổi hiển thị danh mục không hoạt động
+            document.getElementById('showInactiveCheckbox').addEventListener('change', (e) => {
+                showInactive = e.target.checked;
+                loadCategories();
+            });
+            
+            // Sự kiện thay đổi màu sắc
+            document.getElementById('categoryColor').addEventListener('input', (e) => {
+                document.getElementById('categoryColorHex').value = e.target.value;
+            });
+            
+            document.getElementById('categoryColorHex').addEventListener('input', (e) => {
+                document.getElementById('categoryColor').value = e.target.value;
+            });
+            
+            // Sự kiện đăng xuất
+            document.getElementById('adminLogoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                Auth.logout();
+            });
+        });
+        
+        /**
+         * Tải danh sách danh mục
+         */
+        function loadCategories() {
+            const categoriesList = document.getElementById('categoriesList');
+            
+            // Hiển thị trạng thái đang tải
+            categoriesList.innerHTML = '<tr><td colspan="7" class="text-center py-4">Đang tải danh mục...</td></tr>';
+            
+            let categories = DB.getAll(DB.STORES.CATEGORIES);
+            
+            // Lọc theo trạng thái nếu không hiển thị danh mục không hoạt động
+            if (!showInactive) {
+                categories = categories.filter(category => category.status !== false);
+            }
+            
+            // Lọc theo từ khóa tìm kiếm nếu có
+            if (currentSearchTerm) {
+                const searchTermLower = currentSearchTerm.toLowerCase();
+                categories = categories.filter(category => 
+                    category.name.toLowerCase().includes(searchTermLower) || 
+                    (category.description && category.description.toLowerCase().includes(searchTermLower))
+                );
+            }
+            
+            if (categories.length === 0) {
+                categoriesList.innerHTML = '<tr><td colspan="7" class="text-center py-4">Không tìm thấy danh mục nào</td></tr>';
+                return;
+            }
+            
+            // Sắp xếp danh mục theo tên
+            categories.sort((a, b) => a.name.localeCompare(b.name));
+            
+            let html = '';
+            categories.forEach((category, index) => {
+                // Đếm số lượng sản phẩm trong danh mục
+                const products = DB.getAll(DB.STORES.PRODUCTS).filter(product => product.categoryId === category.id);
+                const productCount = products.length;
+                
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>
+                            ${category.icon ? `<i class="bi ${category.icon} me-2"></i>` : ''}
+                            ${category.name}
+                        </td>
+                        <td>${category.description || '<em class="text-muted">Không có mô tả</em>'}</td>
+                        <td>
+                            <span class="category-badge" style="background-color: ${category.color || '#cccccc'}"></span>
+                            ${category.color || 'Không có màu'}
+                        </td>
+                        <td>${productCount}</td>
+                        <td>
+                            ${category.status !== false 
+                                ? '<span class="badge bg-success">Hiện</span>' 
+                                : '<span class="badge bg-secondary">Ẩn</span>'}
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-category" data-id="${category.id}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger delete-category" 
+                                        data-id="${category.id}" 
+                                        data-name="${category.name}"
+                                        data-product-count="${productCount}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            categoriesList.innerHTML = html;
+            
+            // Thêm sự kiện cho các nút
+            document.querySelectorAll('.edit-category').forEach(button => {
+                button.addEventListener('click', () => {
+                    const categoryId = button.getAttribute('data-id');
+                    editCategory(categoryId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-category').forEach(button => {
+                button.addEventListener('click', () => {
+                    const categoryId = button.getAttribute('data-id');
+                    const categoryName = button.getAttribute('data-name');
+                    const productCount = parseInt(button.getAttribute('data-product-count'));
+                    confirmDeleteCategory(categoryId, categoryName, productCount);
+                });
+            });
+        }
+        
+        /**
+         * Đặt lại form danh mục
+         */
+        function resetCategoryForm() {
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryId').value = '';
+            document.getElementById('categoryColor').value = '#3498db';
+            document.getElementById('categoryColorHex').value = '#3498db';
+        }
+        
+        /**
+         * Chỉnh sửa danh mục
+         * @param {string} categoryId - ID của danh mục
+         */
+        function editCategory(categoryId) {
+            const category = DB.getById(DB.STORES.CATEGORIES, categoryId);
+            if (!category) return;
+            
+            // Đặt tiêu đề modal
+            document.getElementById('categoryModalLabel').textContent = 'Chỉnh sửa danh mục';
+            
+            // Điền thông tin danh mục vào form
+            document.getElementById('categoryId').value = category.id;
+            document.getElementById('categoryName').value = category.name;
+            document.getElementById('categoryDescription').value = category.description || '';
+            document.getElementById('categoryColor').value = category.color || '#3498db';
+            document.getElementById('categoryColorHex').value = category.color || '#3498db';
+            document.getElementById('categoryIcon').value = category.icon || '';
+            document.getElementById('categoryStatus').checked = category.status !== false;
+            
+            isEditing = true;
+            categoryModal.show();
+        }
+        
+        /**
+         * Xác nhận xóa danh mục
+         * @param {string} categoryId - ID của danh mục
+         * @param {string} categoryName - Tên của danh mục
+         * @param {number} productCount - Số lượng sản phẩm trong danh mục
+         */
+        function confirmDeleteCategory(categoryId, categoryName, productCount) {
+            categoryToDelete = categoryId;
+            document.getElementById('deleteCategoryName').textContent = categoryName;
+            
+            const warningEl = document.getElementById('categoryHasProductsWarning');
+            const countEl = document.getElementById('productCount');
+            
+            if (productCount > 0) {
+                countEl.textContent = productCount;
+                warningEl.classList.remove('d-none');
+            } else {
+                warningEl.classList.add('d-none');
+            }
+            
+            deleteConfirmModal.show();
+        }
+        
+        /**
+         * Xóa danh mục
+         */
+        function deleteCategory() {
+            if (!categoryToDelete) return;
+            
+            // Xóa danh mục
+            DB.delete(DB.STORES.CATEGORIES, categoryToDelete);
+            
+            // Đóng modal và tải lại danh sách
+            deleteConfirmModal.hide();
+            loadCategories();
+            
+            // Hiển thị thông báo
+            Utils.showToast('Danh mục đã được xóa thành công', 'success');
+            
+            categoryToDelete = null;
+        }
+        
+        /**
+         * Lưu danh mục (thêm mới hoặc cập nhật)
+         */
+        function saveCategory() {
+            // Kiểm tra form
+            const form = document.getElementById('categoryForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Lấy dữ liệu từ form
+            const categoryId = document.getElementById('categoryId').value.trim();
+            const name = document.getElementById('categoryName').value.trim();
+            const description = document.getElementById('categoryDescription').value.trim();
+            const color = document.getElementById('categoryColor').value;
+            const icon = document.getElementById('categoryIcon').value.trim();
+            const status = document.getElementById('categoryStatus').checked;
+            
+            // Tạo đối tượng danh mục
+            const category = {
+                name,
+                description,
+                color,
+                icon,
+                status
+            };
+            
+            if (isEditing) {
+                // Cập nhật danh mục
+                category.id = categoryId;
+                DB.update(DB.STORES.CATEGORIES, category);
+                Utils.showToast('Danh mục đã được cập nhật thành công', 'success');
+            } else {
+                // Thêm danh mục mới
+                category.createdAt = new Date().toISOString();
+                DB.add(DB.STORES.CATEGORIES, category);
+                Utils.showToast('Danh mục mới đã được thêm thành công', 'success');
+            }
+            
+            // Đóng modal và tải lại danh sách
+            categoryModal.hide();
+            loadCategories();
+        }
+    </script>
+</body>
+</html> 

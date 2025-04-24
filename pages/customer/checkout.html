@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - Cửa hàng quà tặng Nhóm5</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    
+    <!-- CSS Tùy chỉnh -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light py-3">
+                <a class="navbar-brand d-flex align-items-center" href="../../index.html">
+                    <img src="../../assets/images/logo.png" alt="Cửa hàng quà tặng Nhóm5" height="40" class="me-2">
+                    <span class="fw-bold">Cửa hàng quà tặng Nhóm5</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../index.html">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../products.html">Sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../about.html">Giới thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../contact.html">Liên hệ</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="nav-link position-relative" href="cart.html">
+                                <i class="bi bi-cart fs-5"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown ms-lg-2" id="userMenu">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-5"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item login-menu-item" href="login.html">Đăng nhập</a></li>
+                                <li><a class="dropdown-item register-menu-item" href="register.html">Đăng ký</a></li>
+                                <li><hr class="dropdown-divider user-authenticated"></li>
+                                <li><a class="dropdown-item user-authenticated" href="profile.html">Tài khoản của tôi</a></li>
+                                <li><a class="dropdown-item user-authenticated" href="orders.html">Đơn hàng của tôi</a></li>
+                                <li><hr class="dropdown-divider user-authenticated"></li>
+                                <li><a class="dropdown-item user-authenticated" href="#" id="logoutBtn">Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+            <h1 class="text-center mb-4">Thanh toán</h1>
+            
+            <div class="row">
+                <!-- Shipping & Contact Info -->
+                <div class="col-lg-7 mb-4 mb-lg-0">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="mb-0">Thông tin thanh toán</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="checkoutForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fullName" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="fullName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" id="phone" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="address" required>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="province" class="form-label">Tỉnh/Thành phố <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="province" required>
+                                            <option value="">Chọn tỉnh/thành phố</option>
+                                            <option value="HCM">TP. Hồ Chí Minh</option>
+                                            <option value="HN">Hà Nội</option>
+                                            <option value="DN">Đà Nẵng</option>
+                                            <option value="CT">Cần Thơ</option>
+                                            <!-- Thêm các tỉnh thành khác -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="district" class="form-label">Quận/Huyện <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="district" required>
+                                            <option value="">Chọn quận/huyện</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="ward" class="form-label">Phường/Xã <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="ward" required>
+                                            <option value="">Chọn phường/xã</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control" id="notes" rows="3" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."></textarea>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Phương thức thanh toán <span class="text-danger">*</span></label>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                                        <label class="form-check-label" for="cod">
+                                            <i class="bi bi-cash me-2"></i> Thanh toán khi nhận hàng (COD)
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="bankTransfer" value="BankTransfer">
+                                        <label class="form-check-label" for="bankTransfer">
+                                            <i class="bi bi-bank me-2"></i> Chuyển khoản ngân hàng
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="Momo">
+                                        <label class="form-check-label" for="momo">
+                                            <i class="bi bi-wallet2 me-2"></i> Ví MoMo
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div id="bankInfo" class="card mb-4 d-none">
+                                    <div class="card-body bg-light">
+                                        <h6>Thông tin chuyển khoản:</h6>
+                                        <p class="mb-1"><strong>Ngân hàng:</strong> Vietcombank</p>
+                                        <p class="mb-1"><strong>Số tài khoản:</strong> 1234567890</p>
+                                        <p class="mb-1"><strong>Chủ tài khoản:</strong> CÔNG TY CỔ PHẦN NHÓM5</p>
+                                        <p class="mb-0"><strong>Nội dung:</strong> Thanh toán đơn hàng #<span id="orderReference">xxx</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="termsAccepted" required>
+                                    <label class="form-check-label" for="termsAccepted">
+                                        Tôi đã đọc và đồng ý với <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">điều khoản và điều kiện</a> của cửa hàng.
+                                    </label>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="placeOrderBtn">Đặt hàng</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="col-lg-5">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="mb-0">Đơn hàng của bạn</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="order-items-container mb-4">
+                                <!-- Order items will be dynamically loaded here -->
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tạm tính:</span>
+                                <span class="subtotal">0 ₫</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Phí vận chuyển:</span>
+                                <span class="shipping-fee">30,000 ₫</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>
+                                    <span>Mã giảm giá:</span>
+                                    <span class="coupon-applied text-success d-none ms-2">(Đã áp dụng)</span>
+                                </div>
+                                <span class="discount-amount">0 ₫</span>
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="couponCode" placeholder="Nhập mã giảm giá">
+                                <button class="btn btn-outline-secondary" type="button" id="applyCouponBtn">Áp dụng</button>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="d-flex justify-content-between mb-0">
+                                <strong>Tổng cộng:</strong>
+                                <strong class="total-amount">0 ₫</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-3 shadow-sm border-0">
+                        <div class="card-body">
+                            <h6 class="mb-3">Đơn hàng được bảo đảm:</h6>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-shield-check text-success fs-4 me-3"></i>
+                                    <span>Bảo mật thanh toán</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-arrow-return-left text-success fs-4 me-3"></i>
+                                    <span>Đổi trả trong 30 ngày</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-truck text-success fs-4 me-3"></i>
+                                    <span>Giao hàng nhanh chóng</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Terms and Conditions Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Điều khoản và điều kiện</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Điều khoản chung</h6>
+                    <p>Khi quý khách truy cập vào trang web của chúng tôi có nghĩa là quý khách đồng ý với các điều khoản này. Trang web có quyền thay đổi, chỉnh sửa, thêm hoặc lược bỏ bất kỳ phần nào trong Điều khoản mua bán hàng hóa này vào bất cứ lúc nào.</p>
+                    
+                    <h6>2. Hướng dẫn sử dụng website</h6>
+                    <p>Khi vào web của chúng tôi, người dùng tối thiểu phải 18 tuổi hoặc truy cập dưới sự giám sát của cha mẹ hay người giám hộ hợp pháp.</p>
+                    
+                    <h6>3. Thanh toán an toàn và tiện lợi</h6>
+                    <p>Người mua có thể tham khảo các phương thức thanh toán sau đây và lựa chọn áp dụng phương thức phù hợp:</p>
+                    <ul>
+                        <li>Thanh toán trực tiếp (người mua nhận hàng tại địa chỉ người bán)</li>
+                        <li>Thanh toán sau (COD – giao hàng và thu tiền tận nơi)</li>
+                        <li>Thanh toán online qua thẻ tín dụng, chuyển khoản</li>
+                    </ul>
+                    
+                    <h6>4. Chính sách vận chuyển</h6>
+                    <p>Shop sẽ giao hàng trong vòng 3-5 ngày đối với các đơn hàng trong nội thành và 5-7 ngày đối với các đơn hàng ở tỉnh khác.</p>
+                    
+                    <h6>5. Chính sách đổi trả</h6>
+                    <p>Trong vòng 30 ngày kể từ khi nhận hàng, khách hàng có thể yêu cầu đổi trả sản phẩm với điều kiện:</p>
+                    <ul>
+                        <li>Sản phẩm còn mới 100%, nguyên tem mác</li>
+                        <li>Có hóa đơn mua hàng kèm theo</li>
+                        <li>Sản phẩm lỗi do nhà sản xuất</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đã hiểu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Checkout Success Modal -->
+    <div class="modal fade" id="checkoutSuccessModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <i class="bi bi-check-circle-fill text-success display-1 mb-3"></i>
+                    <h3>Đặt hàng thành công!</h3>
+                    <p class="mb-4">Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được tiếp nhận.</p>
+                    <p>Mã đơn hàng: <strong id="successOrderId">ORD12345</strong></p>
+                    <div class="alert alert-info bank-payment-info d-none">
+                        <p class="mb-0">Vui lòng thực hiện thanh toán theo thông tin chuyển khoản đã cung cấp để hoàn tất đơn hàng.</p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="orders.html" class="btn btn-primary me-2">
+                            <i class="bi bi-bag-check me-2"></i>Xem đơn hàng của tôi
+                        </a>
+                        <a href="../../index.html" class="btn btn-outline-primary">
+                            <i class="bi bi-house me-2"></i>Về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">Về chúng tôi</h5>
+                    <p>Cửa hàng quà tặng Nhóm5 chuyên cung cấp các sản phẩm quà tặng độc đáo, ý nghĩa cho mọi dịp.</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-youtube fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-tiktok fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5 class="mb-3">Liên kết</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../../index.html" class="text-decoration-none text-white">Trang chủ</a></li>
+                        <li class="mb-2"><a href="../products.html" class="text-decoration-none text-white">Sản phẩm</a></li>
+                        <li class="mb-2"><a href="../about.html" class="text-decoration-none text-white">Giới thiệu</a></li>
+                        <li class="mb-2"><a href="../contact.html" class="text-decoration-none text-white">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Chính sách</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-white">Chính sách bảo mật</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-white">Điều khoản sử dụng</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-white">Chính sách đổi trả</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-white">Chính sách vận chuyển</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 273 An Dương Vương, P.3, Q.5, TP.HCM</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> (028) 3835 4409</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@nhom5.com</li>
+                        <li class="mb-2"><i class="bi bi-clock me-2"></i> 08:00 - 21:00, Thứ 2 - Chủ nhật</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Cửa hàng quà tặng Nhóm5. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JS Tùy chỉnh -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/cart.js"></script>
+    <script src="../../assets/js/checkout.js"></script>
+</body>
+</html> 

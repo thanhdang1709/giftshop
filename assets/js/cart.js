@@ -298,6 +298,185 @@ const Cart = {
     } else {
       alert(message);
     }
+  },
+
+  updateCartUI: function() {
+    const cartCountElements = document.querySelectorAll('.cart-count');
+    cartCountElements.forEach(element => {
+      element.textContent = this.cart.length;
+    });
+
+    if (this.isOnCartPage()) {
+      this.renderCartPage();
+    }
+  },
+
+  renderCartPage: function() {
+    const cartContainer = document.querySelector('.cart-items-container');
+    if (!cartContainer) return;
+
+    if (this.cart.length === 0) {
+      cartContainer.innerHTML = `
+        <div class="text-center py-5">
+          <i class="bi bi-cart-x fs-1 text-muted mb-3"></i>
+          <h4>Giỏ hàng của bạn đang trống</h4>
+          <p class="text-muted">Hãy tiếp tục mua sắm để lựa chọn sản phẩm</p>
+          <a href="../products.html" class="btn btn-primary mt-3">Tiếp tục mua sắm</a>
+        </div>
+      `;
+      document.querySelector('.cart-summary-container').innerHTML = '';
+      return;
+    }
+
+    let totalItems = 0;
+    let subtotal = 0;
+    let html = '';
+
+    this.cart.forEach(item => {
+      totalItems += item.quantity;
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      html += `
+        <div class="card mb-3 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-2 mb-3 mb-md-0 text-center">
+                <img src="${item.image}" alt="${item.name}" class="img-fluid rounded" style="max-height: 80px;">
+              </div>
+              <div class="col-md-5 mb-3 mb-md-0">
+                <h5 class="card-title mb-1">${item.name}</h5>
+                <p class="card-text text-muted mb-0 small">Đơn giá: ${this.formatCurrency(item.price)}</p>
+              </div>
+              <div class="col-md-3 mb-3 mb-md-0">
+                <div class="d-flex align-items-center justify-content-center">
+                  <button class="btn btn-sm btn-outline-secondary decrease-qty" data-id="${item.id}">
+                    <i class="bi bi-dash"></i>
+                  </button>
+                  <input type="number" min="1" value="${item.quantity}" 
+                    class="form-control form-control-sm mx-2 text-center item-qty" 
+                    style="width: 60px;" data-id="${item.id}">
+                  <button class="btn btn-sm btn-outline-secondary increase-qty" data-id="${item.id}">
+                    <i class="bi bi-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-1 text-center text-md-end mb-3 mb-md-0">
+                <h6 class="mb-0">${this.formatCurrency(itemTotal)}</h6>
+              </div>
+              <div class="col-md-1 text-center text-md-end">
+                <button class="btn btn-sm btn-danger remove-item" data-id="${item.id}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    cartContainer.innerHTML = html;
+
+    // Update the order summary
+    const summaryContainer = document.querySelector('.cart-summary-container');
+    if (summaryContainer) {
+      summaryContainer.innerHTML = `
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Tóm tắt đơn hàng</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Tạm tính (${totalItems} sản phẩm):</span>
+              <span>${this.formatCurrency(subtotal)}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Phí vận chuyển:</span>
+              <span>${this.formatCurrency(30000)}</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <strong>Tổng cộng:</strong>
+              <strong>${this.formatCurrency(subtotal + 30000)}</strong>
+            </div>
+            <div class="d-grid">
+              <a href="checkout.html" class="btn btn-primary btn-lg checkout-btn">
+                Tiến hành thanh toán
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    this.setupCartEventListeners();
+  },
+
+  setupCartEventListeners: function() {
+    // Remove items
+    document.querySelectorAll('.remove-item').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        this.removeFromCart(id);
+      });
+    });
+
+    // Quantity changes - manual input
+    document.querySelectorAll('.item-qty').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const qty = parseInt(e.currentTarget.value);
+        if (qty > 0) {
+          this.updateQuantity(id, qty);
+        } else {
+          e.currentTarget.value = 1;
+          this.updateQuantity(id, 1);
+        }
+      });
+    });
+
+    // Quantity changes - buttons
+    document.querySelectorAll('.decrease-qty').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const currentItem = this.cart.find(item => item.id === id);
+        if (currentItem && currentItem.quantity > 1) {
+          this.updateQuantity(id, currentItem.quantity - 1);
+        }
+      });
+    });
+
+    document.querySelectorAll('.increase-qty').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const currentItem = this.cart.find(item => item.id === id);
+        if (currentItem) {
+          this.updateQuantity(id, currentItem.quantity + 1);
+        }
+      });
+    });
+
+    // Checkout button
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', (e) => {
+        if (!Auth.isLoggedIn()) {
+          e.preventDefault();
+          Utils.showToast('Vui lòng đăng nhập để tiến hành thanh toán', 'warning');
+          setTimeout(() => {
+            window.location.href = 'login.html?redirect=checkout';
+          }, 1500);
+        }
+      });
+    }
+  },
+
+  formatCurrency: function(value) {
+    return '$' + value.toLocaleString();
+  },
+
+  isOnCartPage: function() {
+    return window.location.pathname.includes('cart.html');
   }
 };
 

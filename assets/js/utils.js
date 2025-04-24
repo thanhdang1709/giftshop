@@ -52,11 +52,11 @@ const Utils = {
   
   /**
    * Hiển thị thông báo dạng toast
-   * @param {string} message - Tin nhắn cần hiển thị
    * @param {string} type - Loại thông báo (success, error, warning, info)
+   * @param {string} message - Tin nhắn cần hiển thị
    * @param {number} duration - Thời gian hiển thị tính bằng mili giây
    */
-  showToast(message, type = 'info', duration = 3000) {
+  showToast(type, message, duration = 3000) {
     // Đảm bảo CSS cho toast đã được tải
     this.loadCss('/assets/css/toast.css');
     
