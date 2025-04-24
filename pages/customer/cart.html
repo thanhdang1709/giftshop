@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - Nhóm5 Gift Shop</title>
+    <title>Giỏ hàng - Cửa hàng quà tặng Nhóm5</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,17 +11,17 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     
-    <!-- Custom CSS -->
+    <!-- CSS Tùy chỉnh -->
     <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Đầu trang -->
     <header class="header">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="../../index.html">
-                        <img src="../../assets/images/logo.png" alt="Nhóm5 Gift Shop" height="50">
+                        <img src="../../assets/images/logo.png" alt="Cửa hàng quà tặng Nhóm5" height="50">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -29,29 +29,29 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="../../index.html">Home</a>
+                                <a class="nav-link" href="../../index.html">Trang chủ</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Categories
+                                    Danh mục
                                 </a>
                                 <ul class="dropdown-menu" id="categoriesMenu">
-                                    <!-- Categories will be loaded dynamically -->
+                                    <!-- Danh mục sẽ được tải động -->
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="products.html">All Products</a>
+                                <a class="nav-link" href="products.html">Tất cả sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="about.html">About Us</a>
+                                <a class="nav-link" href="about.html">Về chúng tôi</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Contact</a>
+                                <a class="nav-link" href="contact.html">Liên hệ</a>
                             </li>
                         </ul>
                         
                         <form class="d-flex me-2" id="searchForm">
-                            <input class="form-control me-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+                            <input class="form-control me-2" type="search" id="searchInput" placeholder="Tìm kiếm" aria-label="Search">
                             <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
                         </form>
                         
@@ -69,13 +69,13 @@
                                     <span id="userNameDisplay"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="login.html" id="loginBtn">Login</a></li>
-                                    <li><a class="dropdown-item" href="register.html" id="registerBtn">Register</a></li>
-                                    <li><a class="dropdown-item" href="profile.html" id="profileBtn" style="display: none;">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="orders.html" id="ordersBtn" style="display: none;">My Orders</a></li>
+                                    <li><a class="dropdown-item" href="login.html" id="loginBtn">Đăng nhập</a></li>
+                                    <li><a class="dropdown-item" href="register.html" id="registerBtn">Đăng ký</a></li>
+                                    <li><a class="dropdown-item" href="profile.html" id="profileBtn" style="display: none;">Hồ sơ của tôi</a></li>
+                                    <li><a class="dropdown-item" href="orders.html" id="ordersBtn" style="display: none;">Đơn hàng của tôi</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item admin-only" href="../admin/dashboard.html" style="display: none;">Admin Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="#" id="logoutBtn" style="display: none;">Logout</a></li>
+                                    <li><a class="dropdown-item admin-only" href="../admin/dashboard.html" style="display: none;">Quản trị viên</a></li>
+                                    <li><a class="dropdown-item" href="#" id="logoutBtn" style="display: none;">Đăng xuất</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -85,22 +85,22 @@
         </div>
     </header>
 
-    <!-- Breadcrumb -->
+    <!-- Đường dẫn -->
     <div class="bg-light py-2">
         <div class="container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                    <li class="breadcrumb-item"><a href="../../index.html">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
                 </ol>
             </nav>
         </div>
     </div>
 
-    <!-- Cart Section -->
+    <!-- Phần giỏ hàng -->
     <section class="cart-section py-5">
         <div class="container">
-            <h1 class="section-title mb-4">Your Shopping Cart</h1>
+            <h1 class="section-title mb-4">Giỏ hàng của bạn</h1>
             
             <div class="row">
                 <div class="col-lg-8">
@@ -110,18 +110,18 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th>Action</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Tên</th>
+                                            <th>Giá</th>
+                                            <th>Số lượng</th>
+                                            <th>Tổng</th>
+                                            <th>Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tbody id="cartItems">
-                                        <!-- Cart items will be loaded dynamically -->
+                                        <!-- Các mục giỏ hàng sẽ được tải động -->
                                         <tr>
-                                            <td colspan="6" class="text-center py-4">Loading cart...</td>
+                                            <td colspan="6" class="text-center py-4">Đang tải giỏ hàng...</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -129,10 +129,10 @@
                             
                             <div class="d-flex justify-content-between mt-3">
                                 <button class="btn btn-outline-danger clear-cart">
-                                    <i class="bi bi-trash me-1"></i> Clear Cart
+                                    <i class="bi bi-trash me-1"></i> Xóa giỏ hàng
                                 </button>
                                 <a href="products.html" class="btn btn-outline-primary">
-                                    <i class="bi bi-arrow-left me-1"></i> Continue Shopping
+                                    <i class="bi bi-arrow-left me-1"></i> Tiếp tục mua sắm
                                 </a>
                             </div>
                         </div>
@@ -142,35 +142,35 @@
                 <div class="col-lg-4">
                     <div class="card shadow-sm">
                         <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">Order Summary</h5>
+                            <h5 class="mb-0">Tóm tắt đơn hàng</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-3">
-                                <span>Subtotal:</span>
+                                <span>Tổng phụ:</span>
                                 <span id="cartTotal">0đ</span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
-                                <span>Shipping:</span>
-                                <span>Free</span>
+                                <span>Phí vận chuyển:</span>
+                                <span>Miễn phí</span>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between mb-3 fw-bold">
-                                <span>Total:</span>
+                                <span>Tổng cộng:</span>
                                 <span id="orderTotal">0đ</span>
                             </div>
                             
                             <div class="d-grid mt-4">
                                 <button class="btn btn-primary checkout-btn" id="checkoutBtn" disabled>
-                                    Proceed to Checkout
+                                    Tiến hành thanh toán
                                 </button>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Payment Methods -->
+                    <!-- Phương thức thanh toán -->
                     <div class="card shadow-sm mt-4">
                         <div class="card-header">
-                            <h5 class="mb-0">We Accept</h5>
+                            <h5 class="mb-0">Chúng tôi chấp nhận</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -186,23 +186,23 @@
         </div>
     </section>
 
-    <!-- Product Recommendations -->
+    <!-- Đề xuất sản phẩm -->
     <section class="recommendations-section py-5 bg-light">
         <div class="container">
-            <h3 class="section-title mb-4">You Might Also Like</h3>
+            <h3 class="section-title mb-4">Bạn có thể thích</h3>
             <div class="row" id="recommendations">
-                <!-- Recommendations will be loaded dynamically -->
+                <!-- Đề xuất sẽ được tải động -->
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Chân trang -->
     <footer class="footer py-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
-                    <h4 class="text-white">Nhóm5 Gift Shop</h4>
-                    <p class="text-white-50">Bringing joy with adorable gifts and accessories for all occasions.</p>
+                    <h4 class="text-white">Cửa hàng quà tặng Nhóm5</h4>
+                    <p class="text-white-50">Mang niềm vui đến với những món quà và phụ kiện đáng yêu cho mọi dịp.</p>
                     <div class="social-links">
                         <a href="#" class="text-white me-2"><i class="bi bi-facebook"></i></a>
                         <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
@@ -211,37 +211,37 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 mb-4">
-                    <h5 class="text-white">Quick Links</h5>
+                    <h5 class="text-white">Liên kết nhanh</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="../../index.html" class="text-white-50">Home</a></li>
-                        <li class="mb-2"><a href="products.html" class="text-white-50">Products</a></li>
-                        <li class="mb-2"><a href="about.html" class="text-white-50">About Us</a></li>
-                        <li class="mb-2"><a href="contact.html" class="text-white-50">Contact</a></li>
+                        <li class="mb-2"><a href="../../index.html" class="text-white-50">Trang chủ</a></li>
+                        <li class="mb-2"><a href="products.html" class="text-white-50">Sản phẩm</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-white-50">Về chúng tôi</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-white-50">Liên hệ</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-3 mb-4">
-                    <h5 class="text-white">Categories</h5>
+                    <h5 class="text-white">Danh mục</h5>
                     <ul class="list-unstyled" id="footerCategories">
-                        <!-- Categories will be loaded dynamically -->
+                        <!-- Danh mục sẽ được tải động -->
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <h5 class="text-white">Contact Us</h5>
+                    <h5 class="text-white">Liên hệ với chúng tôi</h5>
                     <ul class="list-unstyled text-white-50">
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Gift Street, Tokyo, Japan</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Đường Quà Tặng, Tokyo, Nhật Bản</li>
                         <li class="mb-2"><i class="bi bi-telephone me-2"></i> (123) 456-7890</li>
                         <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@Nhóm5giftshop.com</li>
-                        <li><i class="bi bi-clock me-2"></i> Mon-Fri: 9AM-6PM, Sat: 10AM-4PM</li>
+                        <li><i class="bi bi-clock me-2"></i> Thứ 2-Thứ 6: 9AM-6PM, Thứ 7: 10AM-4PM</li>
                     </ul>
                 </div>
             </div>
             <hr class="border-light">
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="text-white-50 mb-0">&copy; 2025 Nhóm5 Gift Shop. All rights reserved.</p>
+                    <p class="text-white-50 mb-0">&copy; 2025 Cửa hàng quà tặng Nhóm5. Tất cả các quyền được bảo lưu.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <img src="../../assets/images/payment-methods.png" alt="Payment Methods" class="img-fluid" style="max-height: 30px;">
+                    <img src="../../assets/images/payment-methods.png" alt="Phương thức thanh toán" class="img-fluid" style="max-height: 30px;">
                 </div>
             </div>
         </div>
@@ -250,38 +250,38 @@
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JS -->
+    <!-- JS Tùy chỉnh -->
     <script src="../../assets/js/db.js"></script>
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/cart.js"></script>
     <script src="../../assets/js/products.js"></script>
     <script src="../../assets/js/utils.js"></script>
     
-    <!-- Cart Page Script -->
+    <!-- Script trang giỏ hàng -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Update order total to match cart total
+            // Cập nhật tổng đơn hàng để khớp với tổng giỏ hàng
             const orderTotal = document.getElementById('orderTotal');
             const cartTotalEl = document.getElementById('cartTotal');
             
             orderTotal.textContent = cartTotalEl.textContent;
             
-            // Handle checkout button
+            // Xử lý nút thanh toán
             const checkoutBtn = document.getElementById('checkoutBtn');
             checkoutBtn.addEventListener('click', function() {
                 if (!Auth.isLoggedIn()) {
-                    // Redirect to login page with redirect back to cart
+                    // Chuyển hướng đến trang đăng nhập với chuyển hướng trở lại giỏ hàng
                     window.location.href = 'login.html?redirect=cart.html';
                     return;
                 }
                 
-                // Cart.checkout() will handle the checkout process
+                // Cart.checkout() sẽ xử lý quá trình thanh toán
             });
             
-            // Load recommended products (random featured products)
+            // Tải sản phẩm được đề xuất (sản phẩm nổi bật ngẫu nhiên)
             loadRecommendedProducts();
             
-            // Populate categories in the footer and menu
+            // Điền danh mục vào chân trang và menu
             const footerCategories = document.getElementById('footerCategories');
             const categoriesMenu = document.getElementById('categoriesMenu');
             
@@ -305,7 +305,7 @@
         });
         
         /**
-         * Load recommended products
+         * Tải sản phẩm được đề xuất
          */
         function loadRecommendedProducts() {
             const recommendationsContainer = document.getElementById('recommendations');
@@ -313,11 +313,11 @@
             
             const products = DB.getAll(DB.STORES.PRODUCTS)
                 .filter(product => product.status)
-                .sort(() => 0.5 - Math.random()) // Shuffle products randomly
-                .slice(0, 4); // Show up to 4 products
+                .sort(() => 0.5 - Math.random()) // Xáo trộn sản phẩm ngẫu nhiên
+                .slice(0, 4); // Hiển thị tối đa 4 sản phẩm
             
             if (products.length === 0) {
-                recommendationsContainer.innerHTML = '<div class="col-12 text-center"><p>No products available</p></div>';
+                recommendationsContainer.innerHTML = '<div class="col-12 text-center"><p>Không có sản phẩm nào</p></div>';
                 return;
             }
             
