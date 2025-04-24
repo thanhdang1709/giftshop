@@ -110,9 +110,9 @@ const Utils = {
   },
   
   /**
-   * Validate an email address
-   * @param {string} email - Email to validate
-   * @returns {boolean} - Whether the email is valid
+   * Kiểm tra địa chỉ email hợp lệ
+   * @param {string} email - Email cần kiểm tra
+   * @returns {boolean} - Email có hợp lệ hay không
    */
   isValidEmail(email) {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -120,9 +120,9 @@ const Utils = {
   },
   
   /**
-   * Validate a phone number
-   * @param {string} phone - Phone number to validate
-   * @returns {boolean} - Whether the phone number is valid
+   * Kiểm tra số điện thoại hợp lệ
+   * @param {string} phone - Số điện thoại cần kiểm tra
+   * @returns {boolean} - Số điện thoại có hợp lệ hay không
    */
   isValidPhone(phone) {
     const re = /^[0-9]{10,11}$/;
@@ -130,8 +130,8 @@ const Utils = {
   },
   
   /**
-   * Get URL parameters as an object
-   * @returns {Object} - URL parameters
+   * Lấy tham số URL dưới dạng đối tượng
+   * @returns {Object} - Tham số URL
    */
   getUrlParams() {
     const params = {};
@@ -143,10 +143,10 @@ const Utils = {
   },
   
   /**
-   * Create a URL with query parameters
-   * @param {string} base - Base URL
-   * @param {Object} params - Query parameters
-   * @returns {string} - URL with query parameters
+   * Tạo URL với tham số truy vấn
+   * @param {string} base - URL cơ sở
+   * @param {Object} params - Tham số truy vấn
+   * @returns {string} - URL với tham số truy vấn
    */
   createUrl(base, params = {}) {
     const url = new URL(base, window.location.origin);
@@ -161,10 +161,10 @@ const Utils = {
   },
   
   /**
-   * Debounce a function call
-   * @param {Function} func - Function to debounce
-   * @param {number} delay - Delay in milliseconds
-   * @returns {Function} - Debounced function
+   * Debounce một lời gọi hàm
+   * @param {Function} func - Hàm cần debounce
+   * @param {number} delay - Độ trễ tính bằng mili giây
+   * @returns {Function} - Hàm đã được debounce
    */
   debounce(func, delay = 300) {
     let timeoutId;
@@ -177,37 +177,37 @@ const Utils = {
   },
   
   /**
-   * Create a pagination component
-   * @param {Object} options - Pagination options
-   * @param {number} options.currentPage - Current page
-   * @param {number} options.totalPages - Total pages
-   * @param {Function} options.onPageChange - Page change callback
-   * @param {string} options.containerId - Container ID
+   * Tạo thành phần phân trang
+   * @param {Object} options - Tùy chọn phân trang
+   * @param {number} options.currentPage - Trang hiện tại
+   * @param {number} options.totalPages - Tổng số trang
+   * @param {Function} options.onPageChange - Hàm callback khi thay đổi trang
+   * @param {string} options.containerId - ID của container
    */
   createPagination({ currentPage, totalPages, onPageChange, containerId }) {
     const container = document.getElementById(containerId);
     if (!container) return;
     
-    // Clear container
+    // Xóa container
     container.innerHTML = '';
     
-    // Don't show pagination if only one page
+    // Không hiển thị phân trang nếu chỉ có một trang
     if (totalPages <= 1) return;
     
-    // Create pagination nav
+    // Tạo điều hướng phân trang
     const nav = document.createElement('nav');
-    nav.setAttribute('aria-label', 'Page navigation');
+    nav.setAttribute('aria-label', 'Điều hướng trang');
     
     const ul = document.createElement('ul');
     ul.className = 'pagination justify-content-center';
     
-    // Previous button
+    // Nút trước
     const prevLi = document.createElement('li');
     prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
     const prevLink = document.createElement('a');
     prevLink.className = 'page-link';
     prevLink.href = '#';
-    prevLink.setAttribute('aria-label', 'Previous');
+    prevLink.setAttribute('aria-label', 'Trước');
     prevLink.innerHTML = '<span aria-hidden="true">&laquo;</span>';
     prevLi.appendChild(prevLink);
     ul.appendChild(prevLi);
@@ -219,8 +219,8 @@ const Utils = {
       });
     }
     
-    // Page numbers
-    const maxPages = 5; // Show up to 5 page numbers
+    // Số trang
+    const maxPages = 5; // Hiển thị tối đa 5 số trang
     let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     let endPage = Math.min(totalPages, startPage + maxPages - 1);
     
@@ -247,13 +247,13 @@ const Utils = {
       ul.appendChild(li);
     }
     
-    // Next button
+    // Nút tiếp theo
     const nextLi = document.createElement('li');
     nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
     const nextLink = document.createElement('a');
     nextLink.className = 'page-link';
     nextLink.href = '#';
-    nextLink.setAttribute('aria-label', 'Next');
+    nextLink.setAttribute('aria-label', 'Tiếp');
     nextLink.innerHTML = '<span aria-hidden="true">&raquo;</span>';
     nextLi.appendChild(nextLink);
     ul.appendChild(nextLi);
@@ -265,23 +265,23 @@ const Utils = {
       });
     }
     
-    // Add the pagination to the container
+    // Thêm phân trang vào container
     nav.appendChild(ul);
     container.appendChild(nav);
   },
   
   /**
-   * Format price with currency
-   * @param {number} price - Price to format
-   * @param {string} currency - Currency symbol
-   * @returns {string} - Formatted price
+   * Định dạng giá với đơn vị tiền tệ
+   * @param {number} price - Giá cần định dạng
+   * @param {string} currency - Ký hiệu tiền tệ
+   * @returns {string} - Giá đã định dạng
    */
   formatPrice(price, currency = '$') {
     return `${currency}${parseFloat(price).toFixed(2)}`;
   }
 };
 
-// Initialize utilities when the document is loaded
+// Khởi tạo tiện ích khi tài liệu được tải
 document.addEventListener('DOMContentLoaded', () => {
-  // Nothing to initialize for utilities
+  // Không cần khởi tạo gì cho tiện ích
 }); 

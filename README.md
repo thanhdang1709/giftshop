@@ -1,48 +1,46 @@
-# Moji Gift Shop - Web Application
+# Moji Gift Shop - Ứng dụng Web
 
-A client-side gift shop web application built with vanilla JavaScript, HTML, CSS, and Bootstrap. This application uses the browser's localStorage for data persistence, making it easy to understand and learn web development concepts.
+Một ứng dụng web cửa hàng quà tặng phía máy khách được xây dựng bằng JavaScript thuần, HTML, CSS và Bootstrap. Ứng dụng này sử dụng localStorage của trình duyệt để lưu trữ dữ liệu, giúp dễ dàng hiểu và học các khái niệm phát triển web.
 
-## Features
+## Tính năng
 
-- **User Authentication**: Register, login, and user profiles
-- **Product Management**: Browse, search, and filter products
-- **Shopping Cart**: Add products to cart, update quantities, and checkout
-- **Order Management**: Place orders and view order history
-- **Admin Panel**: Manage products, categories, users, and orders
-- **Responsive Design**: Works on desktop and mobile devices
+- **Xác thực người dùng**: Đăng ký, đăng nhập và hồ sơ người dùng
+- **Quản lý sản phẩm**: Duyệt, tìm kiếm và lọc sản phẩm
+- **Giỏ hàng**: Thêm sản phẩm vào giỏ hàng, cập nhật số lượng và thanh toán
+- **Quản lý đơn hàng**: Đặt hàng và xem lịch sử đơn hàng
+- **Bảng quản trị**: Quản lý sản phẩm, danh mục, người dùng và đơn hàng
+- **Thiết kế đáp ứng**: Hoạt động trên máy tính để bàn và thiết bị di động
 
-## Technology Stack
+## Công nghệ sử dụng
 
-- **HTML5**: Structure of the web pages
-- **CSS3**: Styling with custom variables for theming
-- **Bootstrap 5**: Responsive UI components
-- **JavaScript (ES6+)**: Client-side programming
-- **localStorage API**: Data persistence
+- **HTML5**: Cấu trúc của các trang web
+- **CSS3**: Tạo kiểu với biến tùy chỉnh cho chủ đề
+- **Bootstrap 5**: Các thành phần UI đáp ứng
+- **JavaScript (ES6+)**: Lập trình phía máy khách
+- **localStorage API**: Lưu trữ dữ liệu
 
-## Project Structure
-
-```
+## Cấu trúc Dự án
 .
 ├── assets/
-│   ├── css/         # CSS stylesheets
-│   ├── js/          # JavaScript files
-│   │   ├── db.js    # Database management
-│   │   ├── auth.js  # Authentication
-│   │   ├── cart.js  # Shopping cart
-│   │   ├── products.js # Product management
-│   │   ├── utils.js # Utility functions
-│   │   ├── admin.js # Admin panel functionality
-│   │   └── home.js  # Homepage functionality
-│   ├── images/      # Images and assets
-│   └── data/        # Sample data (JSON)
+│   ├── css/         # Tệp CSS
+│   ├── js/          # Tệp JavaScript
+│   │   ├── db.js    # Quản lý dữ liệu
+│   │   ├── auth.js  # Xác thực người dùng
+│   │   ├── cart.js  # Giỏ hàng
+│   │   ├── products.js # Quản lý sản phẩm
+│   │   ├── utils.js # Các hàm tiện ích
+│   │   ├── admin.js # Chức năng cho trang quản trị
+│   │   └── home.js  # Chức năng trang chủ
+│   ├── images/      # Hình ảnh và tài nguyên
+│   └── data/        # Dữ liệu mẫu (JSON)
 ├── pages/
-│   ├── admin/       # Admin pages
+│   ├── admin/       # Các trang dành cho quản trị
 │   │   ├── dashboard.html
 │   │   ├── products.html
 │   │   ├── categories.html
 │   │   ├── orders.html
 │   │   └── users.html
-│   └── customer/    # Customer pages
+│   └── customer/    # Các trang dành cho khách hàng
 │       ├── login.html
 │       ├── register.html
 │       ├── products.html
@@ -52,60 +50,41 @@ A client-side gift shop web application built with vanilla JavaScript, HTML, CSS
 │       ├── profile.html
 │       ├── about.html
 │       └── contact.html
-└── index.html       # Homepage
-```
+└── index.html       # Trang chủ
 
-## How to Run
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
+## Lưu trữ dữ liệu
 
-2. Open the project in a web server or using a live server extension (like Live Server in VS Code).
+Ứng dụng này sử dụng localStorage của trình duyệt để lưu trữ dữ liệu. Các kho dữ liệu bao gồm:
+	•	products: Dữ liệu sản phẩm
+	•	categories: Danh mục sản phẩm
+	•	users: Tài khoản người dùng
+	•	cart: Sản phẩm trong giỏ hàng
+	•	orders: Thông tin đơn hàng
+	•	reviews: Đánh giá sản phẩm
 
-3. Navigate to `index.html` in your browser.
+## Phân quyền người dùng
+	•	Khách hàng (Customer): Có thể xem sản phẩm, mua hàng và quản lý hồ sơ cá nhân
+	•	Nhân viên (Staff): Có quyền truy cập bảng điều khiển với khả năng hạn chế
+	•	Quản trị viên (Admin): Toàn quyền sử dụng các tính năng quản trị
 
-## Data Storage
+## Tài khoản quản trị mặc định
+	•	Tên đăng nhập: admin
+	•	Mật khẩu: admin123
 
-This application uses the browser's localStorage for data persistence. The following data stores are used:
 
-- **products**: Product data
-- **categories**: Product categories
-- **users**: User accounts
-- **cart**: Shopping cart items
-- **orders**: Order information
-- **reviews**: Product reviews
+## Mục đích học tập
 
-## User Roles
+Dự án này được xây dựng nhằm phục vụ mục đích học tập, minh họa cách xây dựng một ứng dụng web hoàn chỉnh chỉ sử dụng công nghệ phía client (trình duyệt). Các kỹ thuật được trình bày:
+	•	JavaScript hướng đối tượng
+	•	Tổ chức mã theo mô hình module
+	•	Thao tác CRUD với localStorage
+	•	Điều hướng phía client
+	•	Kiểm tra dữ liệu nhập form
+	•	Thiết kế giao diện phản hồi (responsive)
+	•	Xác thực người dùng phía client
 
-- **Customer**: Can browse products, make purchases, and manage their profile
-- **Staff**: Can access admin panel with limited capabilities
-- **Admin**: Has full access to all admin features
-
-## Default Admin Account
-
-- **Username**: admin
-- **Password**: admin123
-
-## Learning Purpose
-
-This project is designed for educational purposes to demonstrate how to build a complete web application using only client-side technologies. It showcases:
-
-- Object-oriented JavaScript
-- Module pattern for code organization
-- CRUD operations with localStorage
-- Client-side routing
-- Form validation
-- Responsive UI design
-- User authentication (client-side)
-
-## License
-
-This project is free for educational use.
-
-## Acknowledgements
-
-- Bootstrap for the UI components
-- Bootstrap Icons for the icon set
-- Sample images from various sources for educational purposes 
+## Lời cảm ơn
+	•	Bootstrap: cung cấp các thành phần giao diện
+	•	Bootstrap Icons: bộ biểu tượng sử dụng
+	•	Hình ảnh mẫu: từ nhiều nguồn khác nhau, chỉ dùng cho mục đích học tập

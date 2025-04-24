@@ -1,25 +1,25 @@
 /**
- * Admin functionality manager
- * Handles admin panel features and operations
+ * Quản lý chức năng Admin
+ * Xử lý các tính năng và hoạt động của bảng điều khiển admin
  */
 const Admin = {
   /**
-   * Initialize admin functionality
+   * Khởi tạo chức năng admin
    */
   init() {
-    // Check if user is admin
+    // Kiểm tra nếu người dùng là admin
     if (!this.checkAccess()) return;
     
-    // Setup event listeners
+    // Thiết lập các trình lắng nghe sự kiện
     this.setupEventListeners();
     
-    // Load content based on current page
+    // Tải nội dung dựa trên trang hiện tại
     this.loadPageContent();
   },
   
   /**
-   * Check if the current user has admin access
-   * @returns {boolean} - Whether the user has access
+   * Kiểm tra xem người dùng hiện tại có quyền truy cập admin không
+   * @returns {boolean} - Người dùng có quyền truy cập hay không
    */
   checkAccess() {
     if (!Auth.isLoggedIn()) {
@@ -28,7 +28,7 @@ const Admin = {
     }
     
     if (!Auth.isAdmin() && !Auth.isStaff()) {
-      alert('You do not have permission to access this page');
+      alert('Bạn không có quyền truy cập trang này');
       window.location.href = '/index.html';
       return false;
     }
@@ -37,10 +37,10 @@ const Admin = {
   },
   
   /**
-   * Set up event listeners for admin functionality
+   * Thiết lập các trình lắng nghe sự kiện cho chức năng admin
    */
   setupEventListeners() {
-    // Product form submission
+    // Gửi biểu mẫu sản phẩm
     const productForm = document.getElementById('productForm');
     if (productForm) {
       productForm.addEventListener('submit', (e) => {
@@ -49,7 +49,7 @@ const Admin = {
       });
     }
     
-    // Category form submission
+    // Gửi biểu mẫu danh mục
     const categoryForm = document.getElementById('categoryForm');
     if (categoryForm) {
       categoryForm.addEventListener('submit', (e) => {
@@ -58,7 +58,7 @@ const Admin = {
       });
     }
     
-    // User form submission
+    // Gửi biểu mẫu người dùng
     const userForm = document.getElementById('userForm');
     if (userForm) {
       userForm.addEventListener('submit', (e) => {
@@ -67,7 +67,7 @@ const Admin = {
       });
     }
     
-    // Order status update
+    // Cập nhật trạng thái đơn hàng
     document.addEventListener('change', (e) => {
       if (e.target.classList.contains('order-status-select')) {
         const orderId = e.target.dataset.id;
@@ -76,25 +76,25 @@ const Admin = {
       }
     });
     
-    // Delete buttons
+    // Nút xóa
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete-product-btn')) {
         const productId = e.target.dataset.id;
-        if (confirm('Are you sure you want to delete this product?')) {
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
           this.deleteProduct(productId);
         }
       }
       
       if (e.target.classList.contains('delete-category-btn')) {
         const categoryId = e.target.dataset.id;
-        if (confirm('Are you sure you want to delete this category?')) {
+        if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
           this.deleteCategory(categoryId);
         }
       }
       
       if (e.target.classList.contains('delete-user-btn')) {
         const userId = e.target.dataset.id;
-        if (confirm('Are you sure you want to delete this user?')) {
+        if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
           this.deleteUser(userId);
         }
       }
@@ -102,7 +102,7 @@ const Admin = {
   },
   
   /**
-   * Load content based on current page
+   * Tải nội dung dựa trên trang hiện tại
    */
   loadPageContent() {
     const path = window.location.pathname;
@@ -122,7 +122,7 @@ const Admin = {
   },
   
   /**
-   * Load products for admin management
+   * Tải sản phẩm cho quản lý admin
    */
   loadProducts() {
     const products = DB.getAll(DB.STORES.PRODUCTS);
@@ -130,7 +130,7 @@ const Admin = {
     if (!productList) return;
     
     if (products.length === 0) {
-      productList.innerHTML = '<tr><td colspan="6" class="text-center">No products found</td></tr>';
+      productList.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy sản phẩm nào</td></tr>';
       return;
     }
     
@@ -143,7 +143,7 @@ const Admin = {
           <td>${product.price.toLocaleString()}đ</td>
           <td>${category ? category.name : 'N/A'}</td>
           <td>${product.stock || 0}</td>
-          <td>${product.status ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'}</td>
+          <td>${product.status ? '<span class="badge bg-success">Hoạt động</span>' : '<span class="badge bg-danger">Không hoạt động</span>'}</td>
           <td>
             <button class="btn btn-sm btn-primary edit-product-btn" data-id="${product.id}" data-bs-toggle="modal" data-bs-target="#productModal">
               <i class="bi bi-pencil"></i>
@@ -158,7 +158,7 @@ const Admin = {
     
     productList.innerHTML = html;
     
-    // Add event listeners to edit buttons
+    // Thêm trình lắng nghe sự kiện cho nút chỉnh sửa
     const editButtons = document.querySelectorAll('.edit-product-btn');
     editButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -169,7 +169,7 @@ const Admin = {
   },
   
   /**
-   * Load categories for admin management
+   * Tải danh mục cho quản lý admin
    */
   loadCategories() {
     const categories = DB.getAll(DB.STORES.CATEGORIES);
@@ -177,7 +177,7 @@ const Admin = {
     if (!categoryList) return;
     
     if (categories.length === 0) {
-      categoryList.innerHTML = '<tr><td colspan="3" class="text-center">No categories found</td></tr>';
+      categoryList.innerHTML = '<tr><td colspan="3" class="text-center">Không tìm thấy danh mục nào</td></tr>';
       return;
     }
     
@@ -186,7 +186,7 @@ const Admin = {
       html += `
         <tr>
           <td>${category.name}</td>
-          <td>${category.status ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'}</td>
+          <td>${category.status ? '<span class="badge bg-success">Hoạt động</span>' : '<span class="badge bg-danger">Không hoạt động</span>'}</td>
           <td>
             <button class="btn btn-sm btn-primary edit-category-btn" data-id="${category.id}" data-bs-toggle="modal" data-bs-target="#categoryModal">
               <i class="bi bi-pencil"></i>
@@ -201,7 +201,7 @@ const Admin = {
     
     categoryList.innerHTML = html;
     
-    // Add event listeners to edit buttons
+    // Thêm trình lắng nghe sự kiện cho nút chỉnh sửa
     const editButtons = document.querySelectorAll('.edit-category-btn');
     editButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -212,7 +212,7 @@ const Admin = {
   },
   
   /**
-   * Load users for admin management
+   * Tải người dùng cho quản lý admin
    */
   loadUsers() {
     const users = DB.getAll(DB.STORES.USERS);
@@ -220,7 +220,7 @@ const Admin = {
     if (!userList) return;
     
     if (users.length === 0) {
-      userList.innerHTML = '<tr><td colspan="5" class="text-center">No users found</td></tr>';
+      userList.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy người dùng nào</td></tr>';
       return;
     }
     
@@ -232,7 +232,7 @@ const Admin = {
           <td>${user.fullName}</td>
           <td>${user.email}</td>
           <td>${user.role}</td>
-          <td>${user.active ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'}</td>
+          <td>${user.active ? '<span class="badge bg-success">Hoạt động</span>' : '<span class="badge bg-danger">Không hoạt động</span>'}</td>
           <td>
             <button class="btn btn-sm btn-primary edit-user-btn" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#userModal">
               <i class="bi bi-pencil"></i>
@@ -247,7 +247,7 @@ const Admin = {
     
     userList.innerHTML = html;
     
-    // Add event listeners to edit buttons
+    // Thêm trình lắng nghe sự kiện cho nút chỉnh sửa
     const editButtons = document.querySelectorAll('.edit-user-btn');
     editButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -258,7 +258,7 @@ const Admin = {
   },
   
   /**
-   * Load orders for admin management
+   * Tải đơn hàng cho quản lý admin
    */
   loadOrders() {
     const orders = DB.getAll(DB.STORES.ORDERS);
@@ -266,11 +266,11 @@ const Admin = {
     if (!orderList) return;
     
     if (orders.length === 0) {
-      orderList.innerHTML = '<tr><td colspan="6" class="text-center">No orders found</td></tr>';
+      orderList.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy đơn hàng nào</td></tr>';
       return;
     }
     
-    // Sort orders by date (newest first)
+    // Sắp xếp đơn hàng theo ngày (mới nhất trước)
     orders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
     
     let html = '';
@@ -279,16 +279,16 @@ const Admin = {
       html += `
         <tr>
           <td>${order.id}</td>
-          <td>${user ? user.fullName : 'Unknown'}</td>
+          <td>${user ? user.fullName : 'Không xác định'}</td>
           <td>${Utils.formatDate(order.orderDate, true)}</td>
           <td>${order.totalAmount.toLocaleString()}đ</td>
           <td>
             <select class="form-select form-select-sm order-status-select" data-id="${order.id}">
-              <option value="${DB.ORDER_STATUS.PENDING}" ${order.status === DB.ORDER_STATUS.PENDING ? 'selected' : ''}>Pending</option>
-              <option value="${DB.ORDER_STATUS.PROCESSING}" ${order.status === DB.ORDER_STATUS.PROCESSING ? 'selected' : ''}>Processing</option>
-              <option value="${DB.ORDER_STATUS.SHIPPED}" ${order.status === DB.ORDER_STATUS.SHIPPED ? 'selected' : ''}>Shipped</option>
-              <option value="${DB.ORDER_STATUS.DELIVERED}" ${order.status === DB.ORDER_STATUS.DELIVERED ? 'selected' : ''}>Delivered</option>
-              <option value="${DB.ORDER_STATUS.CANCELLED}" ${order.status === DB.ORDER_STATUS.CANCELLED ? 'selected' : ''}>Cancelled</option>
+              <option value="${DB.ORDER_STATUS.PENDING}" ${order.status === DB.ORDER_STATUS.PENDING ? 'selected' : ''}>Đang chờ</option>
+              <option value="${DB.ORDER_STATUS.PROCESSING}" ${order.status === DB.ORDER_STATUS.PROCESSING ? 'selected' : ''}>Đang xử lý</option>
+              <option value="${DB.ORDER_STATUS.SHIPPED}" ${order.status === DB.ORDER_STATUS.SHIPPED ? 'selected' : ''}>Đã gửi</option>
+              <option value="${DB.ORDER_STATUS.DELIVERED}" ${order.status === DB.ORDER_STATUS.DELIVERED ? 'selected' : ''}>Đã giao</option>
+              <option value="${DB.ORDER_STATUS.CANCELLED}" ${order.status === DB.ORDER_STATUS.CANCELLED ? 'selected' : ''}>Đã hủy</option>
             </select>
           </td>
           <td>
@@ -302,7 +302,7 @@ const Admin = {
     
     orderList.innerHTML = html;
     
-    // Add event listeners to view buttons
+    // Thêm trình lắng nghe sự kiện cho nút xem
     const viewButtons = document.querySelectorAll('.view-order-btn');
     viewButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -313,24 +313,24 @@ const Admin = {
   },
   
   /**
-   * Load dashboard data
+   * Tải dữ liệu bảng điều khiển
    */
   loadDashboardData() {
-    // Product count
+    // Số lượng sản phẩm
     const productCount = DB.getAll(DB.STORES.PRODUCTS).length;
     const productCountEl = document.getElementById('productCount');
     if (productCountEl) {
       productCountEl.textContent = productCount;
     }
     
-    // User count
+    // Số lượng người dùng
     const userCount = DB.getAll(DB.STORES.USERS).length;
     const userCountEl = document.getElementById('userCount');
     if (userCountEl) {
       userCountEl.textContent = userCount;
     }
     
-    // Order count
+    // Số lượng đơn hàng
     const orders = DB.getAll(DB.STORES.ORDERS);
     const orderCount = orders.length;
     const orderCountEl = document.getElementById('orderCount');
@@ -338,7 +338,7 @@ const Admin = {
       orderCountEl.textContent = orderCount;
     }
     
-    // Total revenue
+    // Tổng doanh thu
     const totalRevenue = orders.reduce((sum, order) => {
       if (order.status !== DB.ORDER_STATUS.CANCELLED) {
         return sum + order.totalAmount;
@@ -350,15 +350,15 @@ const Admin = {
       revenueEl.textContent = totalRevenue.toLocaleString() + 'đ';
     }
     
-    // Recent orders
+    // Đơn hàng gần đây
     this.loadRecentOrders();
     
-    // Top products
+    // Sản phẩm bán chạy
     this.loadTopProducts();
   },
   
   /**
-   * Load recent orders for dashboard
+   * Tải đơn hàng gần đây cho bảng điều khiển
    */
   loadRecentOrders() {
     const recentOrdersList = document.getElementById('recentOrders');
@@ -367,11 +367,11 @@ const Admin = {
     const orders = DB.getAll(DB.STORES.ORDERS);
     
     if (orders.length === 0) {
-      recentOrdersList.innerHTML = '<tr><td colspan="5" class="text-center">No orders found</td></tr>';
+      recentOrdersList.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy đơn hàng nào</td></tr>';
       return;
     }
     
-    // Sort orders by date (newest first) and take the first 5
+    // Sắp xếp đơn hàng theo ngày (mới nhất trước) và lấy 5 đơn hàng đầu tiên
     const recentOrders = orders
       .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))
       .slice(0, 5);
@@ -382,7 +382,7 @@ const Admin = {
       html += `
         <tr>
           <td>${order.id.substring(0, 8)}...</td>
-          <td>${user ? user.fullName : 'Unknown'}</td>
+          <td>${user ? user.fullName : 'Không xác định'}</td>
           <td>${Utils.formatDate(order.orderDate)}</td>
           <td>${order.totalAmount.toLocaleString()}đ</td>
           <td>
@@ -396,7 +396,7 @@ const Admin = {
   },
   
   /**
-   * Load top products for dashboard
+   * Tải sản phẩm bán chạy cho bảng điều khiển
    */
   loadTopProducts() {
     const topProductsList = document.getElementById('topProducts');
@@ -406,11 +406,11 @@ const Admin = {
     const orders = DB.getAll(DB.STORES.ORDERS);
     
     if (products.length === 0) {
-      topProductsList.innerHTML = '<tr><td colspan="3" class="text-center">No products found</td></tr>';
+      topProductsList.innerHTML = '<tr><td colspan="3" class="text-center">Không tìm thấy sản phẩm nào</td></tr>';
       return;
     }
     
-    // Calculate total sold for each product
+    // Tính tổng số lượng đã bán cho mỗi sản phẩm
     const productSales = {};
     
     orders.forEach(order => {
@@ -424,13 +424,13 @@ const Admin = {
       }
     });
     
-    // Create array of products with sales data
+    // Tạo mảng sản phẩm với dữ liệu bán hàng
     const productsWithSales = products.map(product => ({
       ...product,
       totalSold: productSales[product.id] || 0
     }));
     
-    // Sort by total sold and take the top 5
+    // Sắp xếp theo tổng số lượng đã bán và lấy 5 sản phẩm hàng đầu
     const topProducts = productsWithSales
       .sort((a, b) => b.totalSold - a.totalSold)
       .slice(0, 5);
@@ -450,9 +450,9 @@ const Admin = {
   },
   
   /**
-   * Get status color class for Bootstrap
-   * @param {string} status - Order status
-   * @returns {string} - Color class
+   * Lấy lớp màu trạng thái cho Bootstrap
+   * @param {string} status - Trạng thái đơn hàng
+   * @returns {string} - Lớp màu
    */
   getStatusColorClass(status) {
     switch (status) {
@@ -472,7 +472,7 @@ const Admin = {
   },
   
   /**
-   * Load categories for select dropdown
+   * Tải danh mục cho dropdown lựa chọn
    */
   loadCategoriesForSelect() {
     const categorySelect = document.getElementById('productCategory');
@@ -480,7 +480,7 @@ const Admin = {
     
     const categories = DB.getAll(DB.STORES.CATEGORIES).filter(c => c.status);
     
-    let html = '<option value="">Select Category</option>';
+    let html = '<option value="">Chọn Danh mục</option>';
     categories.forEach(category => {
       html += `<option value="${category.id}">${category.name}</option>`;
     });
@@ -489,8 +489,8 @@ const Admin = {
   },
   
   /**
-   * Edit a product
-   * @param {string} productId - The product ID
+   * Chỉnh sửa sản phẩm
+   * @param {string} productId - ID sản phẩm
    */
   editProduct(productId) {
     const product = DB.getById(DB.STORES.PRODUCTS, productId);
@@ -499,7 +499,7 @@ const Admin = {
     const form = document.getElementById('productForm');
     if (!form) return;
     
-    // Set form fields
+    // Thiết lập các trường biểu mẫu
     form.productId.value = product.id;
     form.productName.value = product.name;
     form.productPrice.value = product.price;
@@ -510,12 +510,12 @@ const Admin = {
     form.productStatus.checked = product.status;
     form.productFeatured.checked = product.featured;
     
-    document.getElementById('productModalTitle').textContent = 'Edit Product';
+    document.getElementById('productModalTitle').textContent = 'Chỉnh sửa Sản phẩm';
   },
   
   /**
-   * Save a product
-   * @param {HTMLFormElement} form - The product form
+   * Lưu sản phẩm
+   * @param {HTMLFormElement} form - Biểu mẫu sản phẩm
    */
   saveProduct(form) {
     const productId = form.productId.value;
@@ -531,52 +531,52 @@ const Admin = {
       featured: form.productFeatured.checked
     };
     
-    // Validation
+    // Xác thực
     if (!productData.name || isNaN(productData.price) || !productData.categoryId) {
-      alert('Please fill in all required fields');
+      alert('Vui lòng điền đầy đủ tất cả các trường bắt buộc');
       return;
     }
     
     if (productId) {
-      // Update existing product
+      // Cập nhật sản phẩm hiện có
       DB.update(DB.STORES.PRODUCTS, productId, productData);
     } else {
-      // Add new product
+      // Thêm sản phẩm mới
       productData.createdAt = new Date().toISOString();
       DB.add(DB.STORES.PRODUCTS, productData);
     }
     
-    // Close modal
+    // Đóng modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('productModal'));
     if (modal) {
       modal.hide();
     }
     
-    // Reload products
+    // Tải lại sản phẩm
     this.loadProducts();
     
-    // Reset form
+    // Đặt lại biểu mẫu
     form.reset();
     form.productId.value = '';
-    document.getElementById('productModalTitle').textContent = 'Add Product';
+    document.getElementById('productModalTitle').textContent = 'Thêm Sản phẩm';
   },
   
   /**
-   * Delete a product
-   * @param {string} productId - The product ID
+   * Xóa sản phẩm
+   * @param {string} productId - ID sản phẩm
    */
   deleteProduct(productId) {
     const success = DB.remove(DB.STORES.PRODUCTS, productId);
     if (success) {
       this.loadProducts();
     } else {
-      alert('Failed to delete product');
+      alert('Không thể xóa sản phẩm');
     }
   },
   
   /**
-   * Edit a category
-   * @param {string} categoryId - The category ID
+   * Chỉnh sửa danh mục
+   * @param {string} categoryId - ID danh mục
    */
   editCategory(categoryId) {
     const category = DB.getById(DB.STORES.CATEGORIES, categoryId);
@@ -585,17 +585,17 @@ const Admin = {
     const form = document.getElementById('categoryForm');
     if (!form) return;
     
-    // Set form fields
+    // Thiết lập các trường biểu mẫu
     form.categoryId.value = category.id;
     form.categoryName.value = category.name;
     form.categoryStatus.checked = category.status;
     
-    document.getElementById('categoryModalTitle').textContent = 'Edit Category';
+    document.getElementById('categoryModalTitle').textContent = 'Chỉnh sửa Danh mục';
   },
   
   /**
-   * Save a category
-   * @param {HTMLFormElement} form - The category form
+   * Lưu danh mục
+   * @param {HTMLFormElement} form - Biểu mẫu danh mục
    */
   saveCategory(form) {
     const categoryId = form.categoryId.value;
@@ -605,46 +605,46 @@ const Admin = {
       status: form.categoryStatus.checked
     };
     
-    // Validation
+    // Xác thực
     if (!categoryData.name) {
-      alert('Please enter a category name');
+      alert('Vui lòng nhập tên danh mục');
       return;
     }
     
     if (categoryId) {
-      // Update existing category
+      // Cập nhật danh mục hiện có
       DB.update(DB.STORES.CATEGORIES, categoryId, categoryData);
     } else {
-      // Add new category
+      // Thêm danh mục mới
       DB.add(DB.STORES.CATEGORIES, categoryData);
     }
     
-    // Close modal
+    // Đóng modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('categoryModal'));
     if (modal) {
       modal.hide();
     }
     
-    // Reload categories
+    // Tải lại danh mục
     this.loadCategories();
     
-    // Reset form
+    // Đặt lại biểu mẫu
     form.reset();
     form.categoryId.value = '';
-    document.getElementById('categoryModalTitle').textContent = 'Add Category';
+    document.getElementById('categoryModalTitle').textContent = 'Thêm Danh mục';
   },
   
   /**
-   * Delete a category
-   * @param {string} categoryId - The category ID
+   * Xóa danh mục
+   * @param {string} categoryId - ID danh mục
    */
   deleteCategory(categoryId) {
-    // Check if category is in use by products
+    // Kiểm tra xem danh mục có đang được sử dụng bởi sản phẩm không
     const products = DB.getAll(DB.STORES.PRODUCTS);
     const inUse = products.some(product => product.categoryId === categoryId);
     
     if (inUse) {
-      alert('Cannot delete category because it is being used by one or more products');
+      alert('Không thể xóa danh mục vì nó đang được sử dụng bởi một hoặc nhiều sản phẩm');
       return;
     }
     
@@ -652,13 +652,13 @@ const Admin = {
     if (success) {
       this.loadCategories();
     } else {
-      alert('Failed to delete category');
+      alert('Không thể xóa danh mục');
     }
   },
   
   /**
-   * Edit a user
-   * @param {string} userId - The user ID
+   * Chỉnh sửa người dùng
+   * @param {string} userId - ID người dùng
    */
   editUser(userId) {
     const user = DB.getById(DB.STORES.USERS, userId);
@@ -667,7 +667,7 @@ const Admin = {
     const form = document.getElementById('userForm');
     if (!form) return;
     
-    // Set form fields
+    // Thiết lập các trường biểu mẫu
     form.userId.value = user.id;
     form.username.value = user.username;
     form.fullName.value = user.fullName;
@@ -675,17 +675,17 @@ const Admin = {
     form.role.value = user.role;
     form.active.checked = user.active;
     
-    // Hide or show password field
+    // Ẩn hoặc hiển thị trường mật khẩu
     const passwordGroup = document.getElementById('passwordGroup');
     if (passwordGroup) {
       passwordGroup.style.display = 'none';
     }
     
-    document.getElementById('userModalTitle').textContent = 'Edit User';
+    document.getElementById('userModalTitle').textContent = 'Chỉnh sửa Người dùng';
   }
 };
 
-// Initialize admin functionality when document is loaded
+// Khởi tạo chức năng admin khi tài liệu được tải
 document.addEventListener('DOMContentLoaded', () => {
   Admin.init();
 }); 

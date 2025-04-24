@@ -9,18 +9,18 @@ const Auth = {
   SESSION_KEY: 'current_user',
 
   /**
-   * Initialize the authentication system
+   * Khởi tạo hệ thống xác thực
    */
   init() {
-    // Initialize event listeners for auth-related actions
+    // Khởi tạo các trình lắng nghe sự kiện cho các hành động liên quan đến xác thực
     this.setupEventListeners();
   },
 
   /**
-   * Setup event listeners for authentication-related elements
+   * Thiết lập trình lắng nghe sự kiện cho các phần tử liên quan đến xác thực
    */
   setupEventListeners() {
-    // Add event listeners for login/logout/register forms if they exist on the page
+    // Thêm trình lắng nghe sự kiện cho các biểu mẫu đăng nhập/đăng xuất/đăng ký nếu chúng tồn tại trên trang
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
       loginForm.addEventListener('submit', (e) => {
@@ -53,7 +53,7 @@ const Auth = {
       });
     }
 
-    // Update UI based on authentication status
+    // Cập nhật giao diện người dùng dựa trên trạng thái xác thực
     this.updateUI();
   },
 
@@ -128,7 +128,7 @@ const Auth = {
   },
 
   /**
-   * Log out the current user
+   * Đăng xuất người dùng hiện tại
    */
   logout() {
     localStorage.removeItem(this.SESSION_KEY);
@@ -136,31 +136,31 @@ const Auth = {
   },
 
   /**
-   * Get the current user session
-   * @returns {Object|null} - The current user session or null if not logged in
+   * Lấy phiên người dùng hiện tại
+   * @returns {Object|null} - Phiên người dùng hiện tại hoặc null nếu chưa đăng nhập
    */
   getCurrentUser() {
     try {
       const session = localStorage.getItem(this.SESSION_KEY);
       return session ? JSON.parse(session) : null;
     } catch (error) {
-      console.error('Error getting current user:', error);
+      console.error('Lỗi khi lấy thông tin người dùng hiện tại:', error);
       return null;
     }
   },
 
   /**
-   * Check if a user is logged in
-   * @returns {boolean} - Whether a user is logged in
+   * Kiểm tra xem người dùng đã đăng nhập chưa
+   * @returns {boolean} - Người dùng đã đăng nhập hay chưa
    */
   isLoggedIn() {
     return this.getCurrentUser() !== null;
   },
 
   /**
-   * Check if the current user has a specific role
-   * @param {string} role - The role to check
-   * @returns {boolean} - Whether the current user has the role
+   * Kiểm tra xem người dùng hiện tại có vai trò cụ thể không
+   * @param {string} role - Vai trò cần kiểm tra
+   * @returns {boolean} - Người dùng hiện tại có vai trò đó hay không
    */
   hasRole(role) {
     const user = this.getCurrentUser();
@@ -168,28 +168,28 @@ const Auth = {
   },
 
   /**
-   * Check if the current user is an admin
-   * @returns {boolean} - Whether the current user is an admin
+   * Kiểm tra xem người dùng hiện tại có phải là quản trị viên không
+   * @returns {boolean} - Người dùng hiện tại có phải là quản trị viên không
    */
   isAdmin() {
     return this.hasRole(DB.ROLES.ADMIN);
   },
 
   /**
-   * Check if the current user is staff
-   * @returns {boolean} - Whether the current user is staff
+   * Kiểm tra xem người dùng hiện tại có phải là nhân viên không
+   * @returns {boolean} - Người dùng hiện tại có phải là nhân viên không
    */
   isStaff() {
     return this.hasRole(DB.ROLES.STAFF);
   },
 
   /**
-   * Update UI elements based on authentication status
+   * Cập nhật các phần tử giao diện dựa trên trạng thái xác thực
    */
   updateUI() {
     const user = this.getCurrentUser();
     
-    // Update login/logout buttons
+    // Cập nhật các nút đăng nhập/đăng xuất
     const loginBtn = document.getElementById('loginBtn');
     const registerBtn = document.getElementById('registerBtn');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -197,14 +197,14 @@ const Auth = {
     const userNameDisplay = document.getElementById('userNameDisplay');
     
     if (user) {
-      // User is logged in
+      // Người dùng đã đăng nhập
       if (loginBtn) loginBtn.style.display = 'none';
       if (registerBtn) registerBtn.style.display = 'none';
       if (logoutBtn) logoutBtn.style.display = 'block';
       if (profileBtn) profileBtn.style.display = 'block';
       if (userNameDisplay) userNameDisplay.textContent = user.fullName;
       
-      // Show/hide admin/staff links
+      // Hiển thị/ẩn các liên kết dành cho quản trị viên/nhân viên
       const adminLinks = document.querySelectorAll('.admin-only');
       const staffLinks = document.querySelectorAll('.staff-only');
       
@@ -216,14 +216,14 @@ const Auth = {
         link.style.display = (this.isAdmin() || this.isStaff()) ? 'block' : 'none';
       });
     } else {
-      // User is not logged in
+      // Người dùng chưa đăng nhập
       if (loginBtn) loginBtn.style.display = 'block';
       if (registerBtn) registerBtn.style.display = 'block';
       if (logoutBtn) logoutBtn.style.display = 'none';
       if (profileBtn) profileBtn.style.display = 'none';
       if (userNameDisplay) userNameDisplay.textContent = '';
       
-      // Hide admin/staff links
+      // Ẩn các liên kết dành cho quản trị viên/nhân viên
       const adminLinks = document.querySelectorAll('.admin-only');
       const staffLinks = document.querySelectorAll('.staff-only');
       
@@ -250,7 +250,7 @@ const Auth = {
   }
 };
 
-// Initialize authentication when the document is loaded
+// Khởi tạo xác thực khi tài liệu được tải
 document.addEventListener('DOMContentLoaded', () => {
   Auth.init();
 }); 

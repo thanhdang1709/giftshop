@@ -1,10 +1,10 @@
 /**
- * Database Manager for localStorage
- * Manages all data storage and retrieval operations
+ * Quản lý Cơ sở dữ liệu cho localStorage
+ * Quản lý tất cả các hoạt động lưu trữ và truy xuất dữ liệu
  */
 const DB = {
   /**
-   * Store names constants
+   * Hằng số tên kho lưu trữ
    */
   STORES: {
     PRODUCTS: 'products',
@@ -16,7 +16,7 @@ const DB = {
   },
 
   /**
-   * User roles
+   * Vai trò người dùng
    */
   ROLES: {
     ADMIN: 'admin',
@@ -25,7 +25,7 @@ const DB = {
   },
 
   /**
-   * Order statuses
+   * Trạng thái đơn hàng
    */
   ORDER_STATUS: {
     PENDING: 'pending',
@@ -36,23 +36,23 @@ const DB = {
   },
 
   /**
-   * Initialize the database with default data if empty
+   * Khởi tạo cơ sở dữ liệu với dữ liệu mặc định nếu trống
    */
   init() {
-    // Initialize each store if it doesn't exist
+    // Khởi tạo mỗi kho lưu trữ nếu nó không tồn tại
     Object.values(this.STORES).forEach(store => {
       if (!localStorage.getItem(store)) {
         localStorage.setItem(store, JSON.stringify([]));
       }
     });
 
-    // Add admin user if no users exist
+    // Thêm người dùng admin nếu không có người dùng nào tồn tại
     const users = this.getAll(this.STORES.USERS);
     if (users.length === 0) {
       this.add(this.STORES.USERS, {
         id: this.generateId(),
         username: 'admin',
-        password: 'admin123', // Should be hashed in a real application
+        password: 'admin123', // Nên được mã hóa trong ứng dụng thực tế
         fullName: 'Admin User',
         role: this.ROLES.ADMIN,
         email: 'admin@giftshop.com',
@@ -61,7 +61,7 @@ const DB = {
       });
     }
 
-    // Add default categories if none exist
+    // Thêm danh mục mặc định nếu không có danh mục nào tồn tại
     const categories = this.getAll(this.STORES.CATEGORIES);
     if (categories.length === 0) {
       const defaultCategories = [
@@ -80,40 +80,40 @@ const DB = {
   },
 
   /**
-   * Get all items from a store
-   * @param {string} storeName - The name of the store
-   * @returns {Array} - Array of items
+   * Lấy tất cả các mục từ một kho lưu trữ
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @returns {Array} - Mảng các mục
    */
   getAll(storeName) {
     try {
       return JSON.parse(localStorage.getItem(storeName)) || [];
     } catch (error) {
-      console.error(`Error getting data from ${storeName}:`, error);
+      console.error(`Lỗi khi lấy dữ liệu từ ${storeName}:`, error);
       return [];
     }
   },
 
   /**
-   * Get a single item by id
-   * @param {string} storeName - The name of the store
-   * @param {string} id - The id of the item
-   * @returns {Object|null} - The item or null if not found
+   * Lấy một mục duy nhất theo id
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @param {string} id - Id của mục
+   * @returns {Object|null} - Mục hoặc null nếu không tìm thấy
    */
   getById(storeName, id) {
     try {
       const items = this.getAll(storeName);
       return items.find(item => item.id === id) || null;
     } catch (error) {
-      console.error(`Error getting item from ${storeName}:`, error);
+      console.error(`Lỗi khi lấy mục từ ${storeName}:`, error);
       return null;
     }
   },
 
   /**
-   * Add an item to a store
-   * @param {string} storeName - The name of the store
-   * @param {Object} item - The item to add
-   * @returns {Object} - The added item
+   * Thêm một mục vào kho lưu trữ
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @param {Object} item - Mục cần thêm
+   * @returns {Object} - Mục đã thêm
    */
   add(storeName, item) {
     try {
@@ -123,17 +123,17 @@ const DB = {
       localStorage.setItem(storeName, JSON.stringify(items));
       return newItem;
     } catch (error) {
-      console.error(`Error adding item to ${storeName}:`, error);
+      console.error(`Lỗi khi thêm mục vào ${storeName}:`, error);
       throw error;
     }
   },
 
   /**
-   * Update an item in a store
-   * @param {string} storeName - The name of the store
-   * @param {string} id - The id of the item to update
-   * @param {Object} updates - The updates to apply
-   * @returns {Object|null} - The updated item or null if not found
+   * Cập nhật một mục trong kho lưu trữ
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @param {string} id - Id của mục cần cập nhật
+   * @param {Object} updates - Các cập nhật cần áp dụng
+   * @returns {Object|null} - Mục đã cập nhật hoặc null nếu không tìm thấy
    */
   update(storeName, id, updates) {
     try {
@@ -146,16 +146,16 @@ const DB = {
       localStorage.setItem(storeName, JSON.stringify(items));
       return items[index];
     } catch (error) {
-      console.error(`Error updating item in ${storeName}:`, error);
+      console.error(`Lỗi khi cập nhật mục trong ${storeName}:`, error);
       throw error;
     }
   },
 
   /**
-   * Remove an item from a store
-   * @param {string} storeName - The name of the store
-   * @param {string} id - The id of the item to remove
-   * @returns {boolean} - Whether the item was removed
+   * Xóa một mục khỏi kho lưu trữ
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @param {string} id - Id của mục cần xóa
+   * @returns {boolean} - Liệu mục có được xóa hay không
    */
   remove(storeName, id) {
     try {
@@ -167,53 +167,53 @@ const DB = {
       localStorage.setItem(storeName, JSON.stringify(filteredItems));
       return true;
     } catch (error) {
-      console.error(`Error removing item from ${storeName}:`, error);
+      console.error(`Lỗi khi xóa mục khỏi ${storeName}:`, error);
       throw error;
     }
   },
 
   /**
-   * Filter items by criteria
-   * @param {string} storeName - The name of the store
-   * @param {Function} filterFn - The filter function
-   * @returns {Array} - The filtered items
+   * Lọc các mục theo tiêu chí
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @param {Function} filterFn - Hàm lọc
+   * @returns {Array} - Các mục đã lọc
    */
   filter(storeName, filterFn) {
     try {
       const items = this.getAll(storeName);
       return items.filter(filterFn);
     } catch (error) {
-      console.error(`Error filtering items in ${storeName}:`, error);
+      console.error(`Lỗi khi lọc các mục trong ${storeName}:`, error);
       return [];
     }
   },
 
   /**
-   * Clear all items from a store
-   * @param {string} storeName - The name of the store
+   * Xóa tất cả các mục khỏi kho lưu trữ
+   * @param {string} storeName - Tên của kho lưu trữ
    */
   clear(storeName) {
     try {
       localStorage.setItem(storeName, JSON.stringify([]));
     } catch (error) {
-      console.error(`Error clearing store ${storeName}:`, error);
+      console.error(`Lỗi khi xóa kho lưu trữ ${storeName}:`, error);
       throw error;
     }
   },
 
   /**
-   * Generate a unique ID
-   * @returns {string} - A unique ID
+   * Tạo một ID duy nhất
+   * @returns {string} - Một ID duy nhất
    */
   generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
   },
   
   /**
-   * Search items by text in any property
-   * @param {string} storeName - The name of the store
-   * @param {string} searchText - The text to search for
-   * @returns {Array} - The matching items
+   * Tìm kiếm các mục theo văn bản trong bất kỳ thuộc tính nào
+   * @param {string} storeName - Tên của kho lưu trữ
+   * @param {string} searchText - Văn bản cần tìm kiếm
+   * @returns {Array} - Các mục phù hợp
    */
   search(storeName, searchText) {
     try {
@@ -231,13 +231,13 @@ const DB = {
         });
       });
     } catch (error) {
-      console.error(`Error searching items in ${storeName}:`, error);
+      console.error(`Lỗi khi tìm kiếm các mục trong ${storeName}:`, error);
       return [];
     }
   }
 };
 
-// Initialize the database when this script loads
+// Khởi tạo cơ sở dữ liệu khi script này được tải
 document.addEventListener('DOMContentLoaded', () => {
   DB.init();
 }); 

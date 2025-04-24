@@ -1,10 +1,10 @@
 /**
- * Home page functionality
- * Handles the homepage specific features
+ * Chức năng trang chủ
+ * Xử lý các tính năng đặc biệt của trang chủ
  */
 const Home = {
   /**
-   * Initialize the home page functionality
+   * Khởi tạo chức năng trang chủ
    */
   init() {
     this.loadFeaturedProducts();
@@ -15,7 +15,7 @@ const Home = {
   },
   
   /**
-   * Setup event listeners for homepage elements
+   * Thiết lập các trình lắng nghe sự kiện cho các phần tử trang chủ
    */
   setupEventListeners() {
     // Thêm ủy quyền sự kiện toàn cục cho các nút thêm vào giỏ hàng
@@ -37,7 +37,7 @@ const Home = {
   },
   
   /**
-   * Load featured products for the homepage
+   * Tải sản phẩm nổi bật cho trang chủ
    */
   loadFeaturedProducts() {
     const featuredProducts = document.getElementById('featuredProducts');
@@ -45,10 +45,10 @@ const Home = {
     
     const products = DB.getAll(DB.STORES.PRODUCTS)
       .filter(product => product.status && product.featured)
-      .slice(0, 4); // Show up to 4 featured products
+      .slice(0, 4); // Hiển thị tối đa 4 sản phẩm nổi bật
     
     if (products.length === 0) {
-      featuredProducts.innerHTML = '<div class="col-12 text-center"><p>No featured products available</p></div>';
+      featuredProducts.innerHTML = '<div class="col-12 text-center"><p>Không có sản phẩm nổi bật</p></div>';
       return;
     }
     
@@ -59,7 +59,7 @@ const Home = {
           <div class="product-card card h-100">
             <div class="position-relative">
               <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
-              <span class="badge bg-danger position-absolute top-0 end-0 m-2">Featured</span>
+              <span class="badge bg-danger position-absolute top-0 end-0 m-2">Nổi bật</span>
             </div>
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">${product.name}</h5>
@@ -85,7 +85,7 @@ const Home = {
   },
   
   /**
-   * Load categories for the homepage
+   * Tải danh mục cho trang chủ
    */
   loadCategories() {
     const categoriesSection = document.getElementById('categoriesSection');
@@ -94,7 +94,7 @@ const Home = {
     const categories = DB.getAll(DB.STORES.CATEGORIES).filter(category => category.status);
     
     if (categories.length === 0) {
-      categoriesSection.innerHTML = '<div class="col-12 text-center"><p>No categories available</p></div>';
+      categoriesSection.innerHTML = '<div class="col-12 text-center"><p>Không có danh mục nào</p></div>';
       return;
     }
     
@@ -109,7 +109,7 @@ const Home = {
                   <i class="bi bi-${this.getCategoryIcon(category.name)} text-primary" style="font-size: 3rem;"></i>
                 </div>
                 <h4 class="card-title">${category.name}</h4>
-                <p class="card-text text-muted">Explore our collection of ${category.name.toLowerCase()}</p>
+                <p class="card-text text-muted">Khám phá bộ sưu tập ${category.name.toLowerCase()} của chúng tôi</p>
               </div>
             </div>
           </a>
@@ -121,7 +121,7 @@ const Home = {
   },
   
   /**
-   * Load new arrivals for the homepage
+   * Tải sản phẩm mới về cho trang chủ
    */
   loadNewArrivals() {
     const newArrivals = document.getElementById('newArrivals');
@@ -130,10 +130,10 @@ const Home = {
     const products = DB.getAll(DB.STORES.PRODUCTS)
       .filter(product => product.status)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, 4); // Show up to 4 new products
+      .slice(0, 4); // Hiển thị tối đa 4 sản phẩm mới
     
     if (products.length === 0) {
-      newArrivals.innerHTML = '<div class="col-12 text-center"><p>No new products available</p></div>';
+      newArrivals.innerHTML = '<div class="col-12 text-center"><p>Không có sản phẩm mới</p></div>';
       return;
     }
     
@@ -144,7 +144,7 @@ const Home = {
           <div class="product-card card h-100">
             <div class="position-relative">
               <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
-              <span class="badge bg-success position-absolute top-0 end-0 m-2">New</span>
+              <span class="badge bg-success position-absolute top-0 end-0 m-2">Mới</span>
             </div>
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">${product.name}</h5>
@@ -170,7 +170,7 @@ const Home = {
   },
   
   /**
-   * Populate categories in the navigation menu
+   * Điền danh mục vào menu điều hướng
    */
   populateCategoriesMenu() {
     const categoriesMenu = document.getElementById('categoriesMenu');
@@ -198,9 +198,9 @@ const Home = {
   },
   
   /**
-   * Get an icon name for a category
-   * @param {string} categoryName - The name of the category
-   * @returns {string} - The icon name
+   * Lấy tên biểu tượng cho danh mục
+   * @param {string} categoryName - Tên của danh mục
+   * @returns {string} - Tên biểu tượng
    */
   getCategoryIcon(categoryName) {
     const lowerName = categoryName.toLowerCase();
@@ -223,7 +223,7 @@ const Home = {
   }
 };
 
-// Initialize home page functionality when the document is loaded
+// Khởi tạo chức năng trang chủ khi tài liệu được tải
 document.addEventListener('DOMContentLoaded', () => {
   Home.init();
 }); 

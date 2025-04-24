@@ -12,12 +12,12 @@ const Cart = {
   },
 
   /**
-   * Setup event listeners for cart-related elements
+   * Thiết lập các sự kiện lắng nghe cho các phần tử liên quan đến giỏ hàng
    */
   setupEventListeners() {
-    // Add to cart buttons - using event delegation to handle dynamically added buttons
+    // Nút thêm vào giỏ hàng - sử dụng ủy quyền sự kiện để xử lý các nút được thêm động
     document.addEventListener('click', (e) => {
-      // Handle add to cart - check both the button itself and if an icon inside was clicked
+      // Xử lý thêm vào giỏ hàng - kiểm tra cả nút và nếu một biểu tượng bên trong được nhấp
       if (e.target && (e.target.classList.contains('add-to-cart') || 
           e.target.closest('.add-to-cart'))) {
         
@@ -25,14 +25,14 @@ const Cart = {
         const button = e.target.classList.contains('add-to-cart') ? 
                       e.target : e.target.closest('.add-to-cart');
         const productId = button.dataset.id;
-        const quantity = 1; // Default quantity
+        const quantity = 1; // Số lượng mặc định
         
         if (productId) {
           this.addItem(productId, quantity);
         }
       }
 
-      // Handle remove from cart
+      // Xử lý xóa khỏi giỏ hàng
       if (e.target && (e.target.classList.contains('remove-from-cart') || 
           e.target.closest('.remove-from-cart'))) {
         
@@ -46,20 +46,20 @@ const Cart = {
         }
       }
 
-      // Handle clear cart
+      // Xử lý xóa giỏ hàng
       if (e.target && e.target.classList.contains('clear-cart')) {
         e.preventDefault();
         this.clearCart();
       }
 
-      // Handle checkout
+      // Xử lý thanh toán
       if (e.target && e.target.classList.contains('checkout-btn')) {
         e.preventDefault();
         this.checkout();
       }
     });
 
-    // Update quantities
+    // Cập nhật số lượng
     document.addEventListener('change', (e) => {
       if (e.target.classList.contains('cart-quantity')) {
         const productId = e.target.dataset.id;
@@ -73,15 +73,15 @@ const Cart = {
       }
     });
 
-    // Update cart display if we're on the cart page
+    // Cập nhật hiển thị giỏ hàng nếu chúng ta đang ở trang giỏ hàng
     if (window.location.pathname.includes('cart.html')) {
       this.displayCart();
     }
   },
 
   /**
-   * Get the current cart
-   * @returns {Array} - Array of cart items
+   * Lấy giỏ hàng hiện tại
+   * @returns {Array} - Mảng các mục giỏ hàng
    */
   getCart() {
     const cartItems = localStorage.getItem('cart');
@@ -89,8 +89,8 @@ const Cart = {
   },
 
   /**
-   * Save the cart to localStorage
-   * @param {Array} cart - The cart to save
+   * Lưu giỏ hàng vào localStorage
+   * @param {Array} cart - Giỏ hàng cần lưu
    */
   saveCart(cart) {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -129,24 +129,24 @@ const Cart = {
   },
 
   /**
-   * Remove an item from the cart
-   * @param {string} productId - The product ID
+   * Xóa một mục khỏi giỏ hàng
+   * @param {string} productId - ID sản phẩm
    */
   removeItem(productId) {
     const cart = this.getCart();
     const updatedCart = cart.filter(item => item.productId !== productId);
     this.saveCart(updatedCart);
 
-    // If we're on the cart page, update the display
+    // Nếu chúng ta đang ở trang giỏ hàng, cập nhật hiển thị
     if (window.location.pathname.includes('cart.html')) {
       this.displayCart();
     }
   },
 
   /**
-   * Update the quantity of an item in the cart
-   * @param {string} productId - The product ID
-   * @param {number} quantity - The new quantity
+   * Cập nhật số lượng của một mục trong giỏ hàng
+   * @param {string} productId - ID sản phẩm
+   * @param {number} quantity - Số lượng mới
    */
   updateQuantity(productId, quantity) {
     const cart = this.getCart();
@@ -156,7 +156,7 @@ const Cart = {
       item.quantity = quantity;
       this.saveCart(cart);
 
-      // If we're on the cart page, update the display
+      // Nếu chúng ta đang ở trang giỏ hàng, cập nhật hiển thị
       if (window.location.pathname.includes('cart.html')) {
         this.updateCartTotal();
       }
@@ -164,19 +164,19 @@ const Cart = {
   },
 
   /**
-   * Clear the cart
+   * Xóa giỏ hàng
    */
   clearCart() {
     this.saveCart([]);
 
-    // If we're on the cart page, update the display
+    // Nếu chúng ta đang ở trang giỏ hàng, cập nhật hiển thị
     if (window.location.pathname.includes('cart.html')) {
       this.displayCart();
     }
   },
 
   /**
-   * Update the cart count display
+   * Cập nhật hiển thị số lượng giỏ hàng
    */
   updateCartCount() {
     const cartCount = document.getElementById('cartCount');
@@ -188,7 +188,7 @@ const Cart = {
   },
 
   /**
-   * Display the cart on the cart page
+   * Hiển thị giỏ hàng trên trang giỏ hàng
    */
   displayCart() {
     const cartContainer = document.getElementById('cartItems');
@@ -197,7 +197,7 @@ const Cart = {
     const cart = this.getCart();
 
     if (cart.length === 0) {
-      cartContainer.innerHTML = '<tr><td colspan="6" class="text-center">Your cart is empty</td></tr>';
+      cartContainer.innerHTML = '<tr><td colspan="6" class="text-center">Giỏ hàng của bạn đang trống</td></tr>';
       document.getElementById('cartTotal').textContent = '0';
       document.getElementById('checkoutBtn').disabled = true;
       return;
@@ -238,7 +238,7 @@ const Cart = {
   },
 
   /**
-   * Update the cart total display
+   * Cập nhật hiển thị tổng giỏ hàng
    */
   updateCartTotal() {
     const cart = this.getCart();
@@ -301,7 +301,7 @@ const Cart = {
   }
 };
 
-// Initialize cart when the document is loaded
+// Khởi tạo giỏ hàng khi tài liệu được tải
 document.addEventListener('DOMContentLoaded', () => {
   Cart.init();
 }); 
