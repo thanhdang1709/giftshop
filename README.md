@@ -1,4 +1,4 @@
-# Moji Gift Shop - Ứng dụng Web
+# Nhóm5 Gift Shop - Ứng dụng Web
 
 Một ứng dụng web cửa hàng quà tặng phía máy khách được xây dựng bằng JavaScript thuần, HTML, CSS và Bootstrap. Ứng dụng này sử dụng localStorage của trình duyệt để lưu trữ dữ liệu, giúp dễ dàng hiểu và học các khái niệm phát triển web.
 
