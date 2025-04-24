@@ -1,6 +1,6 @@
 /**
- * Products Management Module
- * Handles the admin products interface including listing, adding, editing and deleting products
+ * Module Quản lý Sản phẩm
+ * Xử lý giao diện quản trị sản phẩm bao gồm liệt kê, thêm, chỉnh sửa và xóa sản phẩm
  */
 const ProductsManager = {
     products: [],
@@ -12,7 +12,7 @@ const ProductsManager = {
     currentProductId: null,
 
     init: function() {
-        // Admin protection - redirect if not admin
+        // Bảo vệ trang admin - chuyển hướng nếu không phải admin
         if (!Utils.isAdmin()) {
             window.location.href = 'login.html';
             return;
@@ -25,33 +25,33 @@ const ProductsManager = {
     },
 
     setupEventListeners: function() {
-        // Add product button
+        // Nút thêm sản phẩm
         document.getElementById('add-product-btn').addEventListener('click', () => {
             this.showProductForm();
         });
 
-        // Product form submission
+        // Gửi biểu mẫu sản phẩm
         document.getElementById('product-form').addEventListener('submit', (e) => {
             e.preventDefault();
             this.saveProduct();
         });
 
-        // Cancel button
+        // Nút hủy
         document.getElementById('cancel-product-btn').addEventListener('click', () => {
             this.hideProductForm();
         });
 
-        // Search products
+        // Tìm kiếm sản phẩm
         document.getElementById('search-products').addEventListener('input', (e) => {
             this.searchProducts(e.target.value);
         });
 
-        // Filter by category
+        // Lọc theo danh mục
         document.getElementById('category-filter').addEventListener('change', (e) => {
             this.filterByCategory(e.target.value);
         });
 
-        // Pagination
+        // Phân trang
         document.getElementById('pagination-container').addEventListener('click', (e) => {
             if (e.target.classList.contains('page-link')) {
                 const page = parseInt(e.target.dataset.page);
@@ -59,7 +59,7 @@ const ProductsManager = {
             }
         });
 
-        // Bulk actions
+        // Thao tác hàng loạt
         document.getElementById('bulk-action-btn').addEventListener('click', () => {
             const action = document.getElementById('bulk-action').value;
             if (action) {
@@ -67,21 +67,21 @@ const ProductsManager = {
             }
         });
 
-        // Export products
+        // Xuất sản phẩm
         document.getElementById('export-products-btn').addEventListener('click', () => {
             this.exportProducts();
         });
     },
 
     loadProducts: function() {
-        // Show loading state
+        // Hiển thị trạng thái đang tải
         document.getElementById('products-container').innerHTML = '<div class="text-center p-5"><div class="spinner-border" role="status"><span class="visually-hidden">Đang tải...</span></div></div>';
         
-        // In a real app, this would be an API call
-        // For now, simulate API call with timeout
+        // Trong ứng dụng thực tế, đây sẽ là cuộc gọi API
+        // Hiện tại, mô phỏng cuộc gọi API bằng timeout
         setTimeout(() => {
             try {
-                // Simulate fetching products from server
+                // Mô phỏng việc lấy sản phẩm từ máy chủ
                 this.products = this.generateSampleProducts(50);
                 this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
                 this.renderProducts();
@@ -94,11 +94,11 @@ const ProductsManager = {
     },
 
     loadCategories: function() {
-        // In a real app, this would be an API call
-        // For now, simulate API call with timeout
+        // Trong ứng dụng thực tế, đây sẽ là cuộc gọi API
+        // Hiện tại, mô phỏng cuộc gọi API bằng timeout
         setTimeout(() => {
             try {
-                // Simulate fetching categories from server
+                // Mô phỏng việc lấy danh mục từ máy chủ
                 this.categories = [
                     { id: 1, name: 'Điện thoại' },
                     { id: 2, name: 'Laptop' },
@@ -186,15 +186,15 @@ const ProductsManager = {
 
         container.innerHTML = html;
 
-        // Setup event listeners for edit and delete buttons
+        // Thiết lập trình lắng nghe sự kiện cho các nút chỉnh sửa và xóa
         this.setupProductActionButtons();
         
-        // Setup select all functionality
+        // Thiết lập chức năng chọn tất cả
         this.setupSelectAll();
     },
 
     setupProductActionButtons: function() {
-        // Edit product buttons
+        // Nút chỉnh sửa sản phẩm
         document.querySelectorAll('.edit-product').forEach(button => {
             button.addEventListener('click', (e) => {
                 const productId = parseInt(e.currentTarget.dataset.id);
@@ -202,7 +202,7 @@ const ProductsManager = {
             });
         });
 
-        // Delete product buttons
+        // Nút xóa sản phẩm
         document.querySelectorAll('.delete-product').forEach(button => {
             button.addEventListener('click', (e) => {
                 const productId = parseInt(e.currentTarget.dataset.id);
@@ -232,7 +232,7 @@ const ProductsManager = {
 
         let html = '<ul class="pagination justify-content-center">';
         
-        // Previous button
+        // Nút trước
         html += `
             <li class="page-item ${this.currentPage === 1 ? 'disabled' : ''}">
                 <a class="page-link" href="#" data-page="${this.currentPage - 1}">
@@ -241,7 +241,7 @@ const ProductsManager = {
             </li>
         `;
 
-        // Page numbers
+        // Số trang
         const startPage = Math.max(1, this.currentPage - 2);
         const endPage = Math.min(this.totalPages, startPage + 4);
 
@@ -253,7 +253,7 @@ const ProductsManager = {
             `;
         }
 
-        // Next button
+        // Nút sau
         html += `
             <li class="page-item ${this.currentPage === this.totalPages ? 'disabled' : ''}">
                 <a class="page-link" href="#" data-page="${this.currentPage + 1}">
@@ -308,7 +308,7 @@ const ProductsManager = {
             product.sku.toLowerCase().includes(query)
         );
 
-        // Update products with filtered results
+        // Cập nhật sản phẩm với kết quả đã lọc
         this.products = filteredProducts;
         this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
         this.currentPage = 1;
@@ -327,7 +327,7 @@ const ProductsManager = {
             product.categoryId === categoryId
         );
 
-        // Update products with filtered results
+        // Cập nhật sản phẩm với kết quả đã lọc
         this.products = filteredProducts;
         this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
         this.currentPage = 1;
@@ -342,15 +342,15 @@ const ProductsManager = {
     },
 
     hideProductForm: function() {
-        // Reset form fields
+        // Đặt lại các trường biểu mẫu
         document.getElementById('product-form').reset();
         document.getElementById('product-image-preview').src = 'assets/img/product-placeholder.jpg';
         
-        // Hide form, show list
+        // Ẩn biểu mẫu, hiển thị danh sách
         document.getElementById('products-list-section').classList.remove('d-none');
         document.getElementById('product-form-section').classList.add('d-none');
         
-        // Reset editing state
+        // Đặt lại trạng thái chỉnh sửa
         this.isEditing = false;
         this.currentProductId = null;
     },
@@ -363,11 +363,11 @@ const ProductsManager = {
             return;
         }
 
-        // Set form to editing mode
+        // Đặt biểu mẫu ở chế độ chỉnh sửa
         this.isEditing = true;
         this.currentProductId = productId;
         
-        // Populate form with product data
+        // Điền biểu mẫu với dữ liệu sản phẩm
         document.getElementById('product-name').value = product.name;
         document.getElementById('product-sku').value = product.sku;
         document.getElementById('product-category').value = product.categoryId;
@@ -377,12 +377,12 @@ const ProductsManager = {
         document.getElementById('product-status').value = product.status;
         document.getElementById('product-image-preview').src = product.image;
         
-        // Show the form
+        // Hiển thị biểu mẫu
         this.showProductForm();
     },
 
     saveProduct: function() {
-        // Get form data
+        // Lấy dữ liệu biểu mẫu
         const formData = {
             name: document.getElementById('product-name').value,
             sku: document.getElementById('product-sku').value,
@@ -394,22 +394,22 @@ const ProductsManager = {
             image: document.getElementById('product-image-preview').src
         };
 
-        // Validate form data
+        // Xác thực dữ liệu biểu mẫu
         if (!this.validateProductForm(formData)) {
             return;
         }
 
-        // Show loading state
+        // Hiển thị trạng thái đang tải
         const saveBtn = document.getElementById('save-product-btn');
         const originalText = saveBtn.innerHTML;
         saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang lưu...';
         saveBtn.disabled = true;
 
-        // Simulate API call with timeout
+        // Mô phỏng cuộc gọi API bằng timeout
         setTimeout(() => {
             try {
                 if (this.isEditing) {
-                    // Update existing product
+                    // Cập nhật sản phẩm hiện có
                     const index = this.products.findIndex(p => p.id === this.currentProductId);
                     if (index !== -1) {
                         this.products[index] = {
@@ -419,9 +419,9 @@ const ProductsManager = {
                         Utils.showToast('Sản phẩm đã được cập nhật thành công', 'success');
                     }
                 } else {
-                    // Add new product
+                    // Thêm sản phẩm mới
                     const newProduct = {
-                        id: Date.now(), // Generate a temporary ID
+                        id: Date.now(), // Tạo ID tạm thời
                         ...formData,
                         createdAt: new Date().toISOString()
                     };
@@ -429,14 +429,14 @@ const ProductsManager = {
                     Utils.showToast('Sản phẩm mới đã được thêm thành công', 'success');
                 }
 
-                // Reset form and show product list
+                // Đặt lại biểu mẫu và hiển thị danh sách sản phẩm
                 this.hideProductForm();
                 this.renderProducts();
             } catch (error) {
                 Utils.showToast('Không thể lưu sản phẩm', 'error');
                 console.error('Error saving product:', error);
             } finally {
-                // Reset button state
+                // Đặt lại trạng thái nút
                 saveBtn.innerHTML = originalText;
                 saveBtn.disabled = false;
             }
@@ -479,19 +479,19 @@ const ProductsManager = {
     },
 
     deleteProduct: function(productId) {
-        // Simulate API call with timeout
+        // Mô phỏng cuộc gọi API bằng timeout
         setTimeout(() => {
             try {
-                // Remove product from array
+                // Xóa sản phẩm khỏi mảng
                 this.products = this.products.filter(p => p.id !== productId);
                 
-                // Update pagination if needed
+                // Cập nhật phân trang nếu cần
                 this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
                 if (this.currentPage > this.totalPages) {
                     this.currentPage = Math.max(1, this.totalPages);
                 }
                 
-                // Re-render products
+                // Hiển thị lại sản phẩm
                 this.renderProducts();
                 this.renderPagination();
                 
@@ -532,19 +532,19 @@ const ProductsManager = {
     },
 
     bulkDeleteProducts: function(productIds) {
-        // Simulate API call with timeout
+        // Mô phỏng cuộc gọi API bằng timeout
         setTimeout(() => {
             try {
-                // Remove products from array
+                // Xóa sản phẩm khỏi mảng
                 this.products = this.products.filter(p => !productIds.includes(p.id));
                 
-                // Update pagination if needed
+                // Cập nhật phân trang nếu cần
                 this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
                 if (this.currentPage > this.totalPages) {
                     this.currentPage = Math.max(1, this.totalPages);
                 }
                 
-                // Re-render products
+                // Hiển thị lại sản phẩm
                 this.renderProducts();
                 this.renderPagination();
                 
@@ -557,10 +557,10 @@ const ProductsManager = {
     },
 
     bulkUpdateStatus: function(productIds, status) {
-        // Simulate API call with timeout
+        // Mô phỏng cuộc gọi API bằng timeout
         setTimeout(() => {
             try {
-                // Update product status
+                // Cập nhật trạng thái sản phẩm
                 this.products = this.products.map(p => {
                     if (productIds.includes(p.id)) {
                         return { ...p, status: status };
@@ -568,7 +568,7 @@ const ProductsManager = {
                     return p;
                 });
                 
-                // Re-render products
+                // Hiển thị lại sản phẩm
                 this.renderProducts();
                 
                 const statusText = status === 'active' ? 'kích hoạt' : 'ẩn';
@@ -581,20 +581,20 @@ const ProductsManager = {
     },
 
     exportProducts: function() {
-        // Show loading state
+        // Hiển thị trạng thái đang tải
         const exportBtn = document.getElementById('export-products-btn');
         const originalText = exportBtn.innerHTML;
         exportBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xuất...';
         exportBtn.disabled = true;
 
-        // Simulate export with timeout
+        // Mô phỏng xuất với timeout
         setTimeout(() => {
             try {
-                // In a real app, this would generate a CSV/Excel file
-                // For this demo, just show a success message
+                // Trong ứng dụng thực tế, điều này sẽ tạo ra một tệp CSV/Excel
+                // Đối với bản demo này, chỉ hiển thị thông báo thành công
                 Utils.showToast('Dữ liệu sản phẩm đã được xuất thành công', 'success');
                 
-                // Simulate file download
+                // Mô phỏng tải xuống tệp
                 const a = document.createElement('a');
                 a.href = '#';
                 a.download = 'products_export_' + new Date().toISOString().slice(0, 10) + '.csv';
@@ -603,7 +603,7 @@ const ProductsManager = {
                 Utils.showToast('Không thể xuất dữ liệu sản phẩm', 'error');
                 console.error('Error exporting products:', error);
             } finally {
-                // Reset button state
+                // Đặt lại trạng thái nút
                 exportBtn.innerHTML = originalText;
                 exportBtn.disabled = false;
             }
@@ -670,7 +670,7 @@ const ProductsManager = {
     }
 };
 
-// Initialize when DOM is fully loaded
+// Khởi tạo khi DOM đã được tải hoàn toàn
 document.addEventListener('DOMContentLoaded', function() {
     ProductsManager.init();
 }); 

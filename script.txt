@@ -1,0 +1,251 @@
+==== KỊCH BẢN THUYẾT TRÌNH WEBSITE NHÓM 5 GIFT SHOP ====
+
+========== THÀNH VIÊN 1: GIỚI THIỆU VÀ TỔNG QUAN ==========
+
+Xin chào quý thầy cô và các bạn. Hôm nay, Nhóm 5 chúng em xin giới thiệu về đồ án website Gift Shop - một cửa hàng trực tuyến chuyên bán các sản phẩm quà tặng và phụ kiện dễ thương.
+
+Website của chúng em được xây dựng bằng HTML, CSS, JavaScript thuần, không sử dụng framework hay thư viện phức tạp. Điều này cho phép chúng em hiểu sâu về cách hoạt động của các công nghệ web cơ bản và phương thức xây dựng một trang web hoàn chỉnh từ đầu.
+
+Đặc điểm nổi bật của website:
+1. Giao diện thân thiện, dễ sử dụng với thiết kế responsive
+2. Hệ thống quản lý dữ liệu sử dụng IndexedDB và localStorage
+3. Tính năng đăng nhập/đăng ký với phân quyền Admin và Người dùng
+4. Quản lý sản phẩm, danh mục, đơn hàng đầy đủ
+5. Giỏ hàng và thanh toán trực tuyến hoàn chỉnh
+6. Giao diện quản trị cho Admin
+
+Về cấu trúc, website gồm 2 phần chính:
+- Phần người dùng (Customer): Hiển thị sản phẩm, giỏ hàng, thanh toán, quản lý tài khoản
+- Phần quản trị (Admin): Quản lý sản phẩm, danh mục, đơn hàng, người dùng
+
+Giờ đây, các thành viên trong nhóm sẽ lần lượt giới thiệu chi tiết về từng tính năng của website.
+
+========== THÀNH VIÊN 2: HỆ THỐNG ĐĂNG NHẬP, ĐĂNG KÝ VÀ PHÂN QUYỀN ==========
+
+Xin chào, tôi sẽ giới thiệu về hệ thống xác thực người dùng và phân quyền trong website của chúng tôi.
+
+1. Đăng ký tài khoản:
+   - Người dùng có thể đăng ký tài khoản với thông tin cá nhân như tên, email, mật khẩu
+   - Hệ thống kiểm tra email đã tồn tại chưa và xác thực các trường dữ liệu
+   - Mật khẩu được mã hóa trước khi lưu trữ để đảm bảo an toàn
+
+2. Đăng nhập:
+   - Đăng nhập bằng email và mật khẩu
+   - Hệ thống sẽ so sánh mật khẩu đã mã hóa để xác thực
+   - Lưu trạng thái đăng nhập sử dụng localStorage với token
+
+3. Phân quyền:
+   - Hệ thống có 2 vai trò chính: Admin và User thông thường
+   - Admin có quyền truy cập vào bảng điều khiển quản trị
+   - User chỉ có quyền truy cập các trang dành cho khách hàng
+
+4. Bảo mật:
+   - Kiểm tra phân quyền trên mỗi trang admin
+   - Nếu người dùng không đủ quyền sẽ được chuyển hướng về trang đăng nhập
+   - Token xác thực có thời hạn nhất định
+
+Demo tính năng đăng nhập/đăng ký:
+- Đăng ký tài khoản mới
+- Đăng nhập với tài khoản vừa tạo
+- Đăng nhập với tài khoản admin để hiển thị menu quản trị
+- Đăng xuất và thay đổi trạng thái hiển thị
+
+Hệ thống xác thực được quản lý bởi module auth.js, sử dụng các phương thức như register(), login(), logout(), isLoggedIn(), isAdmin() để kiểm soát quyền truy cập.
+
+========== THÀNH VIÊN 3: QUẢN LÝ SẢN PHẨM VÀ DANH MỤC ==========
+
+Kính chào quý thầy cô và các bạn. Tôi sẽ trình bày về tính năng quản lý sản phẩm và danh mục của hệ thống.
+
+1. Quản lý Danh mục:
+   - Admin có thể thêm, sửa, xóa danh mục sản phẩm
+   - Mỗi danh mục có tên, mô tả, màu sắc và icon riêng
+   - Danh mục có thể được ẩn/hiện trên trang chủ
+   - Khi xóa danh mục có sản phẩm, hệ thống sẽ cảnh báo
+
+2. Quản lý Sản phẩm:
+   - Thêm sản phẩm mới với tên, mô tả, giá, hình ảnh, danh mục
+   - Chỉnh sửa thông tin sản phẩm đã có
+   - Ẩn/hiện sản phẩm trên cửa hàng
+   - Quản lý tồn kho, đánh dấu sản phẩm nổi bật, mới
+
+3. Hiển thị cho người dùng:
+   - Sản phẩm được hiển thị theo danh mục
+   - Trang sản phẩm có tính năng lọc và sắp xếp
+   - Trang chi tiết sản phẩm hiển thị đầy đủ thông tin
+   - Sản phẩm liên quan dựa trên cùng danh mục
+
+4. Tính năng tìm kiếm:
+   - Tìm kiếm sản phẩm theo tên, mô tả
+   - Lọc sản phẩm theo danh mục, giá
+   - Sắp xếp theo giá, mới nhất, phổ biến
+
+Demo quản lý danh mục:
+- Tạo danh mục mới
+- Chỉnh sửa danh mục hiện có
+- Ẩn/hiện danh mục
+
+Demo quản lý sản phẩm:
+- Thêm sản phẩm mới
+- Sửa thông tin sản phẩm
+- Xem sản phẩm trên trang chủ và trang sản phẩm
+
+Tất cả chức năng được quản lý bởi hai file JavaScript chính: categories.js và products.js. Dữ liệu được lưu trữ trong IndexedDB thông qua module db.js.
+
+========== THÀNH VIÊN 4: GIỎ HÀNG VÀ THANH TOÁN ==========
+
+Xin chào, tôi sẽ trình bày về hệ thống giỏ hàng và thanh toán của website.
+
+1. Giỏ hàng:
+   - Thêm sản phẩm vào giỏ hàng từ trang chủ hoặc trang chi tiết sản phẩm
+   - Hiển thị số lượng sản phẩm trong giỏ hàng ở góc trên
+   - Trang giỏ hàng hiển thị danh sách các sản phẩm đã thêm
+   - Điều chỉnh số lượng, xóa sản phẩm từ giỏ hàng
+   - Tính toán tổng tiền tự động khi có thay đổi
+
+2. Quy trình thanh toán:
+   - Từ giỏ hàng đến trang thanh toán
+   - Kiểm tra đăng nhập trước khi thanh toán
+   - Điền thông tin giao hàng
+   - Chọn phương thức thanh toán (COD, chuyển khoản)
+   - Xác nhận đơn hàng
+
+3. Xử lý đơn hàng:
+   - Tạo mã đơn hàng duy nhất
+   - Lưu thông tin đơn hàng vào cơ sở dữ liệu
+   - Hiển thị trang xác nhận đơn hàng
+   - Gửi thông tin đơn hàng đến email (giả lập)
+
+4. Trang chi tiết đơn hàng:
+   - Người dùng có thể xem lịch sử đơn hàng
+   - Xem chi tiết từng đơn hàng
+   - Theo dõi trạng thái đơn hàng
+
+Demo tính năng giỏ hàng và thanh toán:
+- Thêm sản phẩm vào giỏ hàng
+- Chỉnh sửa số lượng sản phẩm
+- Tiến hành thanh toán
+- Xem đơn hàng sau khi hoàn tất
+
+Hệ thống giỏ hàng được quản lý bởi cart.js, trong khi quy trình thanh toán được xử lý bởi checkout.js. Đơn hàng được lưu trong IndexedDB thông qua DB.STORES.ORDERS.
+
+========== THÀNH VIÊN 5: QUẢN LÝ ĐƠN HÀNG VÀ TÀI KHOẢN NGƯỜI DÙNG ==========
+
+Xin chào tất cả mọi người. Phần trình bày của tôi sẽ tập trung vào quản lý đơn hàng và tài khoản người dùng.
+
+1. Quản lý đơn hàng (Admin):
+   - Xem danh sách tất cả đơn hàng
+   - Tìm kiếm đơn hàng theo mã, khách hàng
+   - Lọc đơn hàng theo trạng thái, ngày đặt
+   - Xem chi tiết từng đơn hàng
+   - Cập nhật trạng thái đơn hàng (chờ xác nhận, đang xử lý, đang giao, đã giao, đã hủy)
+
+2. Quản lý tài khoản người dùng (Admin):
+   - Xem danh sách tất cả người dùng
+   - Thêm người dùng mới
+   - Chỉnh sửa thông tin người dùng
+   - Phân quyền (admin/user)
+   - Xóa tài khoản (với các ràng buộc an toàn)
+
+3. Quản lý tài khoản cá nhân (User):
+   - Xem và cập nhật thông tin cá nhân
+   - Đổi mật khẩu
+   - Xem lịch sử đơn hàng
+   - Xem chi tiết từng đơn hàng
+
+4. Thống kê dữ liệu:
+   - Admin có thể xem tổng số đơn hàng theo trạng thái
+   - Thống kê người dùng mới
+   - Phân tích đơn hàng theo thời gian
+
+Demo chức năng quản lý đơn hàng:
+- Xem danh sách đơn hàng
+- Lọc đơn hàng theo trạng thái
+- Cập nhật trạng thái đơn hàng
+- Xem chi tiết đơn hàng
+
+Demo quản lý người dùng:
+- Xem danh sách người dùng
+- Chỉnh sửa thông tin người dùng
+- Phân quyền admin/user
+
+Các tính năng này được quản lý bởi các file JavaScript: admin/orders.js, admin/users.js và profile.js.
+
+========== THÀNH VIÊN 6: TRANG CHỦ VÀ HIỂN THỊ SẢN PHẨM ==========
+
+Xin chào tất cả mọi người. Tôi sẽ trình bày về trang chủ và cách hiển thị sản phẩm trên website của chúng tôi.
+
+1. Trang chủ:
+   - Banner chính giới thiệu cửa hàng
+   - Hiển thị sản phẩm nổi bật
+   - Danh sách danh mục sản phẩm
+   - Sản phẩm mới về
+   - Lợi ích khi mua sắm tại cửa hàng
+
+2. Trang danh sách sản phẩm:
+   - Hiển thị tất cả sản phẩm theo dạng lưới
+   - Bộ lọc sản phẩm theo danh mục, giá
+   - Sắp xếp sản phẩm theo nhiều tiêu chí
+   - Phân trang cho danh sách sản phẩm
+
+3. Trang chi tiết sản phẩm:
+   - Hiển thị thông tin chi tiết sản phẩm
+   - Hình ảnh sản phẩm
+   - Giá và tồn kho
+   - Nút thêm vào giỏ hàng
+   - Sản phẩm liên quan
+
+4. Tính năng tải động:
+   - Danh mục được tải từ cơ sở dữ liệu
+   - Sản phẩm nổi bật được chọn ngẫu nhiên
+   - Sản phẩm mới dựa trên ngày thêm
+
+Demo tính năng:
+- Duyệt trang chủ và hiển thị các phần
+- Xem danh sách sản phẩm và thử bộ lọc
+- Xem chi tiết một sản phẩm
+
+Các tính năng này được quản lý bởi home.js cho trang chủ và products.js cho hiển thị sản phẩm. Chúng tôi sử dụng kỹ thuật tải dữ liệu động từ IndexedDB để hiển thị nội dung.
+
+========== THÀNH VIÊN 7: HỆ THỐNG LƯU TRỮ DỮ LIỆU VÀ KẾT LUẬN ==========
+
+Xin chào quý thầy cô và các bạn. Tôi sẽ trình bày về hệ thống lưu trữ dữ liệu và kết luận về dự án của chúng tôi.
+
+1. Hệ thống lưu trữ dữ liệu:
+   - Sử dụng IndexedDB làm cơ sở dữ liệu chính
+   - Hỗ trợ localStorage cho các dữ liệu nhỏ
+   - Cấu trúc dữ liệu phân chia thành các store:
+     + USERS: Lưu thông tin người dùng
+     + PRODUCTS: Lưu thông tin sản phẩm
+     + CATEGORIES: Lưu thông tin danh mục
+     + ORDERS: Lưu thông tin đơn hàng
+
+2. Module DB.js:
+   - Cung cấp các phương thức thao tác với cơ sở dữ liệu
+   - Khởi tạo cơ sở dữ liệu với dữ liệu mẫu
+   - Các hàm CRUD (Create, Read, Update, Delete)
+   - Xử lý lỗi và đồng bộ hóa dữ liệu
+
+3. Kỹ thuật sử dụng:
+   - Mô hình MVC (Model-View-Controller)
+   - JavaScript thuần, không phụ thuộc framework
+   - Bootstrap cho giao diện người dùng
+   - LocalStorage cho lưu trữ phiên đăng nhập
+
+4. Thử thách và giải pháp:
+   - Xử lý bất đồng bộ với IndexedDB
+   - Đảm bảo tính nhất quán của dữ liệu
+   - Tối ưu hiệu suất tải trang
+
+5. Kết luận:
+   - Mục tiêu đã đạt được:
+     + Xây dựng cửa hàng trực tuyến hoàn chỉnh
+     + Giao diện thân thiện, dễ sử dụng
+     + Quản lý đầy đủ sản phẩm, đơn hàng, người dùng
+   - Các cải tiến trong tương lai:
+     + Tích hợp cổng thanh toán thực
+     + Đồng bộ hóa dữ liệu với máy chủ
+     + Tối ưu hiệu suất và UX
+
+Thay mặt Nhóm 5, chúng tôi cảm ơn quý thầy cô và các bạn đã lắng nghe buổi thuyết trình. Chúng tôi rất mong nhận được những góp ý để có thể hoàn thiện dự án tốt hơn.
+
+==== KẾT THÚC KỊCH BẢN THUYẾT TRÌNH ==== 

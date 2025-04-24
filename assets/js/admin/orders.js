@@ -1,473 +1,405 @@
 /**
- * Orders Management Module
- * Handles admin functionality for managing customer orders
+ * Admin Orders Management Module
+ * Handles displaying, filtering, and managing orders in the admin panel
  */
 
 const OrdersManager = {
-    orders: [],
-    currentPage: 1,
-    itemsPerPage: 10,
-    
     init: function() {
-        // Bảo vệ trang admin
-        if (!Auth.isLoggedIn() || (!Auth.isAdmin() && !Auth.isStaff())) {
-            window.location.href = '../../pages/customer/login.html';
-            return;
-        }
-        
         this.loadOrders();
         this.setupEventListeners();
     },
-    
+
     setupEventListeners: function() {
         // Search functionality
         document.getElementById('searchButton').addEventListener('click', () => {
-            this.applyFilters();
+            this.filterOrders();
         });
         
         document.getElementById('searchOrder').addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
-                this.applyFilters();
+                this.filterOrders();
             }
         });
-        
-        // Filters
+
+        // Status filter
         document.getElementById('statusFilter').addEventListener('change', () => {
-            this.applyFilters();
+            this.filterOrders();
         });
-        
+
+        // Date filter
         document.getElementById('dateFilter').addEventListener('change', () => {
-            this.applyFilters();
+            this.filterOrders();
         });
-        
+
         // Reset filters
         document.getElementById('resetFilters').addEventListener('click', () => {
             document.getElementById('searchOrder').value = '';
             document.getElementById('statusFilter').value = 'all';
             document.getElementById('dateFilter').value = '';
-            this.applyFilters();
+            this.loadOrders();
         });
-        
+
         // Update order status
         document.getElementById('updateStatusBtn').addEventListener('click', () => {
             this.updateOrderStatus();
         });
-        
+
         // Print order
         document.getElementById('printOrderBtn').addEventListener('click', () => {
             this.printOrder();
         });
-        
-        // Pagination event delegation
-        document.getElementById('pagination').addEventListener('click', (e) => {
-            if (e.target.classList.contains('page-link')) {
-                e.preventDefault();
-                const pageNum = parseInt(e.target.getAttribute('data-page'));
-                if (!isNaN(pageNum)) {
-                    this.goToPage(pageNum);
+    },
+
+    loadOrders: function() {
+        const ordersList = document.getElementById('ordersList');
+        ordersList.innerHTML = '<tr><td colspan="6" class="text-center py-4">Đang tải đơn hàng...</td></tr>';
+
+        // Get orders from localStorage instead of demo data
+        const orders = this.getOrdersFromStorage();
+
+        if (orders.length === 0) {
+            ordersList.innerHTML = '<tr><td colspan="6" class="text-center py-4">Không có đơn hàng nào</td></tr>';
+            document.getElementById('orderCount').textContent = '0';
+            return;
+        }
+
+        let html = '';
+        orders.forEach(order => {
+            // Format the date for display
+            const orderDate = order.date || order.orderDate;
+            let formattedDate = "Invalid Date";
+            
+            if (orderDate) {
+                const date = new Date(orderDate);
+                if (!isNaN(date.getTime())) {
+                    formattedDate = date.toLocaleDateString('vi-VN');
                 }
             }
-        });
 
-        // View order details event delegation
-        document.getElementById('ordersList').addEventListener('click', (e) => {
-            const viewButton = e.target.closest('.view-order');
-            if (viewButton) {
-                const orderId = viewButton.getAttribute('data-id');
-                this.openOrderDetail(orderId);
+            // Get customer name safely
+            const customerName = order.customer ? 
+                (order.customer.name || order.customer.fullName || 'Không xác định') : 
+                'Không xác định';
+
+            // Create status badge based on order status
+            let statusBadge = '';
+            switch (order.status) {
+                case 'pending':
+                    statusBadge = '<span class="badge bg-warning">Chờ xác nhận</span>';
+                    break;
+                case 'processing':
+                    statusBadge = '<span class="badge bg-info">Đang xử lý</span>';
+                    break;
+                case 'shipped':
+                    statusBadge = '<span class="badge bg-primary">Đang giao hàng</span>';
+                    break;
+                case 'delivered':
+                    statusBadge = '<span class="badge bg-success">Đã giao hàng</span>';
+                    break;
+                case 'cancelled':
+                    statusBadge = '<span class="badge bg-danger">Đã hủy</span>';
+                    break;
+                default:
+                    statusBadge = '<span class="badge bg-secondary">Không xác định</span>';
             }
-        });
-        
-        // Đăng xuất
-        document.getElementById('adminLogoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            Auth.logout();
-        });
-    },
-    
-    loadOrders: async function() {
-        try {
-            // In a real application, this would fetch from an API
-            // For demonstration, we're using local data
-            this.orders = await this.fetchOrdersData();
-            this.renderOrders();
-        } catch (error) {
-            console.error('Error loading orders:', error);
-            Utils.showToast('error', 'Không thể tải dữ liệu đơn hàng');
-        }
-    },
-    
-    fetchOrdersData: async function() {
-        // Simulating API call with sample data
-        // In production, this would be replaced with a real API fetch
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve([
-                    {
-                        id: "ORD001",
-                        customerName: "Nguyễn Văn A",
-                        email: "nguyenvana@example.com",
-                        phone: "0901234567",
-                        orderDate: "2023-03-15",
-                        total: 1250000,
-                        status: "delivered",
-                        paymentMethod: "COD",
-                        shippingAddress: "123 Đường Lê Lợi, Phường Bến Nghé, Quận 1, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm A", price: 350000, quantity: 2, total: 700000 },
-                            { name: "Sản phẩm B", price: 500000, quantity: 1, total: 500000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: "Giao giờ hành chính"
-                    },
-                    {
-                        id: "ORD002",
-                        customerName: "Trần Thị B",
-                        email: "tranthib@example.com",
-                        phone: "0909876543",
-                        orderDate: "2023-03-16",
-                        total: 820000,
-                        status: "processing",
-                        paymentMethod: "Bank Transfer",
-                        shippingAddress: "456 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm C", price: 420000, quantity: 1, total: 420000 },
-                            { name: "Sản phẩm D", price: 350000, quantity: 1, total: 350000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: ""
-                    },
-                    {
-                        id: "ORD003",
-                        customerName: "Lê Văn C",
-                        email: "levanc@example.com",
-                        phone: "0912345678",
-                        orderDate: "2023-03-17",
-                        total: 1500000,
-                        status: "pending",
-                        paymentMethod: "Momo",
-                        shippingAddress: "789 Đường Hai Bà Trưng, Phường Bến Nghé, Quận 1, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm E", price: 1450000, quantity: 1, total: 1450000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: "Gọi trước khi giao"
-                    },
-                    {
-                        id: "ORD004",
-                        customerName: "Phạm Thị D",
-                        email: "phamthid@example.com",
-                        phone: "0987654321",
-                        orderDate: "2023-03-18",
-                        total: 2100000,
-                        status: "shipped",
-                        paymentMethod: "COD",
-                        shippingAddress: "101 Đường Nguyễn Du, Phường Bến Thành, Quận 1, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm F", price: 980000, quantity: 2, total: 1960000 },
-                            { name: "Sản phẩm G", price: 90000, quantity: 1, total: 90000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: ""
-                    },
-                    {
-                        id: "ORD005",
-                        customerName: "Võ Văn E",
-                        email: "vovane@example.com",
-                        phone: "0978123456",
-                        orderDate: "2023-03-19",
-                        total: 750000,
-                        status: "cancelled",
-                        paymentMethod: "COD",
-                        shippingAddress: "202 Đường Lý Tự Trọng, Phường Bến Thành, Quận 1, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm H", price: 700000, quantity: 1, total: 700000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: "Khách hàng đã yêu cầu hủy"
-                    },
-                    {
-                        id: "ORD006",
-                        customerName: "Nguyễn Thị F",
-                        email: "nguyenthif@example.com",
-                        phone: "0912345987",
-                        orderDate: "2023-03-20",
-                        total: 1800000,
-                        status: "pending",
-                        paymentMethod: "Bank Transfer",
-                        shippingAddress: "303 Đường Nam Kỳ Khởi Nghĩa, Phường Võ Thị Sáu, Quận 3, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm I", price: 1750000, quantity: 1, total: 1750000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: ""
-                    },
-                    {
-                        id: "ORD007",
-                        customerName: "Trần Văn G",
-                        email: "tranvang@example.com",
-                        phone: "0901122334",
-                        orderDate: "2023-03-21",
-                        total: 1350000,
-                        status: "processing",
-                        paymentMethod: "Momo",
-                        shippingAddress: "404 Đường Cách Mạng Tháng 8, Phường 10, Quận 3, TP.HCM",
-                        items: [
-                            { name: "Sản phẩm J", price: 650000, quantity: 2, total: 1300000 }
-                        ],
-                        shippingFee: 50000,
-                        notes: "Giao trong giờ hành chính"
-                    }
-                ]);
-            }, 300);
-        });
-    },
-    
-    renderOrders: function() {
-        const filteredOrders = this.getFilteredOrders();
-        
-        // Update order count
-        document.getElementById('orderCount').textContent = filteredOrders.length;
-        
-        // Calculate pagination
-        const totalPages = Math.ceil(filteredOrders.length / this.itemsPerPage);
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = Math.min(startIndex + this.itemsPerPage, filteredOrders.length);
-        
-        const currentOrders = filteredOrders.slice(startIndex, endIndex);
-        
-        // Render orders
-        const ordersList = document.getElementById('ordersList');
-        ordersList.innerHTML = '';
-        
-        if (currentOrders.length === 0) {
-            const row = document.createElement('tr');
-            row.innerHTML = '<td colspan="6" class="text-center">Không tìm thấy đơn hàng nào</td>';
-            ordersList.appendChild(row);
-        } else {
-            currentOrders.forEach(order => {
-                const statusClass = this.getStatusClass(order.status);
-                const statusText = this.getStatusText(order.status);
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.id}</td>
-                    <td>${order.customerName}</td>
-                    <td>${this.formatDate(order.orderDate)}</td>
+
+            html += `
+                <tr>
+                    <td>${order.id || order.orderNumber || ''}</td>
+                    <td>${customerName}</td>
+                    <td>${formattedDate}</td>
                     <td>${this.formatCurrency(order.total)}</td>
-                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td>${statusBadge}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary view-order" data-id="${order.id}">
+                        <button class="btn btn-sm btn-outline-primary" onclick="OrdersManager.viewOrderDetails('${order.id || order.orderNumber || ''}')">
                             <i class="bi bi-eye"></i>
                         </button>
                     </td>
-                `;
-                ordersList.appendChild(row);
-            });
-        }
-        
-        // Render pagination
-        this.renderPagination(totalPages);
+                </tr>
+            `;
+        });
+
+        ordersList.innerHTML = html;
+        document.getElementById('orderCount').textContent = orders.length;
     },
-    
-    renderPagination: function(totalPages) {
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';
+
+    getOrdersFromStorage: function() {
+        // Get orders from localStorage
+        const orders = localStorage.getItem('orders');
+        let ordersList = orders ? JSON.parse(orders) : [];
         
-        if (totalPages <= 1) return;
+        // Remove duplicate orders by checking for unique orderNumber or id
+        const uniqueOrderMap = new Map();
         
-        // Previous button
-        const prevLi = document.createElement('li');
-        prevLi.className = `page-item ${this.currentPage === 1 ? 'disabled' : ''}`;
-        prevLi.innerHTML = `<a class="page-link" href="#" data-page="${this.currentPage - 1}" ${this.currentPage === 1 ? 'tabindex="-1" aria-disabled="true"' : ''}>Trước</a>`;
-        pagination.appendChild(prevLi);
+        ordersList.forEach(order => {
+            const orderId = order.id || order.orderNumber;
+            if (orderId && !uniqueOrderMap.has(orderId)) {
+                uniqueOrderMap.set(orderId, order);
+            }
+        });
         
-        // Page numbers
-        let startPage = Math.max(1, this.currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        
-        if (endPage - startPage < 4) {
-            startPage = Math.max(1, endPage - 4);
-        }
-        
-        for (let i = startPage; i <= endPage; i++) {
-            const pageLi = document.createElement('li');
-            pageLi.className = `page-item ${i === this.currentPage ? 'active' : ''}`;
-            pageLi.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
-            pagination.appendChild(pageLi);
-        }
-        
-        // Next button
-        const nextLi = document.createElement('li');
-        nextLi.className = `page-item ${this.currentPage === totalPages ? 'disabled' : ''}`;
-        nextLi.innerHTML = `<a class="page-link" href="#" data-page="${this.currentPage + 1}" ${this.currentPage === totalPages ? 'tabindex="-1" aria-disabled="true"' : ''}>Sau</a>`;
-        pagination.appendChild(nextLi);
+        // Convert back to array
+        return Array.from(uniqueOrderMap.values());
     },
-    
-    getFilteredOrders: function() {
+
+    filterOrders: function() {
         const searchTerm = document.getElementById('searchOrder').value.toLowerCase();
         const statusFilter = document.getElementById('statusFilter').value;
         const dateFilter = document.getElementById('dateFilter').value;
         
-        return this.orders.filter(order => {
-            // Search filter
-            const matchesSearch = searchTerm === '' || 
-                order.id.toLowerCase().includes(searchTerm) || 
-                order.customerName.toLowerCase().includes(searchTerm) ||
-                order.email.toLowerCase().includes(searchTerm);
-            
-            // Status filter
-            const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-            
-            // Date filter
-            const matchesDate = dateFilter === '' || order.orderDate === dateFilter;
-            
-            return matchesSearch && matchesStatus && matchesDate;
-        });
-    },
-    
-    applyFilters: function() {
-        this.currentPage = 1; // Reset to first page when filters change
-        this.renderOrders();
-    },
-    
-    goToPage: function(pageNum) {
-        this.currentPage = pageNum;
-        this.renderOrders();
-        // Scroll to top of table
-        document.querySelector('.table-responsive').scrollIntoView({ behavior: 'smooth' });
-    },
-    
-    openOrderDetail: function(orderId) {
-        const order = this.orders.find(o => o.id === orderId);
+        let orders = this.getOrdersFromStorage();
         
-        if (!order) {
-            Utils.showToast('error', 'Không tìm thấy thông tin đơn hàng');
+        // Apply filters
+        if (searchTerm) {
+            orders = orders.filter(order => 
+                order.id.toLowerCase().includes(searchTerm) || 
+                order.customer.name.toLowerCase().includes(searchTerm) ||
+                order.customer.email.toLowerCase().includes(searchTerm) ||
+                order.customer.phone.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        if (statusFilter && statusFilter !== 'all') {
+            orders = orders.filter(order => order.status === statusFilter);
+        }
+        
+        if (dateFilter) {
+            const filterDate = new Date(dateFilter);
+            orders = orders.filter(order => {
+                const orderDate = new Date(order.date);
+                return orderDate.toDateString() === filterDate.toDateString();
+            });
+        }
+        
+        // Render filtered orders
+        const ordersList = document.getElementById('ordersList');
+        
+        if (orders.length === 0) {
+            ordersList.innerHTML = '<tr><td colspan="6" class="text-center py-4">Không tìm thấy đơn hàng nào</td></tr>';
+            document.getElementById('orderCount').textContent = '0';
             return;
         }
         
-        // Fill the modal with order details
-        document.getElementById('orderIdDetail').textContent = order.id;
-        document.getElementById('customerName').textContent = order.customerName;
-        document.getElementById('customerEmail').textContent = order.email;
-        document.getElementById('customerPhone').textContent = order.phone;
-        document.getElementById('orderDate').textContent = this.formatDate(order.orderDate);
-        
-        const statusText = this.getStatusText(order.status);
-        const statusClass = this.getStatusClass(order.status);
-        document.getElementById('orderStatus').innerHTML = `<span class="badge ${statusClass}">${statusText}</span>`;
-        
-        document.getElementById('paymentMethod').textContent = order.paymentMethod;
-        document.getElementById('shippingAddress').textContent = order.shippingAddress;
-        
-        // Order items
-        const orderItems = document.getElementById('orderItems');
-        orderItems.innerHTML = '';
-        
-        let subtotal = 0;
-        order.items.forEach(item => {
-            subtotal += item.total;
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${item.name}</td>
-                <td>${this.formatCurrency(item.price)}</td>
-                <td>${item.quantity}</td>
-                <td class="text-end">${this.formatCurrency(item.total)}</td>
+        let html = '';
+        orders.forEach(order => {
+            const orderDate = new Date(order.date);
+            const formattedDate = orderDate.toLocaleDateString('vi-VN');
+            
+            let statusBadge = '';
+            switch (order.status) {
+                case 'pending':
+                    statusBadge = '<span class="badge bg-warning">Chờ xác nhận</span>';
+                    break;
+                case 'processing':
+                    statusBadge = '<span class="badge bg-info">Đang xử lý</span>';
+                    break;
+                case 'shipped':
+                    statusBadge = '<span class="badge bg-primary">Đang giao hàng</span>';
+                    break;
+                case 'delivered':
+                    statusBadge = '<span class="badge bg-success">Đã giao hàng</span>';
+                    break;
+                case 'cancelled':
+                    statusBadge = '<span class="badge bg-danger">Đã hủy</span>';
+                    break;
+                default:
+                    statusBadge = '<span class="badge bg-secondary">Không xác định</span>';
+            }
+            
+            html += `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.customer.name}</td>
+                    <td>${formattedDate}</td>
+                    <td>${this.formatCurrency(order.total)}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="OrdersManager.viewOrderDetails('${order.id}')">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                </tr>
             `;
-            orderItems.appendChild(row);
         });
         
-        document.getElementById('subtotal').textContent = this.formatCurrency(subtotal);
-        document.getElementById('shippingFee').textContent = this.formatCurrency(order.shippingFee);
-        document.getElementById('totalAmount').textContent = this.formatCurrency(order.total);
+        ordersList.innerHTML = html;
+        document.getElementById('orderCount').textContent = orders.length;
+    },
+
+    viewOrderDetails: function(orderId) {
+        const orders = this.getOrdersFromStorage();
+        const order = orders.find(o => o.id === orderId || o.orderNumber === orderId);
         
-        document.getElementById('orderNotes').textContent = order.notes || "Không có ghi chú";
+        if (!order) {
+            alert('Không tìm thấy đơn hàng!');
+            return;
+        }
+        
+        // Fill modal with order details
+        document.getElementById('orderIdDetail').textContent = order.id || order.orderNumber || '';
+        document.getElementById('customerName').textContent = order.customer ? 
+            (order.customer.name || order.customer.fullName || 'Không xác định') : 
+            'Không xác định';
+        document.getElementById('customerEmail').textContent = order.customer ? 
+            (order.customer.email || 'Không xác định') : 
+            'Không xác định';
+        document.getElementById('customerPhone').textContent = order.customer ? 
+            (order.customer.phone || 'Không xác định') : 
+            'Không xác định';
+        
+        const orderDate = order.date || order.orderDate;
+        let formattedDate = "Không xác định";
+        
+        if (orderDate) {
+            const date = new Date(orderDate);
+            if (!isNaN(date.getTime())) {
+                formattedDate = date.toLocaleDateString('vi-VN', { 
+                    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+                });
+            }
+        }
+        document.getElementById('orderDate').textContent = formattedDate;
+        
+        // Set order status in the modal
+        let statusHtml = '';
+        switch (order.status) {
+            case 'pending':
+                statusHtml = '<span class="badge bg-warning">Chờ xác nhận</span>';
+                break;
+            case 'processing':
+                statusHtml = '<span class="badge bg-info">Đang xử lý</span>';
+                break;
+            case 'shipped':
+                statusHtml = '<span class="badge bg-primary">Đang giao hàng</span>';
+                break;
+            case 'delivered':
+                statusHtml = '<span class="badge bg-success">Đã giao hàng</span>';
+                break;
+            case 'cancelled':
+                statusHtml = '<span class="badge bg-danger">Đã hủy</span>';
+                break;
+            default:
+                statusHtml = '<span class="badge bg-secondary">Không xác định</span>';
+        }
+        document.getElementById('orderStatus').innerHTML = statusHtml;
+        
+        // Payment method
+        document.getElementById('paymentMethod').textContent = order.paymentMethod === 'COD' ? 
+            'Thanh toán khi nhận hàng' : 
+            (order.paymentMethod === 'bank_transfer' ? 'Chuyển khoản ngân hàng' : 'Ví MoMo');
+        
+        // Shipping address
+        document.getElementById('shippingAddress').textContent = order.customer.address;
+        
+        // Order items
+        const orderItemsContainer = document.getElementById('orderItems');
+        let itemsHtml = '';
+        
+        order.items.forEach(item => {
+            itemsHtml += `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${item.image || '../../assets/images/placeholder.jpg'}" alt="${item.name}" class="me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                            <span>${item.name}</span>
+                        </div>
+                    </td>
+                    <td>${this.formatCurrency(item.price)}</td>
+                    <td class="text-center">${item.quantity}</td>
+                    <td class="text-end">${this.formatCurrency(item.price * item.quantity)}</td>
+                </tr>
+            `;
+        });
+        
+        orderItemsContainer.innerHTML = itemsHtml;
+        
+        // Order total
+        document.getElementById('subtotal').textContent = this.formatCurrency(order.subtotal);
+        document.getElementById('shippingFee').textContent = order.shipping > 0 ? this.formatCurrency(order.shipping) : 'Miễn phí';
+        document.getElementById('totalAmount').textContent = this.formatCurrency(order.total);
         
         // Set current status in the dropdown
         document.getElementById('updateStatus').value = order.status;
         
-        // Show the modal
-        const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
-        modal.show();
+        // Order notes
+        document.getElementById('orderNotes').textContent = order.notes || 'Không có ghi chú';
+        
+        // Show modal
+        const orderDetailModal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+        orderDetailModal.show();
     },
-    
+
     updateOrderStatus: function() {
         const orderId = document.getElementById('orderIdDetail').textContent;
         const newStatus = document.getElementById('updateStatus').value;
         
-        // Find the order and update its status
-        const orderIndex = this.orders.findIndex(o => o.id === orderId);
+        // Get orders from localStorage
+        const orders = this.getOrdersFromStorage();
+        const orderIndex = orders.findIndex(o => o.id === orderId);
         
         if (orderIndex === -1) {
-            Utils.showToast('error', 'Không tìm thấy đơn hàng');
+            alert('Không tìm thấy đơn hàng!');
             return;
         }
         
-        // In a real application, this would be an API call
-        // For demonstration, we just update the local data
-        this.orders[orderIndex].status = newStatus;
+        // Update order status
+        orders[orderIndex].status = newStatus;
         
-        // Update the status display in the modal
-        const statusText = this.getStatusText(newStatus);
-        const statusClass = this.getStatusClass(newStatus);
-        document.getElementById('orderStatus').innerHTML = `<span class="badge ${statusClass}">${statusText}</span>`;
+        // Save orders back to localStorage
+        localStorage.setItem('orders', JSON.stringify(orders));
+        
+        // Update the status in the modal
+        let statusHtml = '';
+        switch (newStatus) {
+            case 'pending':
+                statusHtml = '<span class="badge bg-warning">Chờ xác nhận</span>';
+                break;
+            case 'processing':
+                statusHtml = '<span class="badge bg-info">Đang xử lý</span>';
+                break;
+            case 'shipped':
+                statusHtml = '<span class="badge bg-primary">Đang giao hàng</span>';
+                break;
+            case 'delivered':
+                statusHtml = '<span class="badge bg-success">Đã giao hàng</span>';
+                break;
+            case 'cancelled':
+                statusHtml = '<span class="badge bg-danger">Đã hủy</span>';
+                break;
+            default:
+                statusHtml = '<span class="badge bg-secondary">Không xác định</span>';
+        }
+        document.getElementById('orderStatus').innerHTML = statusHtml;
         
         // Reload the orders list to reflect the change
-        this.renderOrders();
+        this.loadOrders();
         
         // Show success message
-        Utils.showToast('success', 'Đã cập nhật trạng thái đơn hàng');
+        alert('Cập nhật trạng thái đơn hàng thành công!');
     },
-    
+
     printOrder: function() {
         const orderId = document.getElementById('orderIdDetail').textContent;
+        alert(`Đang chuẩn bị in đơn hàng ${orderId}. Hãy kết nối máy in của bạn.`);
         
-        // In a real application, this would create a printable view
-        // For demonstration, we just show an alert
-        Utils.showToast('info', 'Đang chuẩn bị in đơn hàng...');
-        
-        // Simulate printing delay
-        setTimeout(() => {
-            window.print();
-        }, 500);
+        // In actual implementation, you would create a printable version of the order here
+        // For demonstration purposes, we'll just show an alert
     },
-    
-    // Helper functions
-    getStatusClass: function(status) {
-        switch (status) {
-            case 'pending': return 'bg-warning text-dark';
-            case 'processing': return 'bg-info text-dark';
-            case 'shipped': return 'bg-primary';
-            case 'delivered': return 'bg-success';
-            case 'cancelled': return 'bg-danger';
-            default: return 'bg-secondary';
-        }
-    },
-    
-    getStatusText: function(status) {
-        switch (status) {
-            case 'pending': return 'Chờ xác nhận';
-            case 'processing': return 'Đang xử lý';
-            case 'shipped': return 'Đang giao hàng';
-            case 'delivered': return 'Đã giao hàng';
-            case 'cancelled': return 'Đã hủy';
-            default: return 'Không xác định';
-        }
-    },
-    
-    formatDate: function(dateString) {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('vi-VN', options);
-    },
-    
+
     formatCurrency: function(amount) {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
-            .replace(/\s+₫/, ' ₫')
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(amount)
+            .replace(/\s+/g, '')
             .replace('₫', 'đ');
     }
 };
 
-// Initialize on DOM loaded
+// Initialize orders manager when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    OrdersManager.init();
+    // Check if the current user is an admin
+    if (Auth && Auth.isAdmin()) {
+        OrdersManager.init();
+    } else {
+        window.location.href = '../../pages/customer/login.html?redirect=admin';
+    }
 }); 

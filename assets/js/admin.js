@@ -341,10 +341,11 @@ const Admin = {
     // Tổng doanh thu
     const totalRevenue = orders.reduce((sum, order) => {
       if (order.status !== DB.ORDER_STATUS.CANCELLED) {
-        return sum + order.totalAmount;
+        return sum + order.total;
       }
       return sum;
     }, 0);
+    
     const revenueEl = document.getElementById('totalRevenue');
     if (revenueEl) {
       revenueEl.textContent = totalRevenue.toLocaleString() + 'đ';
@@ -384,7 +385,7 @@ const Admin = {
           <td>${order.id.substring(0, 8)}...</td>
           <td>${user ? user.fullName : 'Không xác định'}</td>
           <td>${Utils.formatDate(order.orderDate)}</td>
-          <td>${order.totalAmount.toLocaleString()}đ</td>
+          <td>${order.total.toLocaleString()}đ</td>
           <td>
             <span class="badge bg-${this.getStatusColorClass(order.status)}">${order.status}</span>
           </td>

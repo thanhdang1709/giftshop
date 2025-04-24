@@ -325,7 +325,7 @@
             
             const totalRevenue = orders.reduce((sum, order) => {
                 if (order.status !== DB.ORDER_STATUS.CANCELLED) {
-                    return sum + order.totalAmount;
+                    return sum + order.total;
                 }
                 return sum;
             }, 0);
@@ -365,7 +365,7 @@
                         <td>${order.id.substring(0, 8)}...</td>
                         <td>${user ? user.fullName : 'Không xác định'}</td>
                         <td>${Utils.formatDate(order.orderDate)}</td>
-                        <td>${Utils.formatCurrency(order.totalAmount)}</td>
+                        <td>${Utils.formatCurrency(order.total)}</td>
                         <td>
                             <span class="badge bg-${getStatusColorClass(order.status)}">${getStatusVietnamese(order.status)}</span>
                         </td>
