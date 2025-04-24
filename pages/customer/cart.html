@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Moji Gift Shop</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="../../index.html">
+                        <img src="../../assets/images/logo.png" alt="Moji Gift Shop" height="50">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="../../index.html">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Categories
+                                </a>
+                                <ul class="dropdown-menu" id="categoriesMenu">
+                                    <!-- Categories will be loaded dynamically -->
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="products.html">All Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Contact</a>
+                            </li>
+                        </ul>
+                        
+                        <form class="d-flex me-2" id="searchForm">
+                            <input class="form-control me-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+                        </form>
+                        
+                        <div class="d-flex align-items-center">
+                            <a href="cart.html" class="btn btn-outline-light position-relative me-2 active">
+                                <i class="bi bi-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                                    0
+                                </span>
+                            </a>
+                            
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person"></i>
+                                    <span id="userNameDisplay"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="login.html" id="loginBtn">Login</a></li>
+                                    <li><a class="dropdown-item" href="register.html" id="registerBtn">Register</a></li>
+                                    <li><a class="dropdown-item" href="profile.html" id="profileBtn" style="display: none;">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="orders.html" id="ordersBtn" style="display: none;">My Orders</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item admin-only" href="../admin/dashboard.html" style="display: none;">Admin Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="#" id="logoutBtn" style="display: none;">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-light py-2">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <section class="cart-section py-5">
+        <div class="container">
+            <h1 class="section-title mb-4">Your Shopping Cart</h1>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cartItems">
+                                        <!-- Cart items will be loaded dynamically -->
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4">Loading cart...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-outline-danger clear-cart">
+                                    <i class="bi bi-trash me-1"></i> Clear Cart
+                                </button>
+                                <a href="products.html" class="btn btn-outline-primary">
+                                    <i class="bi bi-arrow-left me-1"></i> Continue Shopping
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Order Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Subtotal:</span>
+                                <span id="cartTotal">0đ</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Shipping:</span>
+                                <span>Free</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-3 fw-bold">
+                                <span>Total:</span>
+                                <span id="orderTotal">0đ</span>
+                            </div>
+                            
+                            <div class="d-grid mt-4">
+                                <button class="btn btn-primary checkout-btn" id="checkoutBtn" disabled>
+                                    Proceed to Checkout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Methods -->
+                    <div class="card shadow-sm mt-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">We Accept</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <i class="bi bi-credit-card fs-2 text-primary"></i>
+                                <i class="bi bi-paypal fs-2 text-primary"></i>
+                                <i class="bi bi-wallet fs-2 text-primary"></i>
+                                <i class="bi bi-cash-stack fs-2 text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Recommendations -->
+    <section class="recommendations-section py-5 bg-light">
+        <div class="container">
+            <h3 class="section-title mb-4">You Might Also Like</h3>
+            <div class="row" id="recommendations">
+                <!-- Recommendations will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="text-white">Moji Gift Shop</h4>
+                    <p class="text-white-50">Bringing joy with adorable gifts and accessories for all occasions.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white me-2"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 mb-4">
+                    <h5 class="text-white">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../../index.html" class="text-white-50">Home</a></li>
+                        <li class="mb-2"><a href="products.html" class="text-white-50">Products</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-white-50">About Us</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3 mb-4">
+                    <h5 class="text-white">Categories</h5>
+                    <ul class="list-unstyled" id="footerCategories">
+                        <!-- Categories will be loaded dynamically -->
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-white">Contact Us</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Gift Street, Tokyo, Japan</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> (123) 456-7890</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@mojigiftshop.com</li>
+                        <li><i class="bi bi-clock me-2"></i> Mon-Fri: 9AM-6PM, Sat: 10AM-4PM</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-light">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-white-50 mb-0">&copy; 2023 Moji Gift Shop. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <img src="../../assets/images/payment-methods.png" alt="Payment Methods" class="img-fluid" style="max-height: 30px;">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../../assets/js/db.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/cart.js"></script>
+    <script src="../../assets/js/products.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    
+    <!-- Cart Page Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update order total to match cart total
+            const orderTotal = document.getElementById('orderTotal');
+            const cartTotalEl = document.getElementById('cartTotal');
+            
+            orderTotal.textContent = cartTotalEl.textContent;
+            
+            // Handle checkout button
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.addEventListener('click', function() {
+                if (!Auth.isLoggedIn()) {
+                    // Redirect to login page with redirect back to cart
+                    window.location.href = 'login.html?redirect=cart.html';
+                    return;
+                }
+                
+                // Cart.checkout() will handle the checkout process
+            });
+            
+            // Load recommended products (random featured products)
+            loadRecommendedProducts();
+            
+            // Populate categories in the footer and menu
+            const footerCategories = document.getElementById('footerCategories');
+            const categoriesMenu = document.getElementById('categoriesMenu');
+            
+            const categories = DB.getAll(DB.STORES.CATEGORIES).filter(category => category.status);
+            
+            let footerHtml = '';
+            let menuHtml = '';
+            
+            categories.forEach(category => {
+                footerHtml += `
+                    <li class="mb-2"><a href="products.html?category=${category.id}" class="text-white-50">${category.name}</a></li>
+                `;
+                
+                menuHtml += `
+                    <li><a class="dropdown-item" href="products.html?category=${category.id}">${category.name}</a></li>
+                `;
+            });
+            
+            if (footerCategories) footerCategories.innerHTML = footerHtml;
+            if (categoriesMenu) categoriesMenu.innerHTML = menuHtml;
+        });
+        
+        /**
+         * Load recommended products
+         */
+        function loadRecommendedProducts() {
+            const recommendationsContainer = document.getElementById('recommendations');
+            if (!recommendationsContainer) return;
+            
+            const products = DB.getAll(DB.STORES.PRODUCTS)
+                .filter(product => product.status)
+                .sort(() => 0.5 - Math.random()) // Shuffle products randomly
+                .slice(0, 4); // Show up to 4 products
+            
+            if (products.length === 0) {
+                recommendationsContainer.innerHTML = '<div class="col-12 text-center"><p>No products available</p></div>';
+                return;
+            }
+            
+            let html = '';
+            products.forEach(product => {
+                html += `
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="product-card card h-100">
+                            <img src="${product.image || '../../assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text flex-grow-1">${product.description ? Utils.truncateText(product.description, 60) : ''}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <span class="price">${Utils.formatCurrency(product.price)}</span>
+                                    <div>
+                                        <a href="product-detail.html?id=${product.id}" class="btn btn-sm btn-outline-secondary me-1">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-primary add-to-cart" data-id="${product.id}">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            recommendationsContainer.innerHTML = html;
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - Cửa hàng quà tặng Moji</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Tùy chỉnh -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+    <!-- Đầu trang -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="../../index.html">
+                        <img src="../../assets/images/logo.png" alt="Cửa hàng quà tặng Moji" height="50">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="../../index.html">Trang chủ</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Danh mục
+                                </a>
+                                <ul class="dropdown-menu" id="categoriesMenu">
+                                    <!-- Danh mục sẽ được tải động -->
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="products.html">Tất cả sản phẩm</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">Về chúng tôi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Liên hệ</a>
+                            </li>
+                        </ul>
+                        
+                        <form class="d-flex me-2" id="searchForm">
+                            <input class="form-control me-2" type="search" id="searchInput" placeholder="Tìm kiếm" aria-label="Search">
+                            <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+                        </form>
+                        
+                        <div class="d-flex align-items-center">
+                            <a href="cart.html" class="btn btn-outline-light position-relative me-2">
+                                <i class="bi bi-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                                    0
+                                </span>
+                            </a>
+                            
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person"></i>
+                                    <span id="userNameDisplay"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="login.html" id="loginBtn">Đăng nhập</a></li>
+                                    <li><a class="dropdown-item active" href="register.html" id="registerBtn">Đăng ký</a></li>
+                                    <li><a class="dropdown-item" href="profile.html" id="profileBtn" style="display: none;">Hồ sơ của tôi</a></li>
+                                    <li><a class="dropdown-item" href="orders.html" id="ordersBtn" style="display: none;">Đơn hàng của tôi</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item admin-only" href="../admin/dashboard.html" style="display: none;">Bảng điều khiển Admin</a></li>
+                                    <li><a class="dropdown-item" href="#" id="logoutBtn" style="display: none;">Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Nội dung chính -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white text-center py-3">
+                            <h4 class="mb-0">Tạo tài khoản mới</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="registerForm">
+                                <div class="mb-3">
+                                    <label for="fullName" class="form-label">Họ và tên</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Tên đăng nhập</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                        <input type="text" class="form-control" id="username" name="username" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Địa chỉ email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Mật khẩu</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                        <input type="password" class="form-control" id="password" name="password" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">Tôi đồng ý với <a href="#">Điều khoản và Điều kiện</a></label>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Đăng ký</button>
+                                </div>
+                            </form>
+                            <div class="text-center mt-3">
+                                <p>Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chân trang -->
+    <footer class="footer py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="text-white">Cửa hàng quà tặng Moji</h4>
+                    <p class="text-white-50">Mang lại niềm vui với những món quà và phụ kiện đáng yêu cho mọi dịp.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white me-2"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 mb-4">
+                    <h5 class="text-white">Liên kết nhanh</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../../index.html" class="text-white-50">Trang chủ</a></li>
+                        <li class="mb-2"><a href="products.html" class="text-white-50">Sản phẩm</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-white-50">Về chúng tôi</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-white-50">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3 mb-4">
+                    <h5 class="text-white">Danh mục</h5>
+                    <ul class="list-unstyled" id="footerCategories">
+                        <!-- Danh mục sẽ được tải động -->
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-white">Liên hệ với chúng tôi</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Đường Quà Tặng, Tokyo, Nhật Bản</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> (123) 456-7890</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@mojigiftshop.com</li>
+                        <li><i class="bi bi-clock me-2"></i> Thứ 2-Thứ 6: 9AM-6PM, Thứ 7: 10AM-4PM</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-light">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-white-50 mb-0">&copy; 2023 Cửa hàng quà tặng Moji. Tất cả các quyền được bảo lưu.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <img src="../../assets/images/payment-methods.png" alt="Phương thức thanh toán" class="img-fluid" style="max-height: 30px;">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JS Tùy chỉnh -->
+    <script src="../../assets/js/db.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/cart.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    
+    <!-- Xác thực đăng ký -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Xác thực bổ sung
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Mật khẩu không khớp');
+                    return;
+                }
+                
+                const email = document.getElementById('email').value;
+                if (!Utils.isValidEmail(email)) {
+                    alert('Vui lòng nhập địa chỉ email hợp lệ');
+                    return;
+                }
+                
+                // Biểu mẫu sẽ được xử lý bởi Auth.register trong auth.js
+            });
+        });
+    </script>
+</body>
+</html> 

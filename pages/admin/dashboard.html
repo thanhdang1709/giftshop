@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Moji Gift Shop</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 admin-sidebar d-md-block collapse" id="sidebarMenu">
+                <div class="pt-3 pb-2 mb-3">
+                    <a href="../../index.html" class="d-flex align-items-center text-white text-decoration-none mb-4">
+                        <img src="../../assets/images/logo.png" alt="Moji Gift Shop" height="40" class="me-2">
+                        <span class="fs-4">Admin Panel</span>
+                    </a>
+                    
+                    <hr class="border-light">
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="dashboard.html">
+                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html">
+                                <i class="bi bi-box-seam me-2"></i> Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="categories.html">
+                                <i class="bi bi-list-ul me-2"></i> Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="orders.html">
+                                <i class="bi bi-cart-check me-2"></i> Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="users.html">
+                                <i class="bi bi-people me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="settings.html">
+                                <i class="bi bi-gear me-2"></i> Settings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../index.html">
+                                <i class="bi bi-house-door me-2"></i> Back to Site
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="adminLogoutBtn">
+                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshDashboardBtn">
+                            <i class="bi bi-arrow-repeat me-1"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card border-primary h-100">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <div class="d-flex align-items-center w-100 mb-3">
+                                    <div class="flex-shrink-0 bg-primary text-white rounded p-3 me-3">
+                                        <i class="bi bi-box-seam fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="card-subtitle text-muted">Total Products</h6>
+                                        <h3 class="card-title mb-0" id="productCount">0</h3>
+                                    </div>
+                                </div>
+                                <a href="products.html" class="mt-auto text-primary text-decoration-none">
+                                    <i class="bi bi-arrow-right"></i> View All Products
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card border-success h-100">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <div class="d-flex align-items-center w-100 mb-3">
+                                    <div class="flex-shrink-0 bg-success text-white rounded p-3 me-3">
+                                        <i class="bi bi-cart-check fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="card-subtitle text-muted">Total Orders</h6>
+                                        <h3 class="card-title mb-0" id="orderCount">0</h3>
+                                    </div>
+                                </div>
+                                <a href="orders.html" class="mt-auto text-success text-decoration-none">
+                                    <i class="bi bi-arrow-right"></i> View All Orders
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card border-info h-100">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <div class="d-flex align-items-center w-100 mb-3">
+                                    <div class="flex-shrink-0 bg-info text-white rounded p-3 me-3">
+                                        <i class="bi bi-people fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="card-subtitle text-muted">Total Users</h6>
+                                        <h3 class="card-title mb-0" id="userCount">0</h3>
+                                    </div>
+                                </div>
+                                <a href="users.html" class="mt-auto text-info text-decoration-none">
+                                    <i class="bi bi-arrow-right"></i> View All Users
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card border-danger h-100">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <div class="d-flex align-items-center w-100 mb-3">
+                                    <div class="flex-shrink-0 bg-danger text-white rounded p-3 me-3">
+                                        <i class="bi bi-currency-dollar fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="card-subtitle text-muted">Total Revenue</h6>
+                                        <h3 class="card-title mb-0" id="totalRevenue">0đ</h3>
+                                    </div>
+                                </div>
+                                <a href="orders.html" class="mt-auto text-danger text-decoration-none">
+                                    <i class="bi bi-arrow-right"></i> View Revenue Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Orders -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Recent Orders</h5>
+                                    <a href="orders.html" class="btn btn-sm btn-outline-primary">View All</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Order ID</th>
+                                                <th>Customer</th>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentOrders">
+                                            <!-- Recent orders will be loaded dynamically -->
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4">Loading orders...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Products -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Top Selling Products</h5>
+                                    <a href="products.html" class="btn btn-sm btn-outline-primary">View All</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Product Name</th>
+                                                <th>Price</th>
+                                                <th>Sold</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topProducts">
+                                            <!-- Top products will be loaded dynamically -->
+                                            <tr>
+                                                <td colspan="3" class="text-center py-4">Loading products...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <a href="products.html?action=new" class="btn btn-outline-primary w-100 p-3">
+                                            <i class="bi bi-plus-circle fs-4 d-block mb-2"></i>
+                                            Add New Product
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="categories.html?action=new" class="btn btn-outline-secondary w-100 p-3">
+                                            <i class="bi bi-tags fs-4 d-block mb-2"></i>
+                                            Add New Category
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="orders.html?status=pending" class="btn btn-outline-warning w-100 p-3">
+                                            <i class="bi bi-clock-history fs-4 d-block mb-2"></i>
+                                            Pending Orders
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="users.html?action=new" class="btn btn-outline-info w-100 p-3">
+                                            <i class="bi bi-person-plus fs-4 d-block mb-2"></i>
+                                            Add New User
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <footer class="mt-5 text-center text-muted">
+                    <p>&copy; 2023 Moji Gift Shop Admin Panel</p>
+                </footer>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../../assets/js/db.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/admin.js"></script>
+    
+    <!-- Dashboard Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            if (!Auth.isLoggedIn() || !Auth.isAdmin()) {
+                window.location.href = '../customer/login.html?redirect=../admin/dashboard.html';
+                return;
+            }
+            
+            // Logout button
+            document.getElementById('adminLogoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                Auth.logout();
+            });
+            
+            // Refresh button
+            document.getElementById('refreshDashboardBtn').addEventListener('click', function() {
+                loadDashboardData();
+            });
+            
+            // Load initial data
+            loadDashboardData();
+        });
+        
+        /**
+         * Load dashboard data
+         */
+        function loadDashboardData() {
+            // Product count
+            const productCount = DB.getAll(DB.STORES.PRODUCTS).length;
+            document.getElementById('productCount').textContent = productCount;
+            
+            // User count
+            const userCount = DB.getAll(DB.STORES.USERS).length;
+            document.getElementById('userCount').textContent = userCount;
+            
+            // Order count and revenue
+            const orders = DB.getAll(DB.STORES.ORDERS);
+            document.getElementById('orderCount').textContent = orders.length;
+            
+            const totalRevenue = orders.reduce((sum, order) => {
+                if (order.status !== DB.ORDER_STATUS.CANCELLED) {
+                    return sum + order.totalAmount;
+                }
+                return sum;
+            }, 0);
+            
+            document.getElementById('totalRevenue').textContent = Utils.formatCurrency(totalRevenue);
+            
+            // Recent orders
+            loadRecentOrders();
+            
+            // Top products
+            loadTopProducts();
+        }
+        
+        /**
+         * Load recent orders
+         */
+        function loadRecentOrders() {
+            const recentOrdersList = document.getElementById('recentOrders');
+            
+            const orders = DB.getAll(DB.STORES.ORDERS);
+            
+            if (orders.length === 0) {
+                recentOrdersList.innerHTML = '<tr><td colspan="5" class="text-center">No orders found</td></tr>';
+                return;
+            }
+            
+            // Sort orders by date (newest first) and take the first 5
+            const recentOrders = orders
+                .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))
+                .slice(0, 5);
+            
+            let html = '';
+            recentOrders.forEach(order => {
+                const user = DB.getById(DB.STORES.USERS, order.userId);
+                html += `
+                    <tr>
+                        <td>${order.id.substring(0, 8)}...</td>
+                        <td>${user ? user.fullName : 'Unknown'}</td>
+                        <td>${Utils.formatDate(order.orderDate)}</td>
+                        <td>${Utils.formatCurrency(order.totalAmount)}</td>
+                        <td>
+                            <span class="badge bg-${getStatusColorClass(order.status)}">${order.status}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            recentOrdersList.innerHTML = html;
+        }
+        
+        /**
+         * Load top selling products
+         */
+        function loadTopProducts() {
+            const topProductsList = document.getElementById('topProducts');
+            
+            const products = DB.getAll(DB.STORES.PRODUCTS);
+            const orders = DB.getAll(DB.STORES.ORDERS);
+            
+            if (products.length === 0) {
+                topProductsList.innerHTML = '<tr><td colspan="3" class="text-center">No products found</td></tr>';
+                return;
+            }
+            
+            // Calculate total sold for each product
+            const productSales = {};
+            
+            orders.forEach(order => {
+                if (order.status !== DB.ORDER_STATUS.CANCELLED) {
+                    order.items.forEach(item => {
+                        if (!productSales[item.productId]) {
+                            productSales[item.productId] = 0;
+                        }
+                        productSales[item.productId] += item.quantity;
+                    });
+                }
+            });
+            
+            // Create array of products with sales data
+            const productsWithSales = products.map(product => ({
+                ...product,
+                totalSold: productSales[product.id] || 0
+            }));
+            
+            // Sort by total sold and take the top 5
+            const topProducts = productsWithSales
+                .sort((a, b) => b.totalSold - a.totalSold)
+                .slice(0, 5);
+            
+            let html = '';
+            topProducts.forEach(product => {
+                html += `
+                    <tr>
+                        <td>${product.name}</td>
+                        <td>${Utils.formatCurrency(product.price)}</td>
+                        <td>${product.totalSold}</td>
+                    </tr>
+                `;
+            });
+            
+            topProductsList.innerHTML = html;
+        }
+        
+        /**
+         * Get status color class for Bootstrap
+         * @param {string} status - Order status
+         * @returns {string} - Color class
+         */
+        function getStatusColorClass(status) {
+            switch (status) {
+                case DB.ORDER_STATUS.PENDING:
+                    return 'warning';
+                case DB.ORDER_STATUS.PROCESSING:
+                    return 'info';
+                case DB.ORDER_STATUS.SHIPPED:
+                    return 'primary';
+                case DB.ORDER_STATUS.DELIVERED:
+                    return 'success';
+                case DB.ORDER_STATUS.CANCELLED:
+                    return 'danger';
+                default:
+                    return 'secondary';
+            }
+        }
+    </script>
+</body>
+</html> 
