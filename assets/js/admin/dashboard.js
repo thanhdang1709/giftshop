@@ -476,11 +476,11 @@ const DashboardManager = {
     loadRecentOrders: function() {
         // Simulated data for recent orders
         this.data.recentOrders = [
-            { id: 'ORD-1234', customer: 'Nguyen Van A', date: new Date('2023-05-10T08:30:00'), total: 350000, status: 'completed' },
-            { id: 'ORD-1233', customer: 'Tran Thi B', date: new Date('2023-05-09T14:20:00'), total: 520000, status: 'processing' },
-            { id: 'ORD-1232', customer: 'Le Van C', date: new Date('2023-05-09T10:15:00'), total: 180000, status: 'completed' },
-            { id: 'ORD-1231', customer: 'Pham Thi D', date: new Date('2023-05-08T16:45:00'), total: 790000, status: 'pending' },
-            { id: 'ORD-1230', customer: 'Hoang Van E', date: new Date('2023-05-08T09:10:00'), total: 450000, status: 'completed' }
+            { id: 'ORD-1234', customer: 'Nguyen Van A', date: new Date('2025-05-10T08:30:00'), total: 350000, status: 'completed' },
+            { id: 'ORD-1233', customer: 'Tran Thi B', date: new Date('2025-05-09T14:20:00'), total: 520000, status: 'processing' },
+            { id: 'ORD-1232', customer: 'Le Van C', date: new Date('2025-05-09T10:15:00'), total: 180000, status: 'completed' },
+            { id: 'ORD-1231', customer: 'Pham Thi D', date: new Date('2025-05-08T16:45:00'), total: 790000, status: 'pending' },
+            { id: 'ORD-1230', customer: 'Hoang Van E', date: new Date('2025-05-08T09:10:00'), total: 450000, status: 'completed' }
         ];
         
         // Update UI

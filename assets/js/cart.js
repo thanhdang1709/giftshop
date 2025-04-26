@@ -417,20 +417,30 @@ const Cart = {
 
   /**
    * Cập nhật số lượng của một mục trong giỏ hàng
-   * @param {string} productId - ID sản phẩm
+   * @param {string} itemId - ID sản phẩm (có thể là productId hoặc id)
    * @param {number} quantity - Số lượng mới
    */
-  updateQuantity(productId, quantity) {
+  updateQuantity(itemId, quantity) {
     const cart = this.getCart();
-    const item = cart.find(item => item.productId === productId);
+    const item = cart.find(item => item.productId === itemId || item.id === itemId);
 
     if (item) {
       item.quantity = quantity;
       this.saveCart(cart);
 
       // Nếu chúng ta đang ở trang giỏ hàng, cập nhật hiển thị
-      if (window.location.pathname.includes('cart.html')) {
-        this.updateCartTotal();
+      if (this.isOnCartPage()) {
+        // Cập nhật cả hai hiển thị giỏ hàng để đảm bảo tính nhất quán
+        if (document.getElementById('cartItems')) {
+          this.displayCart();
+        }
+        
+        if (document.querySelector('.cart-items-container')) {
+          this.renderCartPage();
+        } else {
+          // Nếu không có container cho renderCartPage, chỉ cập nhật tổng giỏ hàng
+          this.updateCartTotal();
+        }
       }
     }
   },
@@ -515,7 +525,20 @@ const Cart = {
   updateCartTotal() {
     const cart = this.getCart();
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    document.getElementById('cartTotal').textContent = total.toLocaleString() + 'đ';
+    
+    // Cập nhật tổng giỏ hàng
+    const cartTotalEl = document.getElementById('cartTotal');
+    if (cartTotalEl) {
+      cartTotalEl.textContent = total.toLocaleString() + 'đ';
+    }
+    
+    // Cập nhật tổng cộng (cộng thêm phí vận chuyển nếu có)
+    const orderTotalEl = document.getElementById('orderTotal');
+    if (orderTotalEl) {
+      // Mặc định phí vận chuyển là 0 (miễn phí)
+      const shipping = 0;
+      orderTotalEl.textContent = (total + shipping).toLocaleString() + 'đ';
+    }
   },
 
   /**
@@ -558,8 +581,12 @@ const Cart = {
   renderCartPage: function() {
     const cartContainer = document.querySelector('.cart-items-container');
     if (!cartContainer) return;
+    
+    // Get the latest cart data
+    const cart = this.getCart();
+    this.cart = cart;
 
-    if (this.cart.length === 0) {
+    if (!cart || cart.length === 0) {
       cartContainer.innerHTML = `
         <div class="text-center py-5">
           <i class="bi bi-cart-x fs-1 text-muted mb-3"></i>
@@ -624,6 +651,10 @@ const Cart = {
     // Update the order summary
     const summaryContainer = document.querySelector('.cart-summary-container');
     if (summaryContainer) {
+      // Phí vận chuyển mặc định
+      const shippingFee = 30000;
+      const totalWithShipping = subtotal + shippingFee;
+      
       summaryContainer.innerHTML = `
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-white py-3">
@@ -636,12 +667,12 @@ const Cart = {
             </div>
             <div class="d-flex justify-content-between mb-2">
               <span>Phí vận chuyển:</span>
-              <span>${this.formatCurrency(30000)}</span>
+              <span>${this.formatCurrency(shippingFee)}</span>
             </div>
             <hr>
             <div class="d-flex justify-content-between mb-3">
               <strong>Tổng cộng:</strong>
-              <strong>${this.formatCurrency(subtotal + 30000)}</strong>
+              <strong id="orderTotal">${this.formatCurrency(totalWithShipping)}</strong>
             </div>
             <div class="d-grid">
               <a href="checkout.html" class="btn btn-primary btn-lg checkout-btn">
@@ -657,6 +688,10 @@ const Cart = {
   },
 
   setupCartEventListeners: function() {
+    // Get the cart to ensure we have the most recent version
+    const cart = this.getCart();
+    this.cart = cart;
+
     // Remove items
     document.querySelectorAll('.remove-item').forEach(button => {
       button.addEventListener('click', (e) => {
@@ -672,9 +707,11 @@ const Cart = {
         const qty = parseInt(e.currentTarget.value);
         if (qty > 0) {
           this.updateQuantity(id, qty);
+          this.renderCartPage(); // Re-render to update item totals
         } else {
           e.currentTarget.value = 1;
           this.updateQuantity(id, 1);
+          this.renderCartPage(); // Re-render to update item totals
         }
       });
     });
@@ -683,9 +720,10 @@ const Cart = {
     document.querySelectorAll('.decrease-qty').forEach(button => {
       button.addEventListener('click', (e) => {
         const id = e.currentTarget.getAttribute('data-id');
-        const currentItem = this.cart.find(item => item.id === id);
+        const currentItem = this.cart.find(item => item.id === id || item.productId === id);
         if (currentItem && currentItem.quantity > 1) {
           this.updateQuantity(id, currentItem.quantity - 1);
+          this.renderCartPage(); // Re-render to update item totals
         }
       });
     });
@@ -693,9 +731,10 @@ const Cart = {
     document.querySelectorAll('.increase-qty').forEach(button => {
       button.addEventListener('click', (e) => {
         const id = e.currentTarget.getAttribute('data-id');
-        const currentItem = this.cart.find(item => item.id === id);
+        const currentItem = this.cart.find(item => item.id === id || item.productId === id);
         if (currentItem) {
           this.updateQuantity(id, currentItem.quantity + 1);
+          this.renderCartPage(); // Re-render to update item totals
         }
       });
     });
@@ -717,6 +756,21 @@ const Cart = {
 
   isOnCartPage: function() {
     return window.location.pathname.includes('cart.html');
+  },
+
+  /**
+   * Xóa một mục khỏi giỏ hàng (phiên bản mới hỗ trợ cả id và productId)
+   * @param {string} itemId - ID sản phẩm (có thể là productId hoặc id)
+   */
+  removeFromCart(itemId) {
+    const cart = this.getCart();
+    const updatedCart = cart.filter(item => item.productId !== itemId && item.id !== itemId);
+    this.saveCart(updatedCart);
+
+    // Cập nhật giao diện
+    if (this.isOnCartPage()) {
+      this.renderCartPage();
+    }
   }
 };
 

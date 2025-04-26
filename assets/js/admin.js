@@ -29,7 +29,7 @@ const Admin = {
     
     if (!Auth.isAdmin() && !Auth.isStaff()) {
       alert('Bạn không có quyền truy cập trang này');
-      window.location.href = '/index.html';
+      window.location.href = '.../index.html';
       return false;
     }
     

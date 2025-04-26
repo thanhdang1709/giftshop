@@ -86,7 +86,7 @@ const Auth = {
     
     // Chuyển hướng dựa trên vai trò
     if (user.role === DB.ROLES.ADMIN || user.role === DB.ROLES.STAFF) {
-      window.location.href = '/pages/admin/dashboard.html';
+      window.location.href = '../admin/dashboard.html';
     } else {
       window.location.href = '/index.html';
     }

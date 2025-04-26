@@ -13,6 +13,40 @@
     
     <!-- CSS Tùy chỉnh -->
     <link rel="stylesheet" href="../../assets/css/style.css">
+    
+    <style>
+        .registration-step {
+            transition: all 0.3s ease;
+        }
+        #step2 {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+        }
+        #otpCode {
+            letter-spacing: 3px;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        .text-primary {
+            color: #0d6efd !important;
+        }
+        /* Countdown timer styling */
+        #otpCountdown {
+            font-size: 0.875rem;
+            color: #dc3545;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
     <!-- Đầu trang -->
@@ -95,48 +129,80 @@
                             <h4 class="mb-0">Tạo tài khoản mới</h4>
                         </div>
                         <div class="card-body p-4">
-                            <form id="registerForm">
-                                <div class="mb-3">
-                                    <label for="fullName" class="form-label">Họ và tên</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                            <!-- Step 1: Registration Form -->
+                            <form id="registerForm" class="needs-validation">
+                                <div id="step1" class="registration-step">
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label">Họ và tên</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                            <div class="invalid-feedback">Vui lòng nhập họ và tên của bạn</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Tên đăng nhập</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                            <input type="text" class="form-control" id="username" name="username" required>
+                                            <div class="invalid-feedback">Vui lòng nhập tên đăng nhập</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Địa chỉ email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input type="email" class="form-control" id="email" name="email" required>
+                                            <div class="invalid-feedback">Vui lòng nhập email hợp lệ</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Mật khẩu</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                            <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                                            <div class="invalid-feedback">Mật khẩu phải có ít nhất 6 ký tự</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                            <div class="invalid-feedback">Mật khẩu không khớp</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                        <label class="form-check-label" for="agreeTerms">Tôi đồng ý với <a href="#">Điều khoản và Điều kiện</a></label>
+                                        <div class="invalid-feedback">Bạn phải đồng ý với điều khoản để tiếp tục</div>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="button" id="submitStep1" class="btn btn-primary">Tiếp tục</button>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Tên đăng nhập</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
-                                        <input type="text" class="form-control" id="username" name="username" required>
+
+                                <!-- Step 2: OTP Verification -->
+                                <div id="step2" class="registration-step" style="display: none;">
+                                    <div class="text-center mb-4">
+                                        <i class="bi bi-envelope-check fs-1 text-primary"></i>
+                                        <h5 class="mt-3">Xác thực email của bạn</h5>
+                                        <p class="text-muted">Chúng tôi đã gửi mã OTP đến email của bạn. Vui lòng kiểm tra và nhập mã để hoàn tất đăng ký.</p>
+                                        <p class="text-muted"><strong>Email:</strong> <span id="verificationEmail"></span></p>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Địa chỉ email</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    <div class="mb-4">
+                                        <label for="otpCode" class="form-label">Mã xác thực (OTP)</label>
+                                        <input type="text" class="form-control form-control-lg text-center" id="otpCode" maxlength="6" required>
+                                        <div class="invalid-feedback">Vui lòng nhập mã OTP hợp lệ</div>
+                                        <div class="mt-2 text-center">
+                                            <small class="text-muted">Mã OTP sẽ hết hạn sau <span id="otpCountdown">03:00</span></small>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Mật khẩu</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                        <input type="password" class="form-control" id="password" name="password" required>
+                                    <div class="d-grid gap-2">
+                                        <button type="button" id="verifyOtp" class="btn btn-primary">Xác thực & Đăng ký</button>
+                                        <button type="button" id="resendOtp" class="btn btn-outline-secondary">Gửi lại mã OTP</button>
+                                        <button type="button" id="backToStep1" class="btn btn-link">Quay lại</button>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
-                                    <label class="form-check-label" for="agreeTerms">Tôi đồng ý với <a href="#">Điều khoản và Điều kiện</a></label>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Đăng ký</button>
                                 </div>
                             </form>
                             <div class="text-center mt-3">
@@ -212,28 +278,342 @@
     <!-- Xác thực đăng ký -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const registerForm = document.getElementById('registerForm');
+            console.log('DOM fully loaded');
             
-            registerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Xác thực bổ sung
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-                
-                if (password !== confirmPassword) {
-                    alert('Mật khẩu không khớp');
-                    return;
-                }
-                
-                const email = document.getElementById('email').value;
-                if (!Utils.isValidEmail(email)) {
-                    alert('Vui lòng nhập địa chỉ email hợp lệ');
-                    return;
-                }
-                
-                // Biểu mẫu sẽ được xử lý bởi Auth.register trong auth.js
+            // Get form elements
+            const registerForm = document.getElementById('registerForm');
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const submitStep1 = document.getElementById('submitStep1');
+            const verifyOtp = document.getElementById('verifyOtp');
+            const resendOtp = document.getElementById('resendOtp');
+            const backToStep1 = document.getElementById('backToStep1');
+            const verificationEmail = document.getElementById('verificationEmail');
+            const otpCode = document.getElementById('otpCode');
+            const otpCountdown = document.getElementById('otpCountdown');
+            
+            console.log('Elements found:', {
+                registerForm: !!registerForm,
+                step1: !!step1,
+                step2: !!step2,
+                submitStep1: !!submitStep1,
+                verifyOtp: !!verifyOtp
             });
+            
+            // Store form data
+            let formData = {};
+            let countdownTimer;
+            let otpExpiryTime = 180; // 3 minutes in seconds
+            
+            // Generate fake OTP (6 digits)
+            function generateOTP() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+
+            // Show OTP in placeholder
+            function showOTP() {
+                const otp = generateOTP();
+                otpCode.placeholder = `Mã OTP của bạn: ${otp}`;
+                startCountdown();
+                return otp;
+            }
+            
+            // Start countdown timer
+            function startCountdown() {
+                // Reset timer if it's already running
+                if (countdownTimer) {
+                    clearInterval(countdownTimer);
+                }
+                
+                // Reset time to 3 minutes
+                otpExpiryTime = 180;
+                updateCountdownDisplay();
+                
+                countdownTimer = setInterval(function() {
+                    otpExpiryTime -= 1;
+                    updateCountdownDisplay();
+                    
+                    if (otpExpiryTime <= 0) {
+                        clearInterval(countdownTimer);
+                        // OTP expired
+                        Utils.showToast('Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.', 'warning');
+                        resendOtp.disabled = false;
+                        verifyOtp.disabled = true;
+                    }
+                }, 1000);
+            }
+            
+            // Update countdown display
+            function updateCountdownDisplay() {
+                const minutes = Math.floor(otpExpiryTime / 60);
+                const seconds = otpExpiryTime % 60;
+                otpCountdown.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Change color when less than 30 seconds
+                if (otpExpiryTime < 30) {
+                    otpCountdown.style.color = '#dc3545'; // Bootstrap danger color
+                } else {
+                    otpCountdown.style.color = '';
+                }
+            }
+            
+            // Step 1 submission
+            submitStep1.addEventListener('click', function(e) {
+                console.log('Step 1 submit button clicked');
+                
+                try {
+                    // Basic validation
+                    const fullName = document.getElementById('fullName').value.trim();
+                    const username = document.getElementById('username').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    const agreeTerms = document.getElementById('agreeTerms').checked;
+                    
+                    console.log('Form values:', {
+                        fullName: !!fullName,
+                        username: !!username,
+                        email: !!email,
+                        password: !!password,
+                        confirmPassword: !!confirmPassword,
+                        agreeTerms
+                    });
+                    
+                    // Add validation classes
+                    registerForm.classList.add('was-validated');
+                    
+                    // Validate form
+                    if (!fullName || !username || !email || !password || !confirmPassword || !agreeTerms) {
+                        console.log('Basic validation failed');
+                        return;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        document.getElementById('confirmPassword').setCustomValidity('Mật khẩu không khớp');
+                        document.getElementById('confirmPassword').reportValidity();
+                        return;
+                    } else {
+                        document.getElementById('confirmPassword').setCustomValidity('');
+                    }
+                    
+                    if (!Utils.isValidEmail(email)) {
+                        document.getElementById('email').setCustomValidity('Email không hợp lệ');
+                        document.getElementById('email').reportValidity();
+                        return;
+                    } else {
+                        document.getElementById('email').setCustomValidity('');
+                    }
+                    
+                    // Check if email is already registered
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    console.log('Existing users count:', users.length);
+                    
+                    const emailExists = users.some(user => user.email === email);
+                    if (emailExists) {
+                        Utils.showToast('Email đã được đăng ký. Vui lòng sử dụng email khác.', 'error');
+                        return;
+                    }
+                    
+                    // Check if username is already taken
+                    const usernameExists = users.some(user => user.username === username);
+                    if (usernameExists) {
+                        Utils.showToast('Tên đăng nhập đã tồn tại. Vui lòng chọn tên đăng nhập khác.', 'error');
+                        return;
+                    }
+                    
+                    // Store form data for later use
+                    formData = {
+                        fullName,
+                        username,
+                        email,
+                        password
+                    };
+                    
+                    console.log('Form data stored:', formData);
+                    
+                    // Show verification email
+                    verificationEmail.textContent = email;
+                    
+                    // Generate and show OTP
+                    const otp = showOTP();
+                    formData.otp = otp;
+                    console.log('OTP generated:', otp);
+                    
+                    // Switch to step 2
+                    step1.style.display = 'none';
+                    step2.style.display = 'block';
+                    
+                    // Simulate OTP sent notification
+                    Utils.showToast('Mã OTP đã được gửi đến email của bạn!', 'success');
+                } catch (error) {
+                    console.error('Error in step 1 submission:', error);
+                    alert('Đã xảy ra lỗi: ' + error.message);
+                }
+            });
+            
+            // OTP verification
+            verifyOtp.addEventListener('click', function(e) {
+                console.log('Verify OTP button clicked');
+                
+                try {
+                    const enteredOTP = otpCode.value.trim();
+                    console.log('Entered OTP:', enteredOTP);
+                    
+                    if (!enteredOTP) {
+                        otpCode.classList.add('is-invalid');
+                        return;
+                    }
+                    
+                    // Check if OTP is expired
+                    if (otpExpiryTime <= 0) {
+                        Utils.showToast('Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.', 'error');
+                        otpCode.classList.add('is-invalid');
+                        return;
+                    }
+                    
+                    // Validate OTP - use the placeholder value for validation
+                    const realOTP = formData.otp; 
+                    console.log('Real OTP:', realOTP);
+                    
+                    if (enteredOTP === realOTP) {
+                        // Stop the countdown
+                        if (countdownTimer) {
+                            clearInterval(countdownTimer);
+                        }
+                        
+                        // Create user object
+                        const newUser = {
+                            id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                            fullName: formData.fullName,
+                            username: formData.username,
+                            email: formData.email,
+                            password: typeof Auth !== 'undefined' && Auth.hashPassword ? 
+                                      Auth.hashPassword(formData.password) : formData.password,
+                            role: 'user',
+                            registrationDate: new Date().toISOString(),
+                            status: true
+                        };
+                        
+                        console.log('New user object created:', newUser);
+                        
+                        // Save to localStorage
+                        const users = JSON.parse(localStorage.getItem('users') || '[]');
+                        users.push(newUser);
+                        localStorage.setItem('users', JSON.stringify(users));
+                        console.log('User saved to localStorage');
+                        
+                        // Add to DB if available
+                        if (typeof DB !== 'undefined' && DB.add) {
+                            try {
+                                DB.add(DB.STORES.USERS, newUser);
+                                console.log('User added to DB');
+                            } catch (dbError) {
+                                console.error('Error adding user to DB:', dbError);
+                            }
+                        }
+                        
+                        // Show success message
+                        Utils.showToast('Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...', 'success');
+                        
+                        // Redirect to login page after a delay
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    } else {
+                        Utils.showToast('Mã OTP không chính xác, vui lòng thử lại!', 'error');
+                        otpCode.classList.add('is-invalid');
+                    }
+                } catch (error) {
+                    console.error('Error in OTP verification:', error);
+                    alert('Đã xảy ra lỗi: ' + error.message);
+                }
+            });
+            
+            // Resend OTP
+            resendOtp.addEventListener('click', function(e) {
+                console.log('Resend OTP button clicked');
+                
+                try {
+                    // Disable button temporarily to prevent spamming
+                    resendOtp.disabled = true;
+                    setTimeout(() => { resendOtp.disabled = false; }, 3000);
+                    
+                    const newOTP = showOTP();
+                    formData.otp = newOTP;
+                    console.log('New OTP generated:', newOTP);
+                    
+                    otpCode.value = ''; // Clear input field
+                    otpCode.classList.remove('is-invalid');
+                    verifyOtp.disabled = false; // Re-enable verify button
+                    
+                    Utils.showToast('Mã OTP mới đã được gửi đến email của bạn!', 'success');
+                } catch (error) {
+                    console.error('Error in resend OTP:', error);
+                }
+            });
+            
+            // Back to step 1
+            backToStep1.addEventListener('click', function(e) {
+                console.log('Back to step 1 button clicked');
+                
+                // Stop the countdown if user goes back
+                if (countdownTimer) {
+                    clearInterval(countdownTimer);
+                }
+                
+                step2.style.display = 'none';
+                step1.style.display = 'block';
+                registerForm.classList.remove('was-validated');
+                otpCode.value = '';
+                otpCode.classList.remove('is-invalid');
+            });
+            
+            // Clear validation when input changes
+            otpCode.addEventListener('input', function() {
+                otpCode.classList.remove('is-invalid');
+            });
+            
+            // Also handle Enter key on form
+            registerForm.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    if (step1.style.display !== 'none') {
+                        submitStep1.click();
+                    } else if (step2.style.display !== 'none') {
+                        verifyOtp.click();
+                    }
+                }
+            });
+            
+            // Add debugger fallback if Utils is not available
+            if (typeof Utils === 'undefined' || !Utils.showToast) {
+                console.warn('Utils not found, using fallback');
+                window.Utils = {
+                    isValidEmail: function(email) {
+                        // Simple email validation
+                        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        return re.test(email);
+                    },
+                    showToast: function(message, type) {
+                        console.log(`[TOAST - ${type}]: ${message}`);
+                        alert(message);
+                    }
+                };
+            }
+            
+            // Add debugger fallback if Auth is not available
+            if (typeof Auth === 'undefined') {
+                console.warn('Auth not found, using fallback');
+                window.Auth = {
+                    hashPassword: function(password) {
+                        // Simple hash function for demonstration
+                        return 'hashed_' + password;
+                    }
+                };
+            }
+            
+            console.log('Registration form initialization complete');
         });
     </script>
 </body>

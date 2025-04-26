@@ -87,7 +87,7 @@ const Products = {
           price: 10000,
           categoryId: this.getCategoryIdByName('Phụ kiện'),
           description: 'Quạt nhựa cầm tay hình gấu trúc, thiết kế dễ thương, nhỏ gọn dễ mang theo.',
-          image: '/assets/images/products/quat_gau_truc.jpg',
+          image: 'https://pos.nvncdn.com/cba2a3-7534/ps/20250424_Sr9l1u80Q1.jpeg',
           status: true,
           featured: true,
           stock: 50,
@@ -98,7 +98,7 @@ const Products = {
           price: 40000,
           categoryId: this.getCategoryIdByName('Phụ kiện'),
           description: 'Túi đựng bình nước họa tiết Kuromi, chất liệu vải canvas bền đẹp.',
-          image: '/assets/images/products/tui_binh_nuoc.jpg',
+          image: 'https://pos.nvncdn.com/cba2a3-7534/ps/20250424_ugNijuwpH1.jpeg',
           status: true,
           featured: true,
           stock: 30,
@@ -109,7 +109,7 @@ const Products = {
           price: 190000,
           categoryId: this.getCategoryIdByName('Phụ kiện'),
           description: 'Quạt USB vòng cổ dễ thương thiết kế nhân vật Capybara, có thể sạc và mang theo.',
-          image: '/assets/images/products/quat_usb.jpg',
+          image: 'https://pos.nvncdn.com/cba2a3-7534/ps/20250424_aiw8tF4VNH.jpeg',
           status: true,
           featured: true,
           stock: 15,
@@ -120,7 +120,7 @@ const Products = {
           price: 60000,
           categoryId: this.getCategoryIdByName('Phụ kiện'),
           description: 'Ốp bảo vệ airpods thiết kế độc đáo hình Hello Kitty, chất liệu silicone mềm.',
-          image: '/assets/images/products/case_airpods.jpg',
+          image: 'https://pos.nvncdn.com/cba2a3-7534/ps/20250424_aJf0hF920g.jpeg',
           status: true,
           featured: true,
           stock: 25,
@@ -131,7 +131,7 @@ const Products = {
           price: 150000,
           categoryId: this.getCategoryIdByName('Thú bông'),
           description: 'Thú bông Kuromi kích thước nhỏ, thích hợp để bàn hoặc trưng bày.',
-          image: '/assets/images/products/kuromi.jpg',
+          image: 'https://pos.nvncdn.com/cba2a3-7534/ps/20250424_IL7pztWsDc.jpeg',
           status: true,
           featured: false,
           stock: 20,
@@ -142,7 +142,7 @@ const Products = {
           price: 35000,
           categoryId: this.getCategoryIdByName('Móc khóa'),
           description: 'Móc khóa hình Stitch kích thước mini, dễ thương.',
-          image: '/assets/images/products/moc_khoa_stitch.jpg',
+          image: 'https://pos.nvncdn.com/cba2a3-7534/ps/20250424_iVx3K0oOv5.jpeg',
           status: true,
           featured: false,
           stock: 40,
@@ -188,18 +188,19 @@ const Products = {
         <div class="col-md-4 col-sm-6 mb-4">
           <div class="product-card card h-100">
             <div class="position-relative">
-              <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
-              ${product.featured ? '<span class="badge bg-danger position-absolute top-0 end-0 m-2">Hot</span>' : ''}
+              <a href="product-detail.html?id=${product.id}">
+                <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
+                ${product.featured ? '<span class="badge bg-danger position-absolute top-0 end-0 m-2">Hot</span>' : ''}
+              </a>
             </div>
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title">${product.name}</h5>
+              <a href="product-detail.html?id=${product.id}" class="text-decoration-none">
+                <h5 class="card-title">${product.name}</h5>
+              </a>
               <p class="card-text flex-grow-1">${product.description ? product.description.substring(0, 60) + '...' : ''}</p>
               <div class="d-flex justify-content-between align-items-center mt-auto">
                 <span class="price">${product.price.toLocaleString()}đ</span>
                 <div>
-                  <a href="product-detail.html?id=${product.id}" class="btn btn-sm btn-outline-secondary me-1">
-                    <i class="bi bi-eye"></i>
-                  </a>
                   <button class="btn btn-sm btn-primary add-to-cart" data-id="${product.id}">
                     <i class="bi bi-cart-plus"></i>
                   </button>
@@ -312,16 +313,20 @@ const Products = {
       html += `
         <div class="col-md-4 col-sm-6 mb-4">
           <div class="product-card card h-100">
-            <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
+            <div class="position-relative">
+              <a href="product-detail.html?id=${product.id}">
+                <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
+                ${product.featured ? '<span class="badge bg-danger position-absolute top-0 end-0 m-2">Hot</span>' : ''}
+              </a>
+            </div>
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title">${product.name}</h5>
+              <a href="product-detail.html?id=${product.id}" class="text-decoration-none">
+                <h5 class="card-title">${product.name}</h5>
+              </a>
               <p class="card-text flex-grow-1">${product.description ? product.description.substring(0, 60) + '...' : ''}</p>
               <div class="d-flex justify-content-between align-items-center mt-auto">
                 <span class="price">${product.price.toLocaleString()}đ</span>
                 <div>
-                  <a href="product-detail.html?id=${product.id}" class="btn btn-sm btn-outline-secondary me-1">
-                    <i class="bi bi-eye"></i>
-                  </a>
                   <button class="btn btn-sm btn-primary add-to-cart" data-id="${product.id}">
                     <i class="bi bi-cart-plus"></i>
                   </button>

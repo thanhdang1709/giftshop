@@ -14,7 +14,7 @@ const ProfileManager = {
         
         // Check if user is logged in
         if (!Auth.isLoggedIn()) {
-            window.location.href = 'login.html?redirect=profile';
+            // window.location.href = '/pages/customer/login.html?redirect=/pages/customer/profile.html';
             return;
         }
         
@@ -177,8 +177,7 @@ const ProfileManager = {
             }
             
             // Save updated user
-            users[userIndex] = updatedUser;
-            DB.setAll(DB.STORES.USERS, users);
+            DB.update(DB.STORES.USERS, updatedUser.id, updatedUser);
             
             // Update session user information
             const sessionUser = {
