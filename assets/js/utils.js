@@ -10,24 +10,24 @@ const Utils = {
    */
   formatDate(dateString, includeTime = false) {
     if (!dateString) return '';
-    
+
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return '';
-    
+
     const options = {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
     };
-    
+
     if (includeTime) {
       options.hour = '2-digit';
       options.minute = '2-digit';
     }
-    
+
     return date.toLocaleDateString('vi-VN', options);
   },
-  
+
   /**
    * Định dạng tiền tệ
    * @param {number} amount - Số tiền cần định dạng
@@ -37,7 +37,7 @@ const Utils = {
     if (typeof amount !== 'number') return '0đ';
     return amount.toLocaleString() + 'đ';
   },
-  
+
   /**
    * Cắt ngắn văn bản nếu dài hơn độ dài tối đa
    * @param {string} text - Văn bản cần cắt ngắn
@@ -49,17 +49,17 @@ const Utils = {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   },
-  
+
   /**
    * Hiển thị thông báo dạng toast
    * @param {string} type - Loại thông báo (success, error, warning, info)
    * @param {string} message - Tin nhắn cần hiển thị
    * @param {number} duration - Thời gian hiển thị tính bằng mili giây
    */
-  showToast(type, message, duration = 3000) {
+  showToast(message, type, duration = 3000) {
     // Đảm bảo CSS cho toast đã được tải
     this.loadCss('/assets/css/toast.css');
-    
+
     // Xóa toast hiện có nếu có
     const existingToast = document.querySelector('.toast-notification');
     if (existingToast) {
@@ -87,7 +87,7 @@ const Utils = {
       }, 300); // Đợi hiệu ứng mờ dần
     }, duration);
   },
-  
+
   /**
    * Tải động file CSS
    * @param {string} href - Đường dẫn đến file CSS
@@ -97,18 +97,18 @@ const Utils = {
     // Kiểm tra xem đã tải chưa
     const existingLink = document.querySelector(`link[href="${href}"]`);
     if (existingLink) return existingLink;
-    
+
     // Tạo phần tử link
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href = href;
-    
+
     // Thêm vào head của tài liệu
     document.head.appendChild(link);
     return link;
   },
-  
+
   /**
    * Kiểm tra địa chỉ email hợp lệ
    * @param {string} email - Email cần kiểm tra
@@ -118,7 +118,7 @@ const Utils = {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(String(email).toLowerCase());
   },
-  
+
   /**
    * Kiểm tra số điện thoại hợp lệ
    * @param {string} phone - Số điện thoại cần kiểm tra
@@ -128,7 +128,7 @@ const Utils = {
     const re = /^[0-9]{10,11}$/;
     return re.test(String(phone).replace(/\s/g, ''));
   },
-  
+
   /**
    * Lấy tham số URL dưới dạng đối tượng
    * @returns {Object} - Tham số URL
@@ -141,7 +141,7 @@ const Utils = {
     }
     return params;
   },
-  
+
   /**
    * Tạo URL với tham số truy vấn
    * @param {string} base - URL cơ sở
@@ -150,16 +150,16 @@ const Utils = {
    */
   createUrl(base, params = {}) {
     const url = new URL(base, window.location.origin);
-    
+
     Object.keys(params).forEach(key => {
       if (params[key] !== undefined && params[key] !== null) {
         url.searchParams.append(key, params[key]);
       }
     });
-    
+
     return url.href;
   },
-  
+
   /**
    * Debounce một lời gọi hàm
    * @param {Function} func - Hàm cần debounce
@@ -168,14 +168,14 @@ const Utils = {
    */
   debounce(func, delay = 300) {
     let timeoutId;
-    return function(...args) {
+    return function (...args) {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         func.apply(this, args);
       }, delay);
     };
   },
-  
+
   /**
    * Tạo thành phần phân trang
    * @param {Object} options - Tùy chọn phân trang
@@ -187,20 +187,20 @@ const Utils = {
   createPagination({ currentPage, totalPages, onPageChange, containerId }) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
+
     // Xóa container
     container.innerHTML = '';
-    
+
     // Không hiển thị phân trang nếu chỉ có một trang
     if (totalPages <= 1) return;
-    
+
     // Tạo điều hướng phân trang
     const nav = document.createElement('nav');
     nav.setAttribute('aria-label', 'Điều hướng trang');
-    
+
     const ul = document.createElement('ul');
     ul.className = 'pagination justify-content-center';
-    
+
     // Nút trước
     const prevLi = document.createElement('li');
     prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
@@ -211,23 +211,23 @@ const Utils = {
     prevLink.innerHTML = '<span aria-hidden="true">&laquo;</span>';
     prevLi.appendChild(prevLink);
     ul.appendChild(prevLi);
-    
+
     if (currentPage > 1) {
       prevLink.addEventListener('click', (e) => {
         e.preventDefault();
         onPageChange(currentPage - 1);
       });
     }
-    
+
     // Số trang
     const maxPages = 5; // Hiển thị tối đa 5 số trang
     let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     let endPage = Math.min(totalPages, startPage + maxPages - 1);
-    
+
     if (endPage - startPage < maxPages - 1) {
       startPage = Math.max(1, endPage - maxPages + 1);
     }
-    
+
     for (let i = startPage; i <= endPage; i++) {
       const li = document.createElement('li');
       li.className = `page-item ${i === currentPage ? 'active' : ''}`;
@@ -235,18 +235,18 @@ const Utils = {
       link.className = 'page-link';
       link.href = '#';
       link.textContent = i;
-      
+
       if (i !== currentPage) {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           onPageChange(i);
         });
       }
-      
+
       li.appendChild(link);
       ul.appendChild(li);
     }
-    
+
     // Nút tiếp theo
     const nextLi = document.createElement('li');
     nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
@@ -257,19 +257,19 @@ const Utils = {
     nextLink.innerHTML = '<span aria-hidden="true">&raquo;</span>';
     nextLi.appendChild(nextLink);
     ul.appendChild(nextLi);
-    
+
     if (currentPage < totalPages) {
       nextLink.addEventListener('click', (e) => {
         e.preventDefault();
         onPageChange(currentPage + 1);
       });
     }
-    
+
     // Thêm phân trang vào container
     nav.appendChild(ul);
     container.appendChild(nav);
   },
-  
+
   /**
    * Định dạng giá với đơn vị tiền tệ
    * @param {number} price - Giá cần định dạng
