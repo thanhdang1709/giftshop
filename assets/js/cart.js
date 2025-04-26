@@ -74,7 +74,7 @@ const Cart = {
     });
 
     // Cập nhật hiển thị giỏ hàng nếu chúng ta đang ở trang giỏ hàng
-    if (window.location.pathname.includes('cart.html')) {
+    if (window.location.pathname.includes('cart')) {
       this.displayCart();
       this.setupCheckoutModal();
     }
@@ -410,7 +410,7 @@ const Cart = {
     this.saveCart(updatedCart);
 
     // Nếu chúng ta đang ở trang giỏ hàng, cập nhật hiển thị
-    if (window.location.pathname.includes('cart.html')) {
+    if (window.location.pathname.includes('cart')) {
       this.displayCart();
     }
   },
@@ -452,7 +452,7 @@ const Cart = {
     this.saveCart([]);
 
     // Nếu chúng ta đang ở trang giỏ hàng, cập nhật hiển thị
-    if (window.location.pathname.includes('cart.html')) {
+    if (window.location.pathname.includes('cart')) {
       this.displayCart();
     }
   },
@@ -755,7 +755,7 @@ const Cart = {
   },
 
   isOnCartPage: function() {
-    return window.location.pathname.includes('cart.html');
+    return window.location.pathname.includes('cart');
   },
 
   /**
