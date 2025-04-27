@@ -66,7 +66,8 @@ const Auth = {
   login(username, password) {
     // Tìm người dùng
     const users = DB.getAll(DB.STORES.USERS);
-    const user = users.find(u => u.username === username && u.password === password && u.active);
+    console.log(users);
+    const user = users.find(u => u.username === username && u.password === password && (u.active === true || u.status));
 
     if (!user) {
       this.showError('Tên đăng nhập hoặc mật khẩu không hợp lệ');

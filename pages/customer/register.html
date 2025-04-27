@@ -496,12 +496,6 @@
                         
                         console.log('New user object created:', newUser);
                         
-                        // Save to localStorage
-                        const users = JSON.parse(localStorage.getItem('users') || '[]');
-                        users.push(newUser);
-                        localStorage.setItem('users', JSON.stringify(users));
-                        console.log('User saved to localStorage');
-                        
                         // Add to DB if available
                         if (typeof DB !== 'undefined' && DB.add) {
                             try {
@@ -509,7 +503,18 @@
                                 console.log('User added to DB');
                             } catch (dbError) {
                                 console.error('Error adding user to DB:', dbError);
+                                // Fallback if DB operation fails
+                                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                                users.push(newUser);
+                                localStorage.setItem('users', JSON.stringify(users));
+                                console.log('User saved to localStorage (fallback)');
                             }
+                        } else {
+                            // Fallback if DB.add is not available
+                            const users = JSON.parse(localStorage.getItem('users') || '[]');
+                            users.push(newUser);
+                            localStorage.setItem('users', JSON.stringify(users));
+                            console.log('User saved to localStorage (fallback)');
                         }
                         
                         // Show success message

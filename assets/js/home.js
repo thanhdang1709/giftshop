@@ -58,18 +58,19 @@ const Home = {
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="product-card card h-100">
             <div class="position-relative">
-              <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
-              <span class="badge bg-danger position-absolute top-0 end-0 m-2">Nổi bật</span>
+              <a href="pages/customer/product-detail.html?id=${product.id}">
+                <img src="${product.image || 'assets/images/placeholder.jpg'}" class="card-img-top" alt="${product.name}">
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2">Nổi bật</span>
+              </a>
             </div>
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title">${product.name}</h5>
+              <a href="pages/customer/product-detail.html?id=${product.id}" class="text-decoration-none">
+                <h5 class="card-title">${product.name}</h5>
+              </a>
               <p class="card-text flex-grow-1">${product.description ? Utils.truncateText(product.description, 60) : ''}</p>
               <div class="d-flex justify-content-between align-items-center mt-auto">
                 <span class="price">${Utils.formatCurrency(product.price)}</span>
                 <div>
-                  <a href="pages/customer/product-detail.html?id=${product.id}" class="btn btn-sm btn-outline-secondary me-1">
-                    <i class="bi bi-eye"></i>
-                  </a>
                   <button class="btn btn-sm btn-primary add-to-cart" data-id="${product.id}">
                     <i class="bi bi-cart-plus"></i>
                   </button>
