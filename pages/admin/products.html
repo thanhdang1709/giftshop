@@ -560,14 +560,14 @@
          * Lưu sản phẩm (thêm mới hoặc cập nhật)
          */
         function saveProduct() {
-            // Kiểm tra form
+            // Check form validation
             const form = document.getElementById('productForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
             
-            // Lấy dữ liệu từ form
+            // Get data from form
             const productId = document.getElementById('productId').value.trim();
             const name = document.getElementById('productName').value.trim();
             const categoryId = document.getElementById('productCategory').value;
@@ -578,7 +578,7 @@
             const status = document.getElementById('productStatus').checked;
             const featured = document.getElementById('productFeatured').checked;
             
-            // Tạo đối tượng sản phẩm
+            // Create product object
             const product = {
                 name,
                 categoryId,
@@ -590,21 +590,38 @@
                 featured
             };
             
-            if (isEditing) {
-                // Cập nhật sản phẩm
-                product.id = productId;
-                DB.update(DB.STORES.PRODUCTS, product);
-                Utils.showToast('Sản phẩm đã được cập nhật thành công', 'success');
-            } else {
-                // Thêm sản phẩm mới
-                product.createdAt = new Date().toISOString();
-                DB.add(DB.STORES.PRODUCTS, product);
-                Utils.showToast('Sản phẩm mới đã được thêm thành công', 'success');
+            try {
+                if (isEditing && productId) {
+                    // Update existing product
+                    const existingProduct = DB.getById(DB.STORES.PRODUCTS, productId);
+                    if (!existingProduct) {
+                        Utils.showToast('Product not found', 'error');
+                        return;
+                    }
+                    
+                    // Preserve existing fields and update with new values
+                    product.id = productId;
+                    product.createdAt = existingProduct.createdAt;
+                    product.updatedAt = new Date().toISOString();
+                    
+                    // Update in database
+                    DB.update(DB.STORES.PRODUCTS, product);
+                    Utils.showToast('Product updated successfully', 'success');
+                } else {
+                    // Add new product
+                    product.id = DB.generateId();
+                    product.createdAt = new Date().toISOString();
+                    DB.add(DB.STORES.PRODUCTS, product);
+                    Utils.showToast('New product added successfully', 'success');
+                }
+                
+                // Close modal and reload product list
+                productModal.hide();
+                loadProducts();
+            } catch (error) {
+                console.error('Error saving product:', error);
+                Utils.showToast('Error saving product: ' + error.message, 'error');
             }
-            
-            // Đóng modal và tải lại danh sách
-            productModal.hide();
-            loadProducts();
         }
     </script>
 </body>
