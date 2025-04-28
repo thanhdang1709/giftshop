@@ -1,0 +1,77 @@
+========== SCRIPT THUYẾT TRÌNH THÀNH VIÊN 7 ==========
+
+[Phần Mở Đầu - 30 giây]
+Kính chào quý thầy cô và các bạn. Em là thành viên thứ 7, sau đây em xin trình bày tổng quan về dự án website Gift Shop - cửa hàng quà lưu niệm của nhóm chúng em.
+
+Với đề bài thầy đưa ra là xây dựng một website bán hàng sử dụng HTML, CSS và JavaScript thuần, nhóm em đã quyết định phát triển một cửa hàng quà lưu niệm trực tuyến, tập trung vào trải nghiệm người dùng và tính năng quản lý hiệu quả.
+
+[Phần 1: Cấu Trúc Dự Án - 1 phút]
+Về cấu trúc source code, dự án được tổ chức theo mô hình phân tầng rõ ràng:
+1. Thư mục assets/: 
+   - css/: Chứa các file CSS tùy chỉnh
+   - js/: Chứa các module JavaScript
+   - images/: Lưu trữ hình ảnh và tài nguyên
+2. Thư mục pages/:
+   - admin/: Giao diện quản trị
+   - customer/: Giao diện người dùng
+3. File index.html: Trang chủ website
+4. Các file JavaScript chính:
+   - db.js: Quản lý dữ liệu với localStorage
+   - auth.js: Xử lý xác thực người dùng
+   - utils.js: Các hàm tiện ích
+
+[Phần 2: Công Nghệ Sử Dụng - 1 phút]
+Dự án được xây dựng trên nền tảng công nghệ web cơ bản:
+1. HTML5 cho cấu trúc trang web
+2. CSS3 và Bootstrap 5 cho giao diện:
+   - Responsive design cho mọi thiết bị
+   - Components có sẵn của Bootstrap
+   - Custom CSS cho thiết kế riêng
+3. JavaScript thuần:
+   - Không sử dụng framework
+   - Tự xây dựng các module quản lý
+   - Tương tác DOM trực tiếp
+
+[Phần 3: Hệ Thống Lưu Trữ Dữ Liệu - 1 phút]
+Về phần quản lý dữ liệu, chúng em sử dụng localStorage với cấu trúc được tổ chức thành các store:
+1. Users Store:
+   - Lưu thông tin người dùng
+   - Phân quyền admin/customer
+2. Products Store:
+   - Quản lý sản phẩm
+   - Thông tin chi tiết và hình ảnh
+3. Categories Store:
+   - Danh mục sản phẩm
+4. Orders Store:
+   - Đơn hàng và trạng thái
+   - Lịch sử mua hàng
+
+[Phần 4: Kết Quả Đạt Được - 1 phút]
+Sau quá trình phát triển, dự án đã đạt được các mục tiêu:
+1. Về Chức Năng:
+   - Hệ thống xác thực đăng nhập/đăng ký
+   - Quản lý sản phẩm và danh mục
+   - Giỏ hàng và thanh toán
+   - Quản lý đơn hàng
+2. Về Giao Diện:
+   - Thiết kế responsive
+   - UX/UI thân thiện
+   - Tối ưu hiển thị
+3. Về Kỹ Thuật:
+   - Code có cấu trúc
+   - Dễ bảo trì, mở rộng
+   - Xử lý lỗi tốt
+
+[Phần Kết - 30 giây]
+Qua dự án này, nhóm em đã học được:
+1. Cách xây dựng một ứng dụng web hoàn chỉnh
+2. Quản lý dữ liệu client-side hiệu quả
+3. Làm việc nhóm và phân chia công việc
+
+Em xin cảm ơn quý thầy cô đã lắng nghe. Em rất mong nhận được góp ý để hoàn thiện dự án tốt hơn.
+
+[Ghi chú thêm]
+- Thời lượng: 4-5 phút
+- Tốc độ nói: Vừa phải, rõ ràng
+- Nên chuẩn bị demo một số tính năng chính
+- Có thể mở source code để minh họa cấu trúc 
