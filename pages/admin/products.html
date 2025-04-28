@@ -544,7 +544,7 @@
             if (!productToDelete) return;
             
             // Xóa sản phẩm
-            DB.delete(DB.STORES.PRODUCTS, productToDelete);
+            DB.remove(DB.STORES.PRODUCTS, productToDelete);
             
             // Đóng modal và tải lại danh sách
             deleteConfirmModal.hide();
@@ -589,13 +589,15 @@
                 status,
                 featured
             };
+
+            console.log(product);
             
             try {
                 if (isEditing && productId) {
                     // Update existing product
                     const existingProduct = DB.getById(DB.STORES.PRODUCTS, productId);
                     if (!existingProduct) {
-                        Utils.showToast('Product not found', 'error');
+                        Utils.showToast('Sản phẩm không tồn tại', 'error');
                         return;
                     }
                     
@@ -605,14 +607,14 @@
                     product.updatedAt = new Date().toISOString();
                     
                     // Update in database
-                    DB.update(DB.STORES.PRODUCTS, product);
-                    Utils.showToast('Product updated successfully', 'success');
+                    DB.update(DB.STORES.PRODUCTS, productId, product);
+                    Utils.showToast('Cập nhật sản phẩm thành công', 'success');
                 } else {
                     // Add new product
                     product.id = DB.generateId();
                     product.createdAt = new Date().toISOString();
                     DB.add(DB.STORES.PRODUCTS, product);
-                    Utils.showToast('New product added successfully', 'success');
+                    Utils.showToast('Thêm sản phẩm thành công', 'success');
                 }
                 
                 // Close modal and reload product list
@@ -620,7 +622,7 @@
                 loadProducts();
             } catch (error) {
                 console.error('Error saving product:', error);
-                Utils.showToast('Error saving product: ' + error.message, 'error');
+                Utils.showToast('Lỗi lưu sản phẩm: ' + error.message, 'error');
             }
         }
     </script>

@@ -151,12 +151,18 @@ const OrdersManager = {
         
         // Apply filters
         if (searchTerm) {
-            orders = orders.filter(order => 
-                order.id.toLowerCase().includes(searchTerm) || 
-                order.customer.name.toLowerCase().includes(searchTerm) ||
-                order.customer.email.toLowerCase().includes(searchTerm) ||
-                order.customer.phone.toLowerCase().includes(searchTerm)
-            );
+            orders = orders.filter(order => {
+                // Safely check all searchable fields
+                const orderId = (order.id || order.orderNumber || '').toLowerCase();
+                const customerName = (order.customer?.name || order.customer?.fullName || '').toLowerCase();
+                const customerEmail = (order.customer?.email || '').toLowerCase();
+                const customerPhone = (order.customer?.phone || '').toLowerCase();
+                
+                return orderId.includes(searchTerm) || 
+                       customerName.includes(searchTerm) ||
+                       customerEmail.includes(searchTerm) ||
+                       customerPhone.includes(searchTerm);
+            });
         }
         
         if (statusFilter && statusFilter !== 'all') {
@@ -165,9 +171,14 @@ const OrdersManager = {
         
         if (dateFilter) {
             const filterDate = new Date(dateFilter);
+            filterDate.setHours(0, 0, 0, 0); // Set to start of day
+            
             orders = orders.filter(order => {
-                const orderDate = new Date(order.date);
-                return orderDate.toDateString() === filterDate.toDateString();
+                const orderDate = new Date(order.date || order.orderDate);
+                if (isNaN(orderDate.getTime())) return false;
+                
+                orderDate.setHours(0, 0, 0, 0); // Set to start of day
+                return orderDate.getTime() === filterDate.getTime();
             });
         }
         
@@ -182,8 +193,21 @@ const OrdersManager = {
         
         let html = '';
         orders.forEach(order => {
-            const orderDate = new Date(order.date);
-            const formattedDate = orderDate.toLocaleDateString('vi-VN');
+            // Format the date for display
+            const orderDate = order.date || order.orderDate;
+            let formattedDate = "Không xác định";
+            
+            if (orderDate) {
+                const date = new Date(orderDate);
+                if (!isNaN(date.getTime())) {
+                    formattedDate = date.toLocaleDateString('vi-VN');
+                }
+            }
+
+            // Get customer name safely
+            const customerName = order.customer ? 
+                (order.customer.name || order.customer.fullName || 'Không xác định') : 
+                'Không xác định';
             
             let statusBadge = '';
             switch (order.status) {
@@ -208,13 +232,13 @@ const OrdersManager = {
             
             html += `
                 <tr>
-                    <td>${order.id}</td>
-                    <td>${order.customer.name}</td>
+                    <td>${order.id || order.orderNumber || ''}</td>
+                    <td>${customerName}</td>
                     <td>${formattedDate}</td>
-                    <td>${this.formatCurrency(order.total)}</td>
+                    <td>${this.formatCurrency(order.total || 0)}</td>
                     <td>${statusBadge}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="OrdersManager.viewOrderDetails('${order.id}')">
+                        <button class="btn btn-sm btn-outline-primary" onclick="OrdersManager.viewOrderDetails('${order.id || order.orderNumber || ''}')">
                             <i class="bi bi-eye"></i>
                         </button>
                     </td>
